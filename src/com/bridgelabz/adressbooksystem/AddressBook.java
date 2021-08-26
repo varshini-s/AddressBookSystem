@@ -2,8 +2,6 @@ package com.bridgelabz.adressbooksystem;
 
 import java.util.HashMap;
 
-
-
 public class AddressBook 
 
 {
@@ -55,6 +53,29 @@ public class AddressBook
 		}
 		
 	}
+	public void deleteContact(String name)
+	
+	{
+		
+		map.remove(name);
+		
+		
+	}
+	
+	public void displayContactInfo(String name)
+	{
+		Contact person=map.get(name);
+		System.out.println("address:"+person.getAddress());
+		System.out.println("city:"+person.getCity());
+		System.out.println("state:"+person.getState());
+		System.out.println("zip:"+person.getZip());
+		System.out.println("phone number:"+person.getPhoneNumber());
+		System.out.println("email:"+person.getEmail());
+
+		
+	}
+	
+	
 	
 	
 	
