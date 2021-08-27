@@ -5,79 +5,109 @@ import java.util.HashMap;
 public class AddressBook 
 
 {
-	
-	HashMap<String, Contact> map = new HashMap<String,Contact>();
-	
+	 public int numberOfContacts;
+	 public Contact[] contactList = new Contact[10];
+	 
+	 public AddressBook() 
+	 {
+		numberOfContacts=0;
+	}
 	
 	public void addNewContact(Contact person)
 	{
-		map.put(person.getFirstName()+person.getLastName(),person);
+		contactList[numberOfContacts]=person;
+		numberOfContacts++;
 		
 	}
 	
-	public void editContact(String name,String editInfo,String choice)
+	public void editContact(String number,String editInfo,String choice)
 	{
-		Contact person=map.get(name);
 		
+		int contactIndex=hasContact(number);
+
 		switch (choice) 
 		{
 
 			case "address":
-				person.setAddress(editInfo);
-				map.put(person.getFirstName()+person.getLastName(),person);
-				
+				contactList[contactIndex].setAddress(editInfo);
 				break;
 			case "city":
-				person.setCity(editInfo);
-				map.put(person.getFirstName()+person.getLastName(),person);
+				contactList[contactIndex].setCity(editInfo);
 				break;
 			case "state":
-				person.setState(editInfo);
-				map.put(person.getFirstName()+person.getLastName(),person);
+				contactList[contactIndex].setState(editInfo);
 				break;
 			case "zip":
-				person.setZip(editInfo);
-				map.put(person.getFirstName()+person.getLastName(),person);
+				contactList[contactIndex].setZip(editInfo);
 				break;
 			case "phoneNumber":
-				person.setPhoneNumber(editInfo);
-				map.put(person.getFirstName()+person.getLastName(),person);
+				contactList[contactIndex].setPhoneNumber(editInfo);
 				break;
 			case "email":
-				person.setEmail(editInfo);
-				map.put(person.getFirstName()+person.getLastName(),person);
+				contactList[contactIndex].setEmail(editInfo);
 				break;
-			
+				
+		}
+		
+		System.out.println("After editing the details are:");
+		displayContactInfo(number);
+		
+		
+	}
 	
+	public int hasContact(String number)
+	{	int position=-1;
+		
+		for (int index=0;index<numberOfContacts;index++)
+		{
+			if (contactList[index].getPhoneNumber().equals(number))
+
+			{
+				position=index;
+			}
 			
 		}
 		
+		return position;
 	}
-	public void deleteContact(String name)
+	
+	public void deleteContact(String number)
 	
 	{
 		
-		map.remove(name);
+		int contactIndex=hasContact(number);
+		if(contactIndex>=0)
+		{
+			while(contactIndex<numberOfContacts)
+    		{
+    			contactList[contactIndex]=contactList[contactIndex+1];
+    			contactIndex++;
+    		}
+		}
 		
+	    
 		
 	}
 	
-	public void displayContactInfo(String name)
+	public void displayContactInfo(String number)
 	{
-		Contact person=map.get(name);
-		System.out.println("address:"+person.getAddress());
-		System.out.println("city:"+person.getCity());
-		System.out.println("state:"+person.getState());
-		System.out.println("zip:"+person.getZip());
-		System.out.println("phone number:"+person.getPhoneNumber());
-		System.out.println("email:"+person.getEmail());
+		int contactIndex=hasContact(number);
+		if(contactIndex>=0)
+		{
+			Contact contact=contactList[contactIndex];
+			System.out.println("address:"+contact.getAddress());
+			System.out.println("city:"+contact.getCity());
+			System.out.println("state:"+contact.getState());
+			System.out.println("zip:"+contact.getZip());
+			System.out.println("phone number:"+contact.getPhoneNumber());
+			System.out.println("email:"+contact.getEmail());
+			
+		}
+		
 
 		
 	}
 	
-	
-	
-	
-	
+
 	
 }
