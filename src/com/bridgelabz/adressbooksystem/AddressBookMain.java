@@ -7,22 +7,36 @@ public class AddressBookMain
 
 	public static void main(String[] args) 
 	{
+		String firstName,lastName,address,city,state,zip,phoneNumber,email;
+
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Welcome to Address book system program");
 		
-		AddressBook info = new AddressBook();
+		AddressBook addressBook1 = new AddressBook();
+		AddressBook addressBook2 = new AddressBook();
 
-		String firstName,lastName,address,city,state,zip,phoneNumber,email;
+		AddressBook AddressBookChoice;
 		
 		int choice=1;
 				
 		while(choice!=5)
 		{
+			System.out.println("Enter 1 to manipulate addressbook1, enter 2 to manipulate addressbok2");
+			int bookChoice=scanner.nextInt();
+			if(bookChoice==1)
+			{
+				 AddressBookChoice=addressBook1;
+			}
+			else
+			{
+				 AddressBookChoice=addressBook2;
+			}
+			
 			System.out.println("Enter 1 to add contact,2 to edit contact,3 to delete,4 to display contact,5 to stop");
 			System.out.println("Enter choice");
 			 choice=scanner.nextInt();
 			 scanner.nextLine(); 
-
+			 
 			switch (choice) 
 			{
 				case 1:
@@ -47,7 +61,7 @@ public class AddressBookMain
 						System.out.println("Enter email ");
 						email=scanner.nextLine();
 						Contact person1= new Contact(firstName,lastName,address,city,state,zip,phoneNumber,email);
-						info.addNewContact(person1);
+						AddressBookChoice.addNewContact(person1);
 							
 					}
 				
@@ -60,23 +74,23 @@ public class AddressBookMain
 					System.out.println("Enter the field and value to be edited");
 					String fieldToBeEdited = scanner.nextLine();
 					String valueToBeEdited=scanner.nextLine();
-					info.editContact(phoneNumber,valueToBeEdited,fieldToBeEdited);
+					AddressBookChoice.editContact(phoneNumber,valueToBeEdited,fieldToBeEdited);
 					
 					break;
 				case 3:
 					System.out.println("Enter phone number of contact to be edited");
 					phoneNumber=scanner.nextLine();
-					info.deleteContact(phoneNumber);
+					AddressBookChoice.deleteContact(phoneNumber);
 				
 					break;
 				case 4:
 					System.out.println("Enter phone number of contact to be edited");
 					phoneNumber=scanner.nextLine();
-					info.displayContactInfo(phoneNumber);
+					AddressBookChoice.displayContactInfo(phoneNumber);
 			}
 		}
 		
-
+		scanner.close();
 	}
 
 }
