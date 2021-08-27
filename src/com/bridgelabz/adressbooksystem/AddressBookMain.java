@@ -7,30 +7,45 @@ public class AddressBookMain
 
 	public static void main(String[] args) 
 	{
+		
 		String firstName,lastName,address,city,state,zip,phoneNumber,email;
 
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Welcome to Address book system program");
 		
-		AddressBook addressBook1 = new AddressBook();
-		AddressBook addressBook2 = new AddressBook();
+		AddressBook[] addressBook = new AddressBook[10];
+		 
+		System.out.println("Enter number of address book to create");
+		int numberOfBooks=scanner.nextInt();
+		for(int index=0;index<numberOfBooks;index++)
+		{
+			System.out.println("Enter the name of the addressbook to be created");
+			String addressbookName=scanner.next();
+			addressBook[index]= new AddressBook();
+			addressBook[index].setAddressBookName(addressbookName);
 
-		AddressBook AddressBookChoice;
+		}
+		 
+		 
+
+		AddressBook AddressBookChoice = null;
 		
 		int choice=1;
 				
 		while(choice!=5)
 		{
-			System.out.println("Enter 1 to manipulate addressbook1, enter 2 to manipulate addressbok2");
-			int bookChoice=scanner.nextInt();
-			if(bookChoice==1)
+			System.out.println("Enter the name of the address book to perform operations");
+			String bookName=scanner.next();
+			for (int index=0;index<numberOfBooks;index++)
 			{
-				 AddressBookChoice=addressBook1;
+				if (addressBook[index].getAddressBookName().equals(bookName))
+
+				{
+					AddressBookChoice=addressBook[index];
+				}
+				
 			}
-			else
-			{
-				 AddressBookChoice=addressBook2;
-			}
+			
 			
 			System.out.println("Enter 1 to add contact,2 to edit contact,3 to delete,4 to display contact,5 to stop");
 			System.out.println("Enter choice");
