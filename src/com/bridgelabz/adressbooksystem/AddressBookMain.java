@@ -14,6 +14,7 @@ public class AddressBookMain
 		System.out.println("Welcome to Address book system program");
 		
 		AddressBook[] addressBook = new AddressBook[10];
+		AddessBookOperationImpl addressBookOperations = new AddessBookOperationImpl();
 		 
 		System.out.println("Enter number of address book to create");
 		int numberOfBooks=scanner.nextInt();
@@ -42,6 +43,7 @@ public class AddressBookMain
 
 				{
 					AddressBookChoice=addressBook[index];
+					
 				}
 				
 			}
@@ -76,7 +78,7 @@ public class AddressBookMain
 						System.out.println("Enter email ");
 						email=scanner.nextLine();
 						Contact person1= new Contact(firstName,lastName,address,city,state,zip,phoneNumber,email);
-						AddressBookChoice.addNewContact(person1);
+						addressBookOperations.addNewContact(person1,AddressBookChoice);
 							
 					}
 				
@@ -89,19 +91,19 @@ public class AddressBookMain
 					System.out.println("Enter the field and value to be edited");
 					String fieldToBeEdited = scanner.nextLine();
 					String valueToBeEdited=scanner.nextLine();
-					AddressBookChoice.editContact(phoneNumber,valueToBeEdited,fieldToBeEdited);
+					addressBookOperations.editContact(phoneNumber,valueToBeEdited,fieldToBeEdited,AddressBookChoice);
 					
 					break;
 				case 3:
-					System.out.println("Enter phone number of contact to be edited");
+					System.out.println("Enter phone number of contact to be deleted");
 					phoneNumber=scanner.nextLine();
-					AddressBookChoice.deleteContact(phoneNumber);
+					addressBookOperations.deleteContact(phoneNumber,AddressBookChoice);
 				
 					break;
 				case 4:
-					System.out.println("Enter phone number of contact to be edited");
+					System.out.println("Enter phone number of contact to be display");
 					phoneNumber=scanner.nextLine();
-					AddressBookChoice.displayContactInfo(phoneNumber);
+					addressBookOperations.displayContactInfo(phoneNumber,AddressBookChoice);
 			}
 		}
 		

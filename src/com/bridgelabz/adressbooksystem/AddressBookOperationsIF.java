@@ -3,10 +3,11 @@ package com.bridgelabz.adressbooksystem;
 public interface AddressBookOperationsIF 
 
 {
-	public void addNewContact(Contact person);
-	public void editContact(String number,String editInfo,String choice);
-	public void deleteContact(String number);
-	public void displayContactInfo(String number);
+	public void addNewContact(Contact person,AddressBook addressbook);
+	public void editContact(String number,String editInfo,String choice,AddressBook addressbook);
+	public void deleteContact(String number,AddressBook addressbook);
+	public int hasContact(String number,AddressBook addressbook);
+	public void displayContactInfo(String number,AddressBook addressbook);
 
 	
 
