@@ -5,7 +5,7 @@ public class AddressBook
 
 {
 	 private int numberOfContacts;
-	 public Contact[] contactList = new Contact[10];
+	 private Contact[] contactList = new Contact[10];
 	 private String AddressBookName;
 	 
 	 
@@ -26,7 +26,11 @@ public class AddressBook
 		 return AddressBookName;
 		 
 	 }
-	 
+	 public Contact[] getContactList()
+	 {
+		 
+		 return contactList;
+	 }
 	 public void setNumberOfContacts(int numberOfContacts)
 	 {
 		 this.numberOfContacts=numberOfContacts;
@@ -41,8 +45,7 @@ public class AddressBook
 	 
 	public void addNewContact(Contact person)
 	{
-		contactList[numberOfContacts]=person;
-		numberOfContacts++;
+		
 		
 	}
 	
