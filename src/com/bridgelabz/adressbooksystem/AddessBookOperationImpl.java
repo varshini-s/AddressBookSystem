@@ -177,7 +177,34 @@ public class AddessBookOperationImpl implements AddressBookOperationsIF
 		}
 
 	}
+
+
+	@Override
+	public void searchPersonByCity(String givenName,String city,AddressBook addressbook)  
+	{
+		HashMap<String, List<Contact>> cityDictionary=addressbook.getCityDictionary();
+		if(cityDictionary.containsKey(city))
+		{
+			List<Contact> givenCityList = cityDictionary.get(city);
+			System.out.println("In the addressbook "+addressbook.getAddressBookName()+" list of people in given name present in city "+city);
+			for(int index=0;index<givenCityList.size();index++)
+			{
+
+
+				if(givenCityList.get(index).getFirstName().equals(givenName))
+				{
+					System.out.println(givenCityList.get(index).getFirstName()+" "+givenCityList.get(index).getLastName());
+				}
 			}
 
+		}
+		else
+		{
+			System.out.println("There's no contact list for the city"+city);
+		}
+
+
+	}
+		}
 
 }
