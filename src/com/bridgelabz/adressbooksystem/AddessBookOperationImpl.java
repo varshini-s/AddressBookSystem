@@ -262,4 +262,26 @@ public class AddessBookOperationImpl implements AddressBookOperationsIF
 			return 0;
 		}
 	}
+
+	@Override
+	public int countPeopleinState(String state, AddressBook addressbook)
+	{
+		HashMap<String, List<Contact>> stateDictionary=addressbook.getStateDictionary();
+		if(stateDictionary.containsKey(state))
+		{
+			return stateDictionary.get(state).size();
+		}
+		else
+		{
+
+			return 0;
+		}
+
+	}
+
+
+
+
+
+
 }
