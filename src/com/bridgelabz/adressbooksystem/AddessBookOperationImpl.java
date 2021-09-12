@@ -205,6 +205,26 @@ public class AddessBookOperationImpl implements AddressBookOperationsIF
 
 
 	}
+
+	@Override
+	public void getAllContactsInState(String state, AddressBook addressbook)
+	{
+		HashMap<String, List<Contact>> stateDictionary=addressbook.getStateDictionary();
+		if(stateDictionary.containsKey(state))
+		{
+			List<Contact> givenStateList = stateDictionary.get(state);
+			System.out.println("List of people in state "+state+" In the adressbook "+addressbook.getAddressBookName());
+			for(int index=0;index<givenStateList.size();index++)
+			{
+				System.out.println(givenStateList.get(index).getFirstName()+" "+givenStateList.get(index).getLastName());
+			}
+		}
+		else
+		{
+
+			System.out.println("There's no contact list for the state "+state);
 		}
 
+
+	}
 }
