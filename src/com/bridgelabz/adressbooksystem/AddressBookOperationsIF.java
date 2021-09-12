@@ -12,6 +12,8 @@ public interface AddressBookOperationsIF
 	public void searchPersonByCity(String name,String city,AddressBook addressbook); 
 	public void getAllContactsInState(String state,AddressBook addressbook); 
 	public void getAllContactsInCity(String city,AddressBook addressbook);
+	public int countPeopleinCity(String city, AddressBook addressbook);
+	public int countPeopleinState(String state, AddressBook addressbook);
 
 	
 
