@@ -40,37 +40,38 @@ public class AddessBookOperationImpl implements AddressBookOperationsIF
 	@Override
 	public void editContact(String number, String editInfo, String choice,AddressBook addressbook) 
 	{
-		Contact[] contactList = addressbook.getContactList();
-		int numberOfContacts=addressbook.getNumberOfContacts();
+
+		List<Contact> contactList = addressbook.getNewlist();
+
 		int contactIndex=hasContact(number,addressbook);
 		if(contactIndex>=0)
-		switch (choice) 
-		{
+			switch (choice) 
+			{
 
 			case "address":
-				contactList[contactIndex].setAddress(editInfo);
+				contactList.get(contactIndex).setAddress(editInfo);
 				break;
 			case "city":
-				contactList[contactIndex].setCity(editInfo);
+				contactList.get(contactIndex).setCity(editInfo);
 				break;
 			case "state":
-				contactList[contactIndex].setState(editInfo);
+				contactList.get(contactIndex).setState(editInfo);
 				break;
 			case "zip":
-				contactList[contactIndex].setZip(editInfo);
+				contactList.get(contactIndex).setZip(editInfo);
 				break;
 			case "phoneNumber":
-				contactList[contactIndex].setPhoneNumber(editInfo);
+				contactList.get(contactIndex).setPhoneNumber(editInfo);
 				break;
 			case "email":
-				contactList[contactIndex].setEmail(editInfo);
+				contactList.get(contactIndex).setEmail(editInfo);
 				break;
-				
-		}
-		
+
+			}
+
 		System.out.println("After editing the details are:");
 		displayContactInfo(number,addressbook);
-		
+
 	}
 
 	@Override
