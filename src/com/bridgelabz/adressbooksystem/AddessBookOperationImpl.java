@@ -13,7 +13,7 @@ public class AddessBookOperationImpl implements AddressBookOperationsIF
 	{
 		int givenContactIndex=-1;
 
-		List<Contact> contactList = addressbook.getNewlist();
+		List<Contact> contactList = addressbook.getContactList();
 		for(int index=0;index<contactList.size();index++)
 		{
 
@@ -29,7 +29,7 @@ public class AddessBookOperationImpl implements AddressBookOperationsIF
 	@Override
 	public void addNewContact(Contact person,AddressBook addressbook) 
 	{
-		List<Contact> contactList = addressbook.getNewlist();
+		List<Contact> contactList = addressbook.getContactList();
 
 		if(contactList.contains(person))
 		{
@@ -39,9 +39,40 @@ public class AddessBookOperationImpl implements AddressBookOperationsIF
 		else
 		{
 			contactList.add(person);
+			HashMap<String, List<Contact>> cityDictionary=addressbook.getCityDictionary();
+			if(cityDictionary.containsKey(person.getCity()))
+			{
+				List<Contact> givenCityList = cityDictionary.get(person.getCity());
+				givenCityList.add(person);
+				cityDictionary.put(person.getCity(), givenCityList);
+
+			}
+			else
+			{
+				List<Contact> givenCityList = new LinkedList<Contact>();
+				givenCityList.add(person);
+				cityDictionary.put(person.getCity(), givenCityList);
+
+			}
+
+
+			HashMap<String, List<Contact>> stateDictionary=addressbook.getStateDictionary();
+			if(stateDictionary.containsKey(person.getState()))
+			{
+				List<Contact> givenStateList = stateDictionary.get(person.getState());
+				givenStateList.add(person);
+				stateDictionary.put(person.getState(), givenStateList);
+
+			}
+			else
+			{
+				List<Contact> givenStateList = new LinkedList<Contact>();
+				givenStateList.add(person);
+				stateDictionary.put(person.getState(), givenStateList);
+
+			}
 		}
 
-		addressbook.setNewlist(contactList);
 
 
 	}
@@ -50,7 +81,7 @@ public class AddessBookOperationImpl implements AddressBookOperationsIF
 	public void editContact(String number, String editInfo, String choice,AddressBook addressbook) 
 	{
 
-		List<Contact> contactList = addressbook.getNewlist();
+		List<Contact> contactList = addressbook.getContactList();
 
 		int contactIndex=hasContact(number,addressbook);
 		if(contactIndex>=0)
@@ -87,7 +118,7 @@ public class AddessBookOperationImpl implements AddressBookOperationsIF
 	public void deleteContact(String number,AddressBook addressbook) 
 
 	{
-		List<Contact> newlist = addressbook.getNewlist();
+		List<Contact> newlist = addressbook.getContactList();
 		int contactIndex=hasContact(number,addressbook);
 		if(contactIndex>=0)
 		{
@@ -103,7 +134,7 @@ public class AddessBookOperationImpl implements AddressBookOperationsIF
 	public void displayContactInfo(String number,AddressBook addressbook) 
 
 	{
-		List<Contact> contactList = addressbook.getNewlist();
+		List<Contact> contactList = addressbook.getContactList();
 
 		int contactIndex=hasContact(number,addressbook);
 		if(contactIndex>=0)
@@ -121,7 +152,32 @@ public class AddessBookOperationImpl implements AddressBookOperationsIF
 
 	}
 
+	@Override
+	public void searchPersonByState(String givenName,String state,AddressBook addressbook) 
+	{
 
+		HashMap<String, List<Contact>> stateDictionary=addressbook.getStateDictionary();
+		if(stateDictionary.containsKey(state))
+		{
+			List<Contact> givenStateList = stateDictionary.get(state);
+			System.out.println("In the addressbook "+addressbook.getAddressBookName()+" list of people in given name present in state "+state);
+			for(int index=0;index<givenStateList.size();index++)
+			{
+				if(givenStateList.get(index).getFirstName().equals(givenName))
+				{
+					System.out.println(givenStateList.get(index).getFirstName()+" "+givenStateList.get(index).getLastName());
+				}
+			}
+
+		}
+		else
+		{
+
+			System.out.println("There's no contact list for state "+state);
+		}
+
+	}
+			}
 
 
 }
