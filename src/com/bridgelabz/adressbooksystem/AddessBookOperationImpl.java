@@ -92,15 +92,14 @@ public class AddessBookOperationImpl implements AddressBookOperationsIF
 
 	@Override
 	public void displayContactInfo(String number,AddressBook addressbook) 
-	
+
 	{
-		Contact[] contactList = addressbook.getContactList();
-		int numberOfContacts=addressbook.getNumberOfContacts();
+		List<Contact> contactList = addressbook.getNewlist();
 
 		int contactIndex=hasContact(number,addressbook);
 		if(contactIndex>=0)
 		{
-			Contact contact=contactList[contactIndex];
+			Contact contact=contactList.get(contactIndex);
 			System.out.println("address:"+contact.getAddress());
 			System.out.println("city:"+contact.getCity());
 			System.out.println("state:"+contact.getState());
