@@ -90,6 +90,35 @@ public class Contact
 		this.email=email;
 	}
 	
+	@Override
+    public boolean equals(Object obj) 
 	
+	{
+		
+        if (obj == null) 
+        {
+            return false;
+        }
 
+        if (obj.getClass() != this.getClass()) 
+        {
+            return false;
+        }
+
+        final Contact other = (Contact) obj;
+        
+
+
+        if(this.lastName.equals(other.lastName)==false||this.firstName.equals(other.firstName)==false
+         ||this.address.equals(other.address)==false||this.city.equals(other.city)==false
+         ||this.state.equals(other.state)==false||this.zip.equals(other.zip)==false
+         ||this.phoneNumber.equals(other.phoneNumber)==false||this.email.equals(other.email)==false)
+        {
+            return false;
+        }
+        
+        
+        return true;
+    }
+	
 }
