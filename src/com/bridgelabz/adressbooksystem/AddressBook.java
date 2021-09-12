@@ -1,47 +1,40 @@
 package com.bridgelabz.adressbooksystem;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 public class AddressBook 
 
 {
-	 private int numberOfContacts=0;
-	 private Contact[] contactList = new Contact[10];
 	 private String AddressBookName;
+	private List<Contact> contactList = new LinkedList<Contact>();
+
 	 
 	 
-	 
-	 public AddressBook() 
-	 {
-		numberOfContacts=0;
-	}
 	
-	 public int getNumberOfContacts()
-	 {
-		 
-		 return numberOfContacts;
-	 }
-	 
+	
+
 	 public String getAddressBookName()
 	 {
 		 return AddressBookName;
 		 
 	 }
-	 public Contact[] getContactList()
-	 {
-		 
-		 return contactList;
-	 }
-	 public void setNumberOfContacts(int numberOfContacts)
-	 {
-		 this.numberOfContacts=numberOfContacts;
-		 
-	 }
+	
+	
 	 
 	 public void setAddressBookName(String AddressBookName)
 	 {
 		 this.AddressBookName=AddressBookName;
 		 
 	 }
+	 public List<Contact> getContactlist() {
+			return contactList;
+		}
+
+		public void setContactlist(List<Contact> newlist) {
+			this.contactList = newlist;
+		}
 	
 	
 
