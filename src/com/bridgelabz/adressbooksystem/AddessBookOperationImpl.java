@@ -1,5 +1,9 @@
 package com.bridgelabz.adressbooksystem;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+
 public class AddessBookOperationImpl implements AddressBookOperationsIF
 
 {
@@ -7,22 +11,19 @@ public class AddessBookOperationImpl implements AddressBookOperationsIF
 	@Override
 	public int hasContact(String number,AddressBook addressbook)
 	{
-		Contact[] contactList = addressbook.getContactList();
-		int numberOfContacts=addressbook.getNumberOfContacts();
+		int givenContactIndex=-1;
 
-		int position=-1;
-
-		for (int index=0;index<numberOfContacts;index++)
+		List<Contact> contactList = addressbook.getNewlist();
+		for(int index=0;index<contactList.size();index++)
 		{
-			if (contactList[index].getPhoneNumber().equals(number))
 
+			if(contactList.get(index).getPhoneNumber().equals(number))
 			{
-				position=index;
+				givenContactIndex=index;
+
 			}
-			
 		}
-		
-		return position;
+		return givenContactIndex;
 	}
 	
 	@Override
