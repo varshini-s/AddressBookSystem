@@ -76,18 +76,14 @@ public class AddessBookOperationImpl implements AddressBookOperationsIF
 
 	@Override
 	public void deleteContact(String number,AddressBook addressbook) 
-	
+
 	{
-		Contact[] contactList = addressbook.getContactList();
-		int numberOfContacts=addressbook.getNumberOfContacts();
+		List<Contact> newlist = addressbook.getNewlist();
 		int contactIndex=hasContact(number,addressbook);
 		if(contactIndex>=0)
 		{
-			while(contactIndex<numberOfContacts)
-    		{
-    			contactList[contactIndex]=contactList[contactIndex+1];
-    			contactIndex++;
-    		}
+
+			newlist.remove(contactIndex);
 		}
 
 	}
