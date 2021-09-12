@@ -7,7 +7,7 @@ import java.util.List;
 public class AddessBookOperationImpl implements AddressBookOperationsIF
 
 {
-	
+
 	@Override
 	public int hasContact(String number,AddressBook addressbook)
 	{
@@ -25,16 +25,25 @@ public class AddessBookOperationImpl implements AddressBookOperationsIF
 		}
 		return givenContactIndex;
 	}
-	
+
 	@Override
 	public void addNewContact(Contact person,AddressBook addressbook) 
 	{
-		Contact[] contactList = addressbook.getContactList();
-		int numberOfContacts=addressbook.getNumberOfContacts();
-		contactList[numberOfContacts]=person;
-		numberOfContacts++;
-		addressbook.setNumberOfContacts(numberOfContacts);
-		
+		List<Contact> contactList = addressbook.getNewlist();
+
+		if(contactList.contains(person))
+		{
+			System.out.println("This contact already exists in the adressbook "+addressbook.getAddressBookName());
+
+		}
+		else
+		{
+			contactList.add(person);
+		}
+
+		addressbook.setNewlist(contactList);
+
+
 	}
 
 	@Override
@@ -88,7 +97,7 @@ public class AddessBookOperationImpl implements AddressBookOperationsIF
 
 	}
 
-	
+
 
 	@Override
 	public void displayContactInfo(String number,AddressBook addressbook) 
@@ -106,13 +115,13 @@ public class AddessBookOperationImpl implements AddressBookOperationsIF
 			System.out.println("zip:"+contact.getZip());
 			System.out.println("phone number:"+contact.getPhoneNumber());
 			System.out.println("email:"+contact.getEmail());
-			
+
 		}
-		
-		
+
+
 	}
 
-	
-	
-	
+
+
+
 }
