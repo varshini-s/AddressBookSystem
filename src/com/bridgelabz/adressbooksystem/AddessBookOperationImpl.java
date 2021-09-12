@@ -247,4 +247,19 @@ public class AddessBookOperationImpl implements AddressBookOperationsIF
 		}
 
 	}
+	@Override
+	public int countPeopleinCity(String city, AddressBook addressbook)
+	{
+		HashMap<String, List<Contact>> cityDictionary=addressbook.getCityDictionary();
+		if(cityDictionary.containsKey(city))
+		{
+
+			return cityDictionary.get(city).size();
+		}
+		else
+		{
+
+			return 0;
+		}
+	}
 }
