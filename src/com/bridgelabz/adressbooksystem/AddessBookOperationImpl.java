@@ -8,11 +8,43 @@ public class AddessBookOperationImpl implements AddressBookOperationsIF
 
 {
 
+	AddressBookSystem addressbookSystem = new AddressBookSystem();
+
+
+	public void createAddressBook(String addressbookName)
+	{
+		List<AddressBook> addressbookList=addressbookSystem.getAddressbookList();
+		AddressBook addressBook = new AddressBook();
+		addressBook.setAddressBookName(addressbookName);
+		addressbookList.add(addressBook);	
+		addressbookSystem.setAddressbookList(addressbookList);
+
+	}
+
+	public AddressBook getAddressBook(String addressbookName)
+	{
+		List<AddressBook> addressbookList=addressbookSystem.getAddressbookList();
+
+
+		for(int index=0;index<addressbookList.size();index++)
+		{
+
+			if(addressbookList.get(index).getAddressBookName().equals(addressbookName))
+			{
+				return addressbookList.get(index);
+			}
+		}
+
+		return null;
+	}
+
+
 	@Override
-	public int hasContact(String number,AddressBook addressbook)
+	public int hasContact(String number,String  addressbookName)
 	{
 		int givenContactIndex=-1;
 
+		AddressBook addressbook=getAddressBook(addressbookName);
 		List<Contact> contactList = addressbook.getContactList();
 		for(int index=0;index<contactList.size();index++)
 		{
@@ -27,8 +59,9 @@ public class AddessBookOperationImpl implements AddressBookOperationsIF
 	}
 
 	@Override
-	public void addNewContact(Contact person,AddressBook addressbook) 
+	public void addNewContact(Contact person,String  addressbookName) 
 	{
+		AddressBook addressbook=getAddressBook(addressbookName);
 		List<Contact> contactList = addressbook.getContactList();
 
 		if(contactList.contains(person))
@@ -73,17 +106,20 @@ public class AddessBookOperationImpl implements AddressBookOperationsIF
 			}
 		}
 
+		addressbook.setContactList(contactList);
 
 
 	}
 
 	@Override
-	public void editContact(String number, String editInfo, String choice,AddressBook addressbook) 
+	public void editContact(String number, String editInfo, String choice,String  addressbookName) 
 	{
+		AddressBook addressbook=getAddressBook(addressbookName);
+
 
 		List<Contact> contactList = addressbook.getContactList();
 
-		int contactIndex=hasContact(number,addressbook);
+		int contactIndex=hasContact(number,addressbookName);
 		if(contactIndex>=0)
 			switch (choice) 
 			{
@@ -110,16 +146,18 @@ public class AddessBookOperationImpl implements AddressBookOperationsIF
 			}
 
 		System.out.println("After editing the details are:");
-		displayContactInfo(number,addressbook);
+		displayContactInfo(number,addressbookName);
 
 	}
 
 	@Override
-	public void deleteContact(String number,AddressBook addressbook) 
+	public void deleteContact(String number,String  addressbookName) 
 
 	{
+		AddressBook addressbook=getAddressBook(addressbookName);
+
 		List<Contact> newlist = addressbook.getContactList();
-		int contactIndex=hasContact(number,addressbook);
+		int contactIndex=hasContact(number,addressbookName);
 		if(contactIndex>=0)
 		{
 
@@ -129,14 +167,15 @@ public class AddessBookOperationImpl implements AddressBookOperationsIF
 	}
 
 
-
 	@Override
-	public void displayContactInfo(String number,AddressBook addressbook) 
+	public void displayContactInfo(String number,String  addressbookName) 
 
 	{
+		AddressBook addressbook=getAddressBook(addressbookName);
+
 		List<Contact> contactList = addressbook.getContactList();
 
-		int contactIndex=hasContact(number,addressbook);
+		int contactIndex=hasContact(number,addressbookName);
 		if(contactIndex>=0)
 		{
 			Contact contact=contactList.get(contactIndex);
@@ -153,135 +192,172 @@ public class AddessBookOperationImpl implements AddressBookOperationsIF
 	}
 
 	@Override
-	public void searchPersonByState(String givenName,String state,AddressBook addressbook) 
+	public void searchPersonByState(String givenName,String state)
+	{
+		List<AddressBook> addressbookList=addressbookSystem.getAddressbookList();
+
+		for(int indexOfAddressBook=0;indexOfAddressBook<addressbookList.size();indexOfAddressBook++)
+		{
+			AddressBook addressbook=addressbookList.get(indexOfAddressBook);
+			HashMap<String, List<Contact>> stateDictionary=addressbook.getStateDictionary();
+			if(stateDictionary.containsKey(state))
+			{
+				List<Contact> givenStateList = stateDictionary.get(state);
+				System.out.println("In the addressbook "+addressbook.getAddressBookName()+" list of people in given name present in state "+state);
+				for(int index=0;index<givenStateList.size();index++)
+				{
+
+
+					if(givenStateList.get(index).getFirstName().equals(givenName))
+					{
+						System.out.println(givenStateList.get(index).getFirstName()+" "+givenStateList.get(index).getLastName());
+					}
+				}
+
+			}
+			else
+			{
+
+				System.out.println("There's no contact list for state "+state);
+			}
+		}
+
+
+	}
+
+
+	@Override
+	public void searchPersonByCity(String givenName,String city)  
 	{
 
-		HashMap<String, List<Contact>> stateDictionary=addressbook.getStateDictionary();
-		if(stateDictionary.containsKey(state))
+		List<AddressBook> addressbookList=addressbookSystem.getAddressbookList();
+
+		for(int indexOfAddressBook=0;indexOfAddressBook<addressbookList.size();indexOfAddressBook++)
 		{
-			List<Contact> givenStateList = stateDictionary.get(state);
-			System.out.println("In the addressbook "+addressbook.getAddressBookName()+" list of people in given name present in state "+state);
-			for(int index=0;index<givenStateList.size();index++)
+			AddressBook addressbook=addressbookList.get(indexOfAddressBook);
+			HashMap<String, List<Contact>> cityDictionary=addressbook.getCityDictionary();
+			if(cityDictionary.containsKey(city))
 			{
-				if(givenStateList.get(index).getFirstName().equals(givenName))
+				List<Contact> givenCityList = cityDictionary.get(city);
+				System.out.println("In the addressbook "+addressbook.getAddressBookName()+" list of people in given name present in city "+city);
+				for(int index=0;index<givenCityList.size();index++)
+				{
+
+
+					if(givenCityList.get(index).getFirstName().equals(givenName))
+					{
+						System.out.println(givenCityList.get(index).getFirstName()+" "+givenCityList.get(index).getLastName());
+					}
+				}
+
+			}
+			else
+			{
+
+				System.out.println("There's no contact list for the city"+city);
+			}
+
+		}
+
+
+
+	}
+
+	@Override
+	public void getAllContactsInState(String state)
+	{
+
+		List<AddressBook> addressbookList=addressbookSystem.getAddressbookList();
+
+		for(int indexOfAddressBook=0;indexOfAddressBook<addressbookList.size();indexOfAddressBook++)
+		{
+			AddressBook addressbook=addressbookList.get(indexOfAddressBook);
+			HashMap<String, List<Contact>> stateDictionary=addressbook.getStateDictionary();
+			if(stateDictionary.containsKey(state))
+			{
+				List<Contact> givenStateList = stateDictionary.get(state);
+				System.out.println("List of people in state "+state+" In the adressbook "+addressbook.getAddressBookName());
+				for(int index=0;index<givenStateList.size();index++)
 				{
 					System.out.println(givenStateList.get(index).getFirstName()+" "+givenStateList.get(index).getLastName());
 				}
 			}
+			else
+			{
 
-		}
-		else
-		{
-
-			System.out.println("There's no contact list for state "+state);
+				System.out.println("There's no contact list for the state "+state);
+			}
 		}
 
 	}
 
-
 	@Override
-	public void searchPersonByCity(String givenName,String city,AddressBook addressbook)  
+	public void getAllContactsInCity(String city)
 	{
-		HashMap<String, List<Contact>> cityDictionary=addressbook.getCityDictionary();
-		if(cityDictionary.containsKey(city))
+
+		List<AddressBook> addressbookList=addressbookSystem.getAddressbookList();
+
+		for(int indexOfAddressBook=0;indexOfAddressBook<addressbookList.size();indexOfAddressBook++)
 		{
-			List<Contact> givenCityList = cityDictionary.get(city);
-			System.out.println("In the addressbook "+addressbook.getAddressBookName()+" list of people in given name present in city "+city);
-			for(int index=0;index<givenCityList.size();index++)
+			AddressBook addressbook=addressbookList.get(indexOfAddressBook);
+			HashMap<String, List<Contact>> cityDictionary=addressbook.getCityDictionary();
+			if(cityDictionary.containsKey(city))
 			{
-
-
-				if(givenCityList.get(index).getFirstName().equals(givenName))
+				List<Contact> givenCityList = cityDictionary.get(city);
+				System.out.println("List of people in city "+city+" In the adressbook "+addressbook.getAddressBookName());
+				for(int index=0;index<givenCityList.size();index++)
 				{
 					System.out.println(givenCityList.get(index).getFirstName()+" "+givenCityList.get(index).getLastName());
 				}
 			}
-
-		}
-		else
-		{
-			System.out.println("There's no contact list for the city"+city);
-		}
-
-
-	}
-
-	@Override
-	public void getAllContactsInState(String state, AddressBook addressbook)
-	{
-		HashMap<String, List<Contact>> stateDictionary=addressbook.getStateDictionary();
-		if(stateDictionary.containsKey(state))
-		{
-			List<Contact> givenStateList = stateDictionary.get(state);
-			System.out.println("List of people in state "+state+" In the adressbook "+addressbook.getAddressBookName());
-			for(int index=0;index<givenStateList.size();index++)
+			else
 			{
-				System.out.println(givenStateList.get(index).getFirstName()+" "+givenStateList.get(index).getLastName());
+
+				System.out.println("There's no contact list for the city"+city);
 			}
 		}
-		else
-		{
-
-			System.out.println("There's no contact list for the state "+state);
-		}
-
 
 	}
 	@Override
-	public void getAllContactsInCity(String city, AddressBook addressbook) 
+	public int countPeopleinCity(String city)
 	{
-		HashMap<String, List<Contact>> cityDictionary=addressbook.getCityDictionary();
-		if(cityDictionary.containsKey(city))
+
+		int count=0;
+		List<AddressBook> addressbookList=addressbookSystem.getAddressbookList();
+
+		for(int indexOfAddressBook=0;indexOfAddressBook<addressbookList.size();indexOfAddressBook++)
 		{
-			List<Contact> givenCityList = cityDictionary.get(city);
-			System.out.println("List of people in city "+city+" In the adressbook "+addressbook.getAddressBookName());
-			for(int index=0;index<givenCityList.size();index++)
+			AddressBook addressbook=addressbookList.get(indexOfAddressBook);
+			HashMap<String, List<Contact>> cityDictionary=addressbook.getCityDictionary();
+			if(cityDictionary.containsKey(city))
 			{
-				System.out.println(givenCityList.get(index).getFirstName()+" "+givenCityList.get(index).getLastName());
+
+				count=count+ cityDictionary.get(city).size();
 			}
-		}
-		else
-		{
 
-			System.out.println("There's no contact list for the city"+city);
 		}
-
-	}
-	@Override
-	public int countPeopleinCity(String city, AddressBook addressbook)
-	{
-		HashMap<String, List<Contact>> cityDictionary=addressbook.getCityDictionary();
-		if(cityDictionary.containsKey(city))
-		{
-
-			return cityDictionary.get(city).size();
-		}
-		else
-		{
-
-			return 0;
-		}
+		return count;
 	}
 
 	@Override
-	public int countPeopleinState(String state, AddressBook addressbook)
+	public int countPeopleinState(String state)
 	{
-		HashMap<String, List<Contact>> stateDictionary=addressbook.getStateDictionary();
-		if(stateDictionary.containsKey(state))
-		{
-			return stateDictionary.get(state).size();
-		}
-		else
-		{
+		int count = 0;
 
-			return 0;
-		}
+		List<AddressBook> addressbookList=addressbookSystem.getAddressbookList();
 
+		for(int indexOfAddressBook=0;indexOfAddressBook<addressbookList.size();indexOfAddressBook++)
+		{
+			AddressBook addressbook=addressbookList.get(indexOfAddressBook);
+
+			HashMap<String, List<Contact>> stateDictionary=addressbook.getStateDictionary();
+			if(stateDictionary.containsKey(state))
+			{
+				count=count+ stateDictionary.get(state).size();
+			}
+
+		}
+		return count;
 	}
-
-
-
-
-
 
 }
