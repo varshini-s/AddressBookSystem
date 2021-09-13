@@ -3,17 +3,18 @@ package com.bridgelabz.adressbooksystem;
 public interface AddressBookOperationsIF 
 
 {
-	public void addNewContact(Contact person,AddressBook addressbook);
-	public void editContact(String number,String editInfo,String choice,AddressBook addressbook);
-	public void deleteContact(String number,AddressBook addressbook);
-	public int hasContact(String number,AddressBook addressbook);
-	public void displayContactInfo(String number,AddressBook addressbook);
-	public void searchPersonByState(String givenName,String state,AddressBook addressbook); 
-	public void searchPersonByCity(String name,String city,AddressBook addressbook); 
-	public void getAllContactsInState(String state,AddressBook addressbook); 
-	public void getAllContactsInCity(String city,AddressBook addressbook);
-	public int countPeopleinCity(String city, AddressBook addressbook);
-	public int countPeopleinState(String state, AddressBook addressbook);
+	public void addNewContact(Contact person,String  addressbookName);
+	public void editContact(String number,String editInfo,String choice,String  addressbookName);
+	public void deleteContact(String number,String  addressbookName);
+	public int hasContact(String number,String  addressbookName);
+	public void displayContactInfo(String number,String  addressbookName);
+	public void searchPersonByState(String givenName,String state); 
+	public void searchPersonByCity(String name,String city); 
+	public void getAllContactsInState(String state); 
+	public void getAllContactsInCity(String city);
+	public int countPeopleinCity(String city);
+	public int countPeopleinState(String state);
+
 
 	
 
