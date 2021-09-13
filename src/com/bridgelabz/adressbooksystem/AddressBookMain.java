@@ -62,9 +62,6 @@ public class AddressBookMain
 					email=scanner.nextLine();
 					Contact person= new Contact(firstName,lastName,address,city,state,zip,phoneNumber,email);
 					addressBookOperations.addNewContact(person,addressbookName);
-
-
-
 					break;
 
 				case 2:
@@ -74,20 +71,16 @@ public class AddressBookMain
 					System.out.println("Enter the field and value to be edited");
 					String fieldToBeEdited = scanner.nextLine();
 					String valueToBeEdited=scanner.nextLine();
-
 					addressBookOperations.editContact(phoneNumber,valueToBeEdited,fieldToBeEdited,addressbookName);
-
 					break;
 				case 3:
 					System.out.println("Enter phone number of contact to be deleted");
 					phoneNumber=scanner.nextLine();
 					addressBookOperations.deleteContact(phoneNumber,addressbookName);
-
 					break;
 				case 4:
 					System.out.println("Enter phone number of contact to be display");
 					phoneNumber=scanner.nextLine();
-
 					addressBookOperations.displayContactInfo(phoneNumber,addressbookName);
 					break;
 				case 5:
