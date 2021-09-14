@@ -241,7 +241,7 @@ public class AddessBookOperationImpl implements AddressBookOperationsIF
 	{
 		List<AddressBook> addressbookList=addressbookSystem.getAddressbookList();
 
-		System.out.println("all contacts in given city are:");
+		System.out.println("Sorting contacts by fist name:");
 		addressbookList.stream()
 		.forEach(addressBook->addressBook.getContactList()
 		.stream().sorted((person1,person2)->person1.getFirstName().compareTo(person2.getFirstName())).forEach(System.out::println));
@@ -252,10 +252,10 @@ public class AddessBookOperationImpl implements AddressBookOperationsIF
 	{
 		List<AddressBook> addressbookList=addressbookSystem.getAddressbookList();
 
-		System.out.println("all contacts in given city are:");
+		System.out.println("Sorting contacts by  city:");
 		addressbookList.stream()
 		.forEach(addressBook->addressBook.getContactList()
-		.stream().sorted((person1,person2)->person1.getCity().compareTo(person2.getCity())).forEach(System.out::println));
+		.stream().sorted((person1,person2)->person1.getCity().compareTo(person2.getCity())).forEach(contact->System.out.println(contact.getCity())));
 	}
 	
 	@Override
@@ -263,10 +263,21 @@ public class AddessBookOperationImpl implements AddressBookOperationsIF
 	{
 		List<AddressBook> addressbookList=addressbookSystem.getAddressbookList();
 
-		System.out.println("all contacts in given city are:");
+		System.out.println("Sorting contacts by  state");
 		addressbookList.stream()
 		.forEach(addressBook->addressBook.getContactList()
-		.stream().sorted((person1,person2)->person1.getState().compareTo(person2.getState())).forEach(System.out::println));
+		.stream().sorted((person1,person2)->person1.getState().compareTo(person2.getState())).forEach(contact->System.out.println(contact.getState())));
+	}
+	
+	@Override
+	public void sortByZip() 
+	{
+		List<AddressBook> addressbookList=addressbookSystem.getAddressbookList();
+
+		System.out.println("Sorting contacts by  zip:");
+		addressbookList.stream()
+		.forEach(addressBook->addressBook.getContactList()
+		.stream().sorted((person1,person2)->person1.getZip().compareTo(person2.getZip())).forEach(contact->System.out.println(contact.getZip())));
 	}
 	
 
