@@ -37,7 +37,7 @@ public class AddressBookMain
 				String addressbookName=scanner.next();
 				System.out.println("Menu for the given addressbook: \n1)Add contact\n2)Edit contact\n3Delete contac\n4)Display contact"
 						+ "\n5)Search by City\n6)Search by State\n7)Get all contacts in city\n8Get all contacts in state\n"
-						+ "9)Count people in city\n10)Count peopel in state)");
+						+ "9)Count people in city\n10)Count peopel in state \n11)Sort by name)");
 				int choice = scanner.nextInt();
 				scanner.nextLine();
 
@@ -84,6 +84,43 @@ public class AddressBookMain
 					addressBookOperations.displayContactInfo(phoneNumber,addressbookName);
 					break;
 				
+
+				case 5:
+					System.out.println("Enter name of the person to search");
+					name=scanner.nextLine();
+					System.out.println("Enter city to search");
+					city=scanner.nextLine();
+					addressBookOperations.searchPersonByCity(name, city);
+					break;
+				case 6:
+					System.out.println("Enter name of the person to search");
+					name=scanner.nextLine();
+					System.out.println("Enter state to search");
+					state=scanner.nextLine();
+					addressBookOperations.searchPersonByState(name, state);
+					break;
+				case 7:
+					System.out.println("Enter city to search");
+					city=scanner.nextLine();
+					addressBookOperations.getAllContactsInCity(city);
+					break;
+				case 8:
+					System.out.println("Enter state to search");
+					state=scanner.nextLine();
+					addressBookOperations.getAllContactsInState(state);
+					break;
+				case 9:
+					System.out.println("Enter city to search");
+					city=scanner.nextLine();
+					addressBookOperations.countPeopleinCity(city);
+					break;
+				case 10:
+					System.out.println("Enter state to search");
+					state=scanner.nextLine();
+					addressBookOperations.countPeopleinState(state);
+					break;
+				case 11:
+					addressBookOperations.sortByName();
 
 				}
 
