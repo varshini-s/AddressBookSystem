@@ -10,6 +10,8 @@ public interface AddressBookOperationsIF
 	public void displayContactInfo(String number,String  addressbookName);
 	public void searchPersonByState(String givenName,String state); 
 	public void searchPersonByCity(String name,String city);
+	public void getAllContactsInState(String state);
+	public void getAllContactsInCity(String city);
 
 
 	
