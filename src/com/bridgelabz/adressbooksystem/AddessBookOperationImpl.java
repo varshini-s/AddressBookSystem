@@ -246,6 +246,18 @@ public class AddessBookOperationImpl implements AddressBookOperationsIF
 		.forEach(addressBook->addressBook.getContactList()
 		.stream().sorted((person1,person2)->person1.getFirstName().compareTo(person2.getFirstName())).forEach(System.out::println));
 	}
+	
+	@Override
+	public void sortByCity() 
+	{
+		List<AddressBook> addressbookList=addressbookSystem.getAddressbookList();
+
+		System.out.println("all contacts in given city are:");
+		addressbookList.stream()
+		.forEach(addressBook->addressBook.getContactList()
+		.stream().sorted((person1,person2)->person1.getCity().compareTo(person2.getCity())).forEach(System.out::println));
+	}
+	
 
 }
 
