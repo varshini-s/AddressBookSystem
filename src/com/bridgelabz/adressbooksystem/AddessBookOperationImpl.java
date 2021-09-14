@@ -74,38 +74,6 @@ public class AddessBookOperationImpl implements AddressBookOperationsIF
 		contactList = contactList.stream()
 				.distinct()
 				.collect(Collectors.toList());
-		HashMap<String, List<Contact>> cityDictionary=addressbook.getCityDictionary();
-		if(cityDictionary.containsKey(person.getCity()))
-		{
-			List<Contact> givenCityList = cityDictionary.get(person.getCity());
-			givenCityList.add(person);
-			cityDictionary.put(person.getCity(), givenCityList);
-
-		}
-		else
-		{
-			List<Contact> givenCityList = new LinkedList<Contact>();
-			givenCityList.add(person);
-			cityDictionary.put(person.getCity(), givenCityList);
-
-		}
-
-
-		HashMap<String, List<Contact>> stateDictionary=addressbook.getStateDictionary();
-		if(stateDictionary.containsKey(person.getState()))
-		{
-			List<Contact> givenStateList = stateDictionary.get(person.getState());
-			givenStateList.add(person);
-			stateDictionary.put(person.getState(), givenStateList);
-
-		}
-		else
-		{
-			List<Contact> givenStateList = new LinkedList<Contact>();
-			givenStateList.add(person);
-			stateDictionary.put(person.getState(), givenStateList);
-
-		}
 
 		addressbook.setContactList(contactList);
 
@@ -198,47 +166,25 @@ public class AddessBookOperationImpl implements AddressBookOperationsIF
 
 		List<AddressBook> addressbookList=addressbookSystem.getAddressbookList();
 
-		for(int indexOfAddressBook=0;indexOfAddressBook<addressbookList.size();indexOfAddressBook++)
-		{
-			AddressBook addressbook=addressbookList.get(indexOfAddressBook);
-
-
-			HashMap<String, List<Contact>> stateDictionary=addressbook.getStateDictionary();
-			if(stateDictionary.containsKey(state))
-			{
-				List<Contact> givenStateList = stateDictionary.get(state);
-
-
-				givenStateList.stream()
-				.filter(stateObject->stateObject.getFirstName().equals(givenName))
-				.forEach(System.out::println);
-			}
-
-		}
+		System.out.println("all contacts in given name in given state are:");
+		addressbookList.stream()
+		.forEach(addressBook->addressBook.getContactList()
+		.stream().filter(contact->contact.getState().equals(state) && contact.getFirstName().equals(givenName))
+		.forEach(System.out::println));
 	}
 
 
 	@Override
 	public void searchPersonByCity(String givenName,String city)  
 	{
-
+		
 		List<AddressBook> addressbookList=addressbookSystem.getAddressbookList();
 
-		for(int indexOfAddressBook=0;indexOfAddressBook<addressbookList.size();indexOfAddressBook++)
-		{
-			AddressBook addressbook=addressbookList.get(indexOfAddressBook);
-			HashMap<String, List<Contact>> cityDictionary=addressbook.getCityDictionary();
-			if(cityDictionary.containsKey(city))
-			{
-				List<Contact> givenCityList = cityDictionary.get(city);
-
-				givenCityList.stream()
-				.filter(cityObject->cityObject.getFirstName().equals(givenName))
-				.forEach(System.out::println);
-
-
-			}
-		}
+		System.out.println("all contacts in given name in given city are:");
+		addressbookList.stream()
+		.forEach(addressBook->addressBook.getContactList()
+		.stream().filter(contact->contact.getCity().equals(city) && contact.getFirstName().equals(givenName))
+		.forEach(System.out::println));
 
 	}
 }
