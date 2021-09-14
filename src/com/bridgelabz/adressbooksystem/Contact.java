@@ -1,5 +1,7 @@
 package com.bridgelabz.adressbooksystem;
 
+import java.util.Objects;
+
 public class Contact 
 
 {
@@ -120,5 +122,11 @@ public class Contact
         
         return true;
     }
+	
+	@Override
+	public int hashCode() 
+	{
+		return Objects.hash(firstName);
+	}
 	
 }
