@@ -129,4 +129,10 @@ public class Contact
 		return Objects.hash(firstName);
 	}
 	
+	 @Override
+	    public String toString() {
+	        return firstName;
+	    }
+	
+	
 }
