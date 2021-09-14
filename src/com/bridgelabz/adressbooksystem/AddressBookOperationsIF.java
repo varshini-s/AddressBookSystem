@@ -8,7 +8,8 @@ public interface AddressBookOperationsIF
 	public void deleteContact(String number,String  addressbookName);
 	public int hasContact(String number,String  addressbookName);
 	public void displayContactInfo(String number,String  addressbookName);
-	
+	public void searchPersonByState(String givenName,String state); 
+	public void searchPersonByCity(String name,String city);
 
 
 	

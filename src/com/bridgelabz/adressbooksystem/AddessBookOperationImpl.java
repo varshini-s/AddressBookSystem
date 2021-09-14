@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
+import java.util.function.Predicate;
+
 
 public class AddessBookOperationImpl implements AddressBookOperationsIF
 
@@ -64,15 +66,48 @@ public class AddessBookOperationImpl implements AddressBookOperationsIF
 	public void addNewContact(Contact person,String  addressbookName) 
 	{
 		AddressBook addressbook=getAddressBook(addressbookName);
-	    List<Contact> contactList = addressbook.getContactList();
+		List<Contact> contactList = addressbook.getContactList();
 
-	    contactList.add(person);
-	    Stream<Contact> stream=contactList.stream().distinct();
+		contactList.add(person);
+		Stream<Contact> stream=contactList.stream().distinct();
 
-	    contactList = contactList.stream()
-	            .distinct()
-	            .collect(Collectors.toList());
-	    addressbook.setContactList(contactList);
+		contactList = contactList.stream()
+				.distinct()
+				.collect(Collectors.toList());
+		HashMap<String, List<Contact>> cityDictionary=addressbook.getCityDictionary();
+		if(cityDictionary.containsKey(person.getCity()))
+		{
+			List<Contact> givenCityList = cityDictionary.get(person.getCity());
+			givenCityList.add(person);
+			cityDictionary.put(person.getCity(), givenCityList);
+
+		}
+		else
+		{
+			List<Contact> givenCityList = new LinkedList<Contact>();
+			givenCityList.add(person);
+			cityDictionary.put(person.getCity(), givenCityList);
+
+		}
+
+
+		HashMap<String, List<Contact>> stateDictionary=addressbook.getStateDictionary();
+		if(stateDictionary.containsKey(person.getState()))
+		{
+			List<Contact> givenStateList = stateDictionary.get(person.getState());
+			givenStateList.add(person);
+			stateDictionary.put(person.getState(), givenStateList);
+
+		}
+		else
+		{
+			List<Contact> givenStateList = new LinkedList<Contact>();
+			givenStateList.add(person);
+			stateDictionary.put(person.getState(), givenStateList);
+
+		}
+
+		addressbook.setContactList(contactList);
 
 
 	}
@@ -157,4 +192,55 @@ public class AddessBookOperationImpl implements AddressBookOperationsIF
 
 	}
 
+	@Override
+	public void searchPersonByState(String givenName,String state) 
+	{
+
+		List<AddressBook> addressbookList=addressbookSystem.getAddressbookList();
+
+		for(int indexOfAddressBook=0;indexOfAddressBook<addressbookList.size();indexOfAddressBook++)
+		{
+			AddressBook addressbook=addressbookList.get(indexOfAddressBook);
+
+
+			HashMap<String, List<Contact>> stateDictionary=addressbook.getStateDictionary();
+			if(stateDictionary.containsKey(state))
+			{
+				List<Contact> givenStateList = stateDictionary.get(state);
+
+
+				givenStateList.stream()
+				.filter(stateObject->stateObject.getFirstName().equals(givenName))
+				.forEach(System.out::println);
+			}
+
+		}
+	}
+
+
+	@Override
+	public void searchPersonByCity(String givenName,String city)  
+	{
+
+		List<AddressBook> addressbookList=addressbookSystem.getAddressbookList();
+
+		for(int indexOfAddressBook=0;indexOfAddressBook<addressbookList.size();indexOfAddressBook++)
+		{
+			AddressBook addressbook=addressbookList.get(indexOfAddressBook);
+			HashMap<String, List<Contact>> cityDictionary=addressbook.getCityDictionary();
+			if(cityDictionary.containsKey(city))
+			{
+				List<Contact> givenCityList = cityDictionary.get(city);
+
+				givenCityList.stream()
+				.filter(cityObject->cityObject.getFirstName().equals(givenName))
+				.forEach(System.out::println);
+
+
+			}
+		}
+
+	}
 }
+
+
