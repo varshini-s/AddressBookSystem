@@ -37,7 +37,8 @@ public class AddressBookMain
 				String addressbookName=scanner.next();
 				System.out.println("Menu for the given addressbook: \n1)Add contact\n2)Edit contact\n3Delete contac\n4)Display contact"
 						+ "\n5)Search by City\n6)Search by State\n7)Get all contacts in city\n8Get all contacts in state\n"
-						+ "9)Count people in city\n10)Count peopel in state \n11)Sort by name)");
+						+ "9)Count people in city\n10)Count peopel in state \n11)Sort by name)"
+						+ "\n12)sort by city \n13)sort by state \n14)sort by zip");
 				int choice = scanner.nextInt();
 				scanner.nextLine();
 
@@ -121,6 +122,15 @@ public class AddressBookMain
 					break;
 				case 11:
 					addressBookOperations.sortByName();
+					break;
+				case 12:
+					addressBookOperations.sortByCity();
+					break;
+				case 13:
+					addressBookOperations.sortByState();
+					break;
+				case 14:
+					addressBookOperations.sortByZip();
 
 				}
 
