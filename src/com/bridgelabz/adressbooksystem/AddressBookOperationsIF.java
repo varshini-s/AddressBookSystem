@@ -15,6 +15,10 @@ public interface AddressBookOperationsIF
 	public void countPeopleinCity(String city);
 	public void countPeopleinState(String state);
 	public void sortByName();
+	public void sortByCity();
+	public void sortByState();
+	public void sortByZip();
+
 
 
 
