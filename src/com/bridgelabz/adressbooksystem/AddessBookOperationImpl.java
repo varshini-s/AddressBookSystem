@@ -3,6 +3,8 @@ package com.bridgelabz.adressbooksystem;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 public class AddessBookOperationImpl implements AddressBookOperationsIF
 
@@ -62,51 +64,15 @@ public class AddessBookOperationImpl implements AddressBookOperationsIF
 	public void addNewContact(Contact person,String  addressbookName) 
 	{
 		AddressBook addressbook=getAddressBook(addressbookName);
-		List<Contact> contactList = addressbook.getContactList();
+	    List<Contact> contactList = addressbook.getContactList();
 
-		if(contactList.contains(person))
-		{
-			System.out.println("This contact already exists in the adressbook "+addressbook.getAddressBookName());
+	    contactList.add(person);
+	    Stream<Contact> stream=contactList.stream().distinct();
 
-		}
-		else
-		{
-			contactList.add(person);
-			HashMap<String, List<Contact>> cityDictionary=addressbook.getCityDictionary();
-			if(cityDictionary.containsKey(person.getCity()))
-			{
-				List<Contact> givenCityList = cityDictionary.get(person.getCity());
-				givenCityList.add(person);
-				cityDictionary.put(person.getCity(), givenCityList);
-
-			}
-			else
-			{
-				List<Contact> givenCityList = new LinkedList<Contact>();
-				givenCityList.add(person);
-				cityDictionary.put(person.getCity(), givenCityList);
-
-			}
-
-
-			HashMap<String, List<Contact>> stateDictionary=addressbook.getStateDictionary();
-			if(stateDictionary.containsKey(person.getState()))
-			{
-				List<Contact> givenStateList = stateDictionary.get(person.getState());
-				givenStateList.add(person);
-				stateDictionary.put(person.getState(), givenStateList);
-
-			}
-			else
-			{
-				List<Contact> givenStateList = new LinkedList<Contact>();
-				givenStateList.add(person);
-				stateDictionary.put(person.getState(), givenStateList);
-
-			}
-		}
-
-		addressbook.setContactList(contactList);
+	    contactList = contactList.stream()
+	            .distinct()
+	            .collect(Collectors.toList());
+	    addressbook.setContactList(contactList);
 
 
 	}
@@ -189,175 +155,6 @@ public class AddessBookOperationImpl implements AddressBookOperationsIF
 		}
 
 
-	}
-
-	@Override
-	public void searchPersonByState(String givenName,String state)
-	{
-		List<AddressBook> addressbookList=addressbookSystem.getAddressbookList();
-
-		for(int indexOfAddressBook=0;indexOfAddressBook<addressbookList.size();indexOfAddressBook++)
-		{
-			AddressBook addressbook=addressbookList.get(indexOfAddressBook);
-			HashMap<String, List<Contact>> stateDictionary=addressbook.getStateDictionary();
-			if(stateDictionary.containsKey(state))
-			{
-				List<Contact> givenStateList = stateDictionary.get(state);
-				System.out.println("In the addressbook "+addressbook.getAddressBookName()+" list of people in given name present in state "+state);
-				for(int index=0;index<givenStateList.size();index++)
-				{
-
-
-					if(givenStateList.get(index).getFirstName().equals(givenName))
-					{
-						System.out.println(givenStateList.get(index).getFirstName()+" "+givenStateList.get(index).getLastName());
-					}
-				}
-
-			}
-			else
-			{
-
-				System.out.println("There's no contact list for state "+state);
-			}
-		}
-
-
-	}
-
-
-	@Override
-	public void searchPersonByCity(String givenName,String city)  
-	{
-
-		List<AddressBook> addressbookList=addressbookSystem.getAddressbookList();
-
-		for(int indexOfAddressBook=0;indexOfAddressBook<addressbookList.size();indexOfAddressBook++)
-		{
-			AddressBook addressbook=addressbookList.get(indexOfAddressBook);
-			HashMap<String, List<Contact>> cityDictionary=addressbook.getCityDictionary();
-			if(cityDictionary.containsKey(city))
-			{
-				List<Contact> givenCityList = cityDictionary.get(city);
-				System.out.println("In the addressbook "+addressbook.getAddressBookName()+" list of people in given name present in city "+city);
-				for(int index=0;index<givenCityList.size();index++)
-				{
-
-
-					if(givenCityList.get(index).getFirstName().equals(givenName))
-					{
-						System.out.println(givenCityList.get(index).getFirstName()+" "+givenCityList.get(index).getLastName());
-					}
-				}
-
-			}
-			else
-			{
-
-				System.out.println("There's no contact list for the city"+city);
-			}
-
-		}
-
-
-
-	}
-
-	@Override
-	public void getAllContactsInState(String state)
-	{
-
-		List<AddressBook> addressbookList=addressbookSystem.getAddressbookList();
-
-		for(int indexOfAddressBook=0;indexOfAddressBook<addressbookList.size();indexOfAddressBook++)
-		{
-			AddressBook addressbook=addressbookList.get(indexOfAddressBook);
-			HashMap<String, List<Contact>> stateDictionary=addressbook.getStateDictionary();
-			if(stateDictionary.containsKey(state))
-			{
-				List<Contact> givenStateList = stateDictionary.get(state);
-				System.out.println("List of people in state "+state+" In the adressbook "+addressbook.getAddressBookName());
-				for(int index=0;index<givenStateList.size();index++)
-				{
-					System.out.println(givenStateList.get(index).getFirstName()+" "+givenStateList.get(index).getLastName());
-				}
-			}
-			else
-			{
-
-				System.out.println("There's no contact list for the state "+state);
-			}
-		}
-
-	}
-
-	@Override
-	public void getAllContactsInCity(String city)
-	{
-
-		List<AddressBook> addressbookList=addressbookSystem.getAddressbookList();
-
-		for(int indexOfAddressBook=0;indexOfAddressBook<addressbookList.size();indexOfAddressBook++)
-		{
-			AddressBook addressbook=addressbookList.get(indexOfAddressBook);
-			HashMap<String, List<Contact>> cityDictionary=addressbook.getCityDictionary();
-			if(cityDictionary.containsKey(city))
-			{
-				List<Contact> givenCityList = cityDictionary.get(city);
-				System.out.println("List of people in city "+city+" In the adressbook "+addressbook.getAddressBookName());
-				for(int index=0;index<givenCityList.size();index++)
-				{
-					System.out.println(givenCityList.get(index).getFirstName()+" "+givenCityList.get(index).getLastName());
-				}
-			}
-			else
-			{
-
-				System.out.println("There's no contact list for the city"+city);
-			}
-		}
-
-	}
-	@Override
-	public int countPeopleinCity(String city)
-	{
-
-		int count=0;
-		List<AddressBook> addressbookList=addressbookSystem.getAddressbookList();
-
-		for(int indexOfAddressBook=0;indexOfAddressBook<addressbookList.size();indexOfAddressBook++)
-		{
-			AddressBook addressbook=addressbookList.get(indexOfAddressBook);
-			HashMap<String, List<Contact>> cityDictionary=addressbook.getCityDictionary();
-			if(cityDictionary.containsKey(city))
-			{
-
-				count=count+ cityDictionary.get(city).size();
-			}
-
-		}
-		return count;
-	}
-
-	@Override
-	public int countPeopleinState(String state)
-	{
-		int count = 0;
-
-		List<AddressBook> addressbookList=addressbookSystem.getAddressbookList();
-
-		for(int indexOfAddressBook=0;indexOfAddressBook<addressbookList.size();indexOfAddressBook++)
-		{
-			AddressBook addressbook=addressbookList.get(indexOfAddressBook);
-
-			HashMap<String, List<Contact>> stateDictionary=addressbook.getStateDictionary();
-			if(stateDictionary.containsKey(state))
-			{
-				count=count+ stateDictionary.get(state).size();
-			}
-
-		}
-		return count;
 	}
 
 }

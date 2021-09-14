@@ -83,40 +83,7 @@ public class AddressBookMain
 					phoneNumber=scanner.nextLine();
 					addressBookOperations.displayContactInfo(phoneNumber,addressbookName);
 					break;
-				case 5:
-					System.out.println("Enter name of the person to search");
-					name=scanner.nextLine();
-					System.out.println("Enter city to search");
-					city=scanner.nextLine();
-					addressBookOperations.searchPersonByCity(name, city);
-					break;
-				case 6:
-					System.out.println("Enter name of the person to search");
-					name=scanner.nextLine();
-					System.out.println("Enter state to search");
-					state=scanner.nextLine();
-					addressBookOperations.searchPersonByState(name, state);
-					break;
-				case 7:
-					System.out.println("Enter city to search");
-					city=scanner.nextLine();
-					addressBookOperations.getAllContactsInCity(city);
-					break;
-				case 8:
-					System.out.println("Enter state to search");
-					state=scanner.nextLine();
-					addressBookOperations.getAllContactsInState(state);
-					break;
-				case 9:
-					System.out.println("Enter city to search");
-					city=scanner.nextLine();
-					addressBookOperations.countPeopleinCity(city);
-					break;
-				case 10:
-					System.out.println("Enter state to search");
-					state=scanner.nextLine();
-					addressBookOperations.countPeopleinState(state);
-					break;
+				
 
 				}
 
