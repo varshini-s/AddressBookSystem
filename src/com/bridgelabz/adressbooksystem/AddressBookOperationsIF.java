@@ -12,9 +12,10 @@ public interface AddressBookOperationsIF
 	public void searchPersonByCity(String name,String city);
 	public void getAllContactsInState(String state);
 	public void getAllContactsInCity(String city);
+	public void countPeopleinCity(String city);
+	public void countPeopleinState(String state);
 
 
-	
 
 
 }

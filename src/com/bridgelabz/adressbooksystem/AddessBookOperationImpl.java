@@ -211,6 +211,30 @@ public class AddessBookOperationImpl implements AddressBookOperationsIF
 		.stream().filter(contact->contact.getCity().equals(city)).forEach(System.out::println));
 
 	}
+	@Override
+	public void countPeopleinCity(String city)
+	{
+
+		List<AddressBook> addressbookList=addressbookSystem.getAddressbookList();
+
+		addressbookList.stream()
+		.forEach(addressBook->System.out.println("Number of contacts of given city in addressbook"+addressBook.getAddressBookName()+" is"+addressBook.getContactList()
+		.stream().filter(contact->contact.getCity().equals(city)).count()));
+
+
+	}
+
+
+	@Override
+	public void countPeopleinState(String state)
+	{
+		List<AddressBook> addressbookList=addressbookSystem.getAddressbookList();
+
+		addressbookList.stream()
+		.forEach(addressBook->System.out.println("Number of contacts of given state in addressbook"+addressBook.getAddressBookName()+" is"+addressBook.getContactList()
+		.stream().filter(contact->contact.getState().equals(state)).count()));
+
+	}
 
 }
 
