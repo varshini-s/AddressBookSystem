@@ -193,25 +193,10 @@ public class AddessBookOperationImpl implements AddressBookOperationsIF
 	{
 		List<AddressBook> addressbookList=addressbookSystem.getAddressbookList();
 
-		for(int indexOfAddressBook=0;indexOfAddressBook<addressbookList.size();indexOfAddressBook++)
-		{
-			AddressBook addressbook=addressbookList.get(indexOfAddressBook);
-			HashMap<String, List<Contact>> stateDictionary=addressbook.getStateDictionary();
-			if(stateDictionary.containsKey(state))
-			{
-				List<Contact> givenStateList = stateDictionary.get(state);
-
-
-				givenStateList.stream()
-				.forEach(System.out::println);
-			}
-			else
-			{
-				System.out.println("There's no contact list for the state "+state);
-			}
-
-		}
-
+		System.out.println("all contacts in given state are:");
+		addressbookList.stream()
+		.forEach(addressBook->addressBook.getContactList()
+		.stream().filter(contact->contact.getState().equals(state)).forEach(System.out::println));
 
 	}
 	@Override
@@ -220,23 +205,10 @@ public class AddessBookOperationImpl implements AddressBookOperationsIF
 
 		List<AddressBook> addressbookList=addressbookSystem.getAddressbookList();
 
-		for(int indexOfAddressBook=0;indexOfAddressBook<addressbookList.size();indexOfAddressBook++)
-		{
-			AddressBook addressbook=addressbookList.get(indexOfAddressBook);
-			HashMap<String, List<Contact>> cityDictionary=addressbook.getCityDictionary();
-			if(cityDictionary.containsKey(city))
-			{
-				List<Contact> givenCityList = cityDictionary.get(city);
-
-				givenCityList.stream()
-				.forEach(System.out::println);
-			}
-			else
-			{
-				System.out.println("There's no contact list for the city"+city);
-			}
-
-		}
+		System.out.println("all contacts in given city are:");
+		addressbookList.stream()
+		.forEach(addressBook->addressBook.getContactList()
+		.stream().filter(contact->contact.getCity().equals(city)).forEach(System.out::println));
 
 	}
 
