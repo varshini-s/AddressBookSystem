@@ -30,4 +30,6 @@ public interface AddressBookServiceIF
 	public void writeContactsOfAddressBook(IOService ioService,String  addressbookName);
 	public void printData(IOService ioService);
 	public long countEntries(IOService ioService); 
+	public long readContactListData(IOService ioService,String  addressbookName);
+
 }
