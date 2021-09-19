@@ -31,6 +31,18 @@ public class AddressBookFileIOService
 		
 	}
 	
+	public void printData() 
+	{
+		try 
+		{
+			Files.lines(new File(ADDRESSBOOK_FILE_NAME).toPath())
+			.forEach(System.out::println);
+		} catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	
 
 
 }
