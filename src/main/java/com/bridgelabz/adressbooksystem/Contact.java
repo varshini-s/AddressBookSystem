@@ -130,8 +130,9 @@ public class Contact
 	}
 	
 	 @Override
-	    public String toString() {
-			return "firstName="+firstName+",lastName="+lastName+",address="+address+",city="+city+",zip="+zip+",state="+state+",phone number"+phoneNumber+
+	    public String toString() 
+	 {
+			return "firstName="+firstName+",lastName="+lastName+",address="+address+",city="+city+",zip="+zip+",state="+state+",phone number="+phoneNumber+
 					",email="+email;
 	    }
 	
