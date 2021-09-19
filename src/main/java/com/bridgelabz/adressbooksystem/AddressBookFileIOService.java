@@ -43,6 +43,19 @@ public class AddressBookFileIOService
 		}
 	}
 	
-
+	public long countEntries()
+	{
+		
+		long entries=0;
+		try {
+			entries=Files.lines(new File(ADDRESSBOOK_FILE_NAME).toPath())
+					.count();
+		}
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		return entries;
+	}
 
 }
