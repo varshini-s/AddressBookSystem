@@ -30,7 +30,7 @@ public class AddressBookFileIOService
 	public enum FileType {TXT,CSV,JSON}
 
 
-	public void writeData(List<Contact> contactList,FileType fileType,AddressBookSystem...addressBookSystem) throws IOException, CsvException 
+	public void writeData(List<Contact> contactList,FileType fileType,AddressBooksCollection...addressBookSystem) throws IOException, CsvException 
 	{
 		if(fileType.equals(FileType.TXT))
 		{
@@ -63,7 +63,26 @@ public class AddressBookFileIOService
 			}
 			
 		}
-		
+		else if(fileType.equals(FileType.JSON))
+		{
+			try
+			{
+
+				List<AddressBook> addressbookList = addressBookSystem[0].getAddressbookList();
+		        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+				String json =gson.toJson(addressbookList);
+				FileWriter writer = new FileWriter(ADDRESSBOOK_JSON_FILE_NAME);
+				writer.write(json);
+				writer.close();
+	
+			}
+			catch(IOException e)
+			{
+				e.printStackTrace();
+				
+			}
+		}
 	}
 	
 	public void printData(FileType fileType) throws IOException, CsvException 
@@ -105,7 +124,14 @@ public class AddressBookFileIOService
 				}
 			}
 		}
-		
+		else if(fileType.equals(FileType.JSON))
+		{
+			
+			List<AddressBook> addressBookList=this.readData();
+			addressBookList.stream()
+			.forEach(addressBook-> {addressBook.getContactList().stream().forEach(contact->System.out.println(contact));});
+			
+		}
 		
 	}
 	
@@ -128,7 +154,11 @@ public class AddressBookFileIOService
 		{
 			return this.readData(FileType.CSV).size();
 		}
-		
+		else if(fileType.equals(FileType.JSON))
+		{
+			
+			return this.readData().size();
+		}
 		return 0;
 	}
 
@@ -201,6 +231,15 @@ public class AddressBookFileIOService
 		return contactList;
 	}
 	
-	
+	public List<AddressBook> readData() throws IOException, CsvException 
+	{
+		BufferedReader br = new BufferedReader(new FileReader(ADDRESSBOOK_JSON_FILE_NAME));
+		Gson gson= new Gson();
+		AddressBook[] usrObj =gson.fromJson(br, AddressBook[].class);
+		List<AddressBook> addressBookList = Arrays.asList(usrObj);
+		
+		return addressBookList;
+		
+	}
 
 }
