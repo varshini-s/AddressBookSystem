@@ -1,0 +1,72 @@
+[
+  {
+    "AddressBookName": "Addressbook1",
+    "contactList": [
+      {
+        "firstName": "Sheldon",
+        "lastName": "Cooper",
+        "address": "texas",
+        "city": "pasadena",
+        "state": "california",
+        "zip": "11134",
+        "phoneNumber": "12345",
+        "email": "abc@gmail.com"
+      },
+      {
+        "firstName": "Ross ",
+        "lastName": "Geller",
+        "address": "groov street",
+        "city": "aaa",
+        "state": "New york",
+        "zip": "12311",
+        "phoneNumber": "89897677",
+        "email": "ross@gmail.com"
+      },
+      {
+        "firstName": "Ted",
+        "lastName": "Mobsby",
+        "address": "aaa",
+        "city": "bbb",
+        "state": "new york",
+        "zip": "44562",
+        "phoneNumber": "567890999",
+        "email": "ted@gmail.com"
+      }
+    ]
+  },
+  {
+    "AddressBookName": "Addressbook2",
+    "contactList": [
+      {
+        "firstName": "james",
+        "lastName": "b",
+        "address": "texas",
+        "city": "pasadena",
+        "state": "california",
+        "zip": "11134",
+        "phoneNumber": "12345",
+        "email": "abc@gmail.com"
+      },
+      {
+        "firstName": "susan ",
+        "lastName": "aaa",
+        "address": "groov street",
+        "city": "aaa",
+        "state": "New york",
+        "zip": "12311",
+        "phoneNumber": "89897677",
+        "email": "ross@gmail.com"
+      },
+      {
+        "firstName": "alan",
+        "lastName": "c",
+        "address": "aaa",
+        "city": "bbb",
+        "state": "new york",
+        "zip": "44562",
+        "phoneNumber": "567890999",
+        "email": "ted@gmail.com"
+      }
+    ]
+  }
+]
