@@ -87,6 +87,22 @@ public class AddressBookServiceTest
 
 	}
 
-	
+	@Test
+	public void whenGivenNameAndCity_ShouldPrintAllContactsWithGivenNameAndCity()
+	{
+		addressBookOperations.searchPersonByCity("Sheldon", "aaa",printStream);
+		String expected=contact1.toString()+"\n";
+		Assert.assertEquals(expected, byteArrayOutputStream.toString());
+
+	}
+
+	@Test
+	public void whenGivenNameAndState_ShouldPrintAllContactsWithGivenNameAndState()
+	{
+		addressBookOperations.searchPersonByState("Sheldon", "california",printStream);
+		String expected=contact1.toString()+"\n";
+		Assert.assertEquals(expected, byteArrayOutputStream.toString());
+
+	}
 	
 }
