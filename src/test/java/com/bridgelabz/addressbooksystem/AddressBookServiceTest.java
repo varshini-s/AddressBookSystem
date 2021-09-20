@@ -104,5 +104,22 @@ public class AddressBookServiceTest
 		Assert.assertEquals(expected, byteArrayOutputStream.toString());
 
 	}
+	@Test
+	public void  whenGivenCity_ShouldPrintAllContactsInGivenCity()
+	{
+		addressBookOperations.getAllContactsInCity("aaa",printStream);
+		String expected=contact1.toString()+"\n"+contact2.toString()+"\n"+contact5.toString()+"\n";
+		Assert.assertEquals(expected, byteArrayOutputStream.toString());		
+	}
+
+	@Test
+	public void whenGivenState_ShouldPrintAllContactsInGivenState()
+	{
+		addressBookOperations.getAllContactsInState("california",printStream);
+		String expected=contact1.toString()+"\n"+contact4.toString()+"\n";
+		Assert.assertEquals(expected, byteArrayOutputStream.toString());		
+
+	}
+
 	
 }
