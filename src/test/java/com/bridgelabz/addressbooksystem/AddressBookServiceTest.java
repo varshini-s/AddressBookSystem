@@ -67,6 +67,16 @@ public class AddressBookServiceTest
 
 	}
 
-	
+	@Test
+	public void whenGivenContactToEdit_GivenFieldMustBeEdited()
+	{
+		addressBookName="Addressbook1";
+		addressBookOperations.editContact("12345","shell@example.com","email",addressBookName);
+		Contact resultingContact = new Contact("Sheldon","Cooper","texas","aaa","california","11134","12345","shell@example.com");
+		int contactIndex=addressBookOperations.hasContact("12345", addressBookName);
+		Contact editedContact=addressBookOperations.getAddressBook(addressBookName).getContactList().get(contactIndex);
+		Assert.assertEquals(resultingContact,editedContact);
+
+	}
 	
 }
