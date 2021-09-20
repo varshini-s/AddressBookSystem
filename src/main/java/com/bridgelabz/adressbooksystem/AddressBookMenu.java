@@ -1,13 +1,15 @@
 package com.bridgelabz.adressbooksystem;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 import com.bridgelabz.adressbooksystem.AddessBookServiceImpl.IOService;
+import com.opencsv.exceptions.CsvException;
 
 public class AddressBookMenu 
 
 {
-	public void performOperations()
+	public void performOperations() throws IOException, CsvException
 	{
 
 		String firstName,lastName,address,city,state,zip,phoneNumber,email,name;
