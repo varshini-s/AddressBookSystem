@@ -1,8 +1,12 @@
 package com.bridgelabz.adressbooksystem;
 
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.List;
 import java.util.stream.Stream;
 
+import com.bridgelabz.adressbooksystem.AddressBookFileIOService.FileType;
+import com.opencsv.exceptions.CsvException;
 
 import java.util.stream.Collectors;
 
@@ -11,7 +15,7 @@ public class AddessBookServiceImpl implements AddressBookServiceIF
 
 {
 
-	AddressBookSystem addressbookSystem = new AddressBookSystem();
+	AddressBooksCollection addressbookSystem = new AddressBooksCollection();
 
 	public enum IOService {CONSOLE_IO,FILE_IO,DB_IO,REST_IO}
 
@@ -163,7 +167,7 @@ public class AddessBookServiceImpl implements AddressBookServiceIF
 	}
 
 	@Override
-	public void searchPersonByState(String givenName,String state) 
+	public void searchPersonByState(String givenName,String state,PrintStream... printStreamObject) 
 	{
 
 		List<AddressBook> addressbookList=addressbookSystem.getAddressbookList();
@@ -172,12 +176,12 @@ public class AddessBookServiceImpl implements AddressBookServiceIF
 		addressbookList.stream()
 		.forEach(addressBook->addressBook.getContactList()
 				.stream().filter(contact->contact.getState().equals(state) && contact.getFirstName().equals(givenName))
-				.forEach(System.out::println));
+				.forEach(object->printStreamObject[0].println(object)));
 	}
 
 
 	@Override
-	public void searchPersonByCity(String givenName,String city)  
+	public void searchPersonByCity(String givenName,String city,PrintStream... printStreamObject)  
 	{
 
 		List<AddressBook> addressbookList=addressbookSystem.getAddressbookList();
@@ -186,23 +190,23 @@ public class AddessBookServiceImpl implements AddressBookServiceIF
 		addressbookList.stream()
 		.forEach(addressBook->addressBook.getContactList()
 				.stream().filter(contact->contact.getCity().equals(city) && contact.getFirstName().equals(givenName))
-				.forEach(System.out::println));
+				.forEach(contact->printStreamObject[0].println(contact)));
 
 	}
 
 	@Override
-	public void getAllContactsInState(String state)
+	public void getAllContactsInState(String state,PrintStream... printStreamObject)
 	{
 		List<AddressBook> addressbookList=addressbookSystem.getAddressbookList();
 
 		System.out.println("all contacts in given state are:");
 		addressbookList.stream()
 		.forEach(addressBook->addressBook.getContactList()
-				.stream().filter(contact->contact.getState().equals(state)).forEach(System.out::println));
+				.stream().filter(contact->contact.getState().equals(state)).forEach(contact->printStreamObject[0].println(contact)));
 
 	}
 	@Override
-	public void getAllContactsInCity(String city)
+	public void getAllContactsInCity(String city,PrintStream... printStreamObject)
 	{
 
 		List<AddressBook> addressbookList=addressbookSystem.getAddressbookList();
@@ -210,11 +214,11 @@ public class AddessBookServiceImpl implements AddressBookServiceIF
 		System.out.println("all contacts in given city are:");
 		addressbookList.stream()
 		.forEach(addressBook->addressBook.getContactList()
-				.stream().filter(contact->contact.getCity().equals(city)).forEach(System.out::println));
+				.stream().filter(contact->contact.getCity().equals(city)).forEach(contact->printStreamObject[0].println(contact)));
 
 	}
 	@Override
-	public void countPeopleinCity(String city)
+	public void countPeopleinCity(String city,PrintStream... printStreamObject)
 	{
 
 		List<AddressBook> addressbookList=addressbookSystem.getAddressbookList();
@@ -228,7 +232,7 @@ public class AddessBookServiceImpl implements AddressBookServiceIF
 
 
 	@Override
-	public void countPeopleinState(String state)
+	public void countPeopleinState(String state,PrintStream... printStreamObject)
 	{
 		List<AddressBook> addressbookList=addressbookSystem.getAddressbookList();
 
@@ -239,47 +243,47 @@ public class AddessBookServiceImpl implements AddressBookServiceIF
 	}
 
 	@Override
-	public void sortByName() 
+	public void sortByName(PrintStream... printStreamObject) 
 	{
 		List<AddressBook> addressbookList=addressbookSystem.getAddressbookList();
 
 		System.out.println("Sorting contacts by fist name:");
 		addressbookList.stream()
 		.forEach(addressBook->addressBook.getContactList()
-				.stream().sorted((person1,person2)->person1.getFirstName().compareTo(person2.getFirstName())).forEach(System.out::println));
+				.stream().sorted((person1,person2)->person1.getFirstName().compareTo(person2.getFirstName())).forEach(contact->printStreamObject[0].println(contact)));
 	}
 
 	@Override
-	public void sortByCity() 
+	public void sortByCity(PrintStream... printStreamObject) 
 	{
 		List<AddressBook> addressbookList=addressbookSystem.getAddressbookList();
 
 		System.out.println("Sorting contacts by  city:");
 		addressbookList.stream()
 		.forEach(addressBook->addressBook.getContactList()
-				.stream().sorted((person1,person2)->person1.getCity().compareTo(person2.getCity())).forEach(contact->System.out.println(contact.getCity())));
+				.stream().sorted((person1,person2)->person1.getCity().compareTo(person2.getCity())).forEach(contact->printStreamObject[0].println(contact)));
 	}
 
 	@Override
-	public void sortByState() 
+	public void sortByState(PrintStream... printStreamObject)
 	{
 		List<AddressBook> addressbookList=addressbookSystem.getAddressbookList();
 
 		System.out.println("Sorting contacts by  state");
 		addressbookList.stream()
 		.forEach(addressBook->addressBook.getContactList()
-				.stream().sorted((person1,person2)->person1.getState().compareTo(person2.getState())).forEach(contact->System.out.println(contact.getState())));
+				.stream().sorted((person1,person2)->person1.getState().compareTo(person2.getState())).forEach(contact->printStreamObject[0].println(contact)));
 	}
 
 	@Override
-	public void sortByZip() 
+	public void sortByZip(PrintStream... printStreamObject)
 	{
 		List<AddressBook> addressbookList=addressbookSystem.getAddressbookList();
 
 		System.out.println("Sorting contacts by  zip:");
 		addressbookList.stream()
 		.forEach(addressBook->addressBook.getContactList()
-				.stream().sorted((person1,person2)->person1.getZip().compareTo(person2.getZip())).forEach(contact->System.out.println(contact.getZip())));
+				.stream().sorted((person1,person2)->person1.getZip().compareTo(person2.getZip())).forEach(contact->printStreamObject[0].println(contact)));
 	}
 	@Override
 	public List<Contact> getContactList(String  addressbookName)
@@ -291,48 +295,55 @@ public class AddessBookServiceImpl implements AddressBookServiceIF
 		return contactList;
 	}
 	@Override
-	public void writeContactsOfAddressBook(IOService ioService,String  addressbookName)
+	public void writeContactsOfAddressBook(IOService ioService,String  addressbookName,FileType... fileType) throws IOException, CsvException
 	{
 		if(ioService.equals(IOService.CONSOLE_IO))
 			System.out.println("\nWriting contact list  info to console:\n "+this.getContactList(addressbookName));
 		else if(ioService.equals(IOService.FILE_IO))
 		{
-			new AddressBookFileIOService().writeData(this.getContactList(addressbookName));
+			new AddressBookFileIOService().writeData(this.getContactList(addressbookName),fileType[0],this.addressbookSystem);
 		}
 
 	}
 	@Override
-	public void printData(IOService ioService) 
+	public void printData(IOService ioService,FileType... fileType) throws IOException, CsvException 
 	{
 		if(ioService.equals(IOService.FILE_IO))
 		{
-			new AddressBookFileIOService().printData();
+			new AddressBookFileIOService().printData(fileType[0]);
 		}
 
 	}
 	@Override
 
-	public long countEntries(IOService ioService) 
+	public long countEntries(IOService ioService,FileType... fileType) throws IOException, CsvException 
 	{
 
 		if(ioService.equals(IOService.FILE_IO))
 		{
-			return new AddressBookFileIOService().countEntries();
+			return new AddressBookFileIOService().countEntries(fileType[0]);
 		}
 
 		return 0;
 	}
 
 	@Override
-	public long readContactListData(IOService ioService,String  addressbookName)
+	public long readContactListData(IOService ioService,String  addressbookName,FileType... fileType) throws IOException, CsvException
 	{
 
 		if(ioService.equals(IOService.FILE_IO))
 		{
 			AddressBookFileIOService addressbookFileIOService = new AddressBookFileIOService();
 			
-			this.getAddressBook(addressbookName).setContactList(new AddressBookFileIOService().readData());
+			if(fileType[0].equals(FileType.JSON))
+			{
+				return addressbookFileIOService.readData().size();
+			}
+			else
+			{
+				this.getAddressBook(addressbookName).setContactList(addressbookFileIOService.readData(fileType[0]));
 
+			}
 		}
 
 		return this.getAddressBook(addressbookName).getContactList().size();
