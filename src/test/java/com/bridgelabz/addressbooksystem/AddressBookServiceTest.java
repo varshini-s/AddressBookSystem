@@ -12,14 +12,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.bridgelabz.adressbooksystem.AddessBookServiceImpl;
-import com.bridgelabz.adressbooksystem.AddressBookSystem;
+import com.bridgelabz.adressbooksystem.AddressBooksCollection;
 import com.bridgelabz.adressbooksystem.Contact;
 
 public class AddressBookServiceTest 
 {
 
 	AddessBookServiceImpl addressBookOperations;
-	AddressBookSystem addressBookSystem = new AddressBookSystem();
+	AddressBooksCollection addressBookSystem = new AddressBooksCollection();
 	Contact contact1,contact2,contact3,contact4,contact5,contact6;
 
 	String addressBookName;
