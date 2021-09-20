@@ -78,5 +78,15 @@ public class AddressBookServiceTest
 		Assert.assertEquals(resultingContact,editedContact);
 
 	}
+	@Test
+	public void whenGivenDetailsOfContactToDelete_ShouldBeDeletedFromContactList()
+	{
+		addressBookName="Addressbook1";
+		addressBookOperations.deleteContact("12345", addressBookName);
+		Assert.assertEquals(-1,addressBookOperations.hasContact("12345", addressBookName));
+
+	}
+
+	
 	
 }
