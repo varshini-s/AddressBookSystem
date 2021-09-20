@@ -55,6 +55,18 @@ public class AddressBookServiceTest
 		printStream = new PrintStream(byteArrayOutputStream);
 	}
 
+	@Test
+	public void whenGiven3Contacts_ShouldBeProperlyAddedToGivenAddressBook()
+	{
+		List<Contact> givenContactList = new ArrayList<Contact>();
+		givenContactList.add(contact1);
+		givenContactList.add(contact2);
+		givenContactList.add(contact3);
 
+		Assert.assertEquals(givenContactList, addressBookOperations.getAddressBook("Addressbook1").getContactList());
+
+	}
+
+	
 	
 }
