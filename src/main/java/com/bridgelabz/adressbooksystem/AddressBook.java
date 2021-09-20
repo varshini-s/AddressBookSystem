@@ -9,8 +9,8 @@ public class AddressBook
 {
 	private String AddressBookName;
 	private List<Contact> contactList = new LinkedList<Contact>();
-	private HashMap<String, List<Contact>> cityDictionary = new HashMap<String, List<Contact>>();
-	private HashMap<String, List<Contact>> stateDictionary = new HashMap<String, List<Contact>>();
+	private transient HashMap<String, List<Contact>> cityDictionary = new HashMap<String, List<Contact>>();
+	private transient HashMap<String, List<Contact>> stateDictionary = new HashMap<String, List<Contact>>();
 
 
 	public HashMap<String, List<Contact>> getCityDictionary() {
