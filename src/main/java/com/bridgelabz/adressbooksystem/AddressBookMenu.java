@@ -18,7 +18,7 @@ public class AddressBookMenu
 		System.out.println("Welcome to Address book system program");
 
 		AddessBookServiceImpl addressBookOperations = new AddessBookServiceImpl();
-		AddressBookSystem addressBookSystem = new AddressBookSystem();
+		AddressBooksCollection addressBookSystem = new AddressBooksCollection();
 
 		int addressBookMenuChoice;
 
