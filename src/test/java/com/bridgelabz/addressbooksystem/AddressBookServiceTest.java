@@ -121,5 +121,34 @@ public class AddressBookServiceTest
 
 	}
 
+	@Test
+	public void whenGivenAddressBookAndContacts_ShouldSortByName()
+	{
+		addressBookOperations.sortByName(printStream);
+		String expected=contact2.toString()+"\n"+contact1.toString()+"\n"+contact3.toString()+"\n"+contact6.toString()+"\n"+contact4.toString()+"\n"+contact5.toString()+"\n";
+		Assert.assertEquals(expected, byteArrayOutputStream.toString());		
+	}
+	@Test
+	public void whenGivenAddressBookAndContacts_ShouldSortByCity()
+	{
+		addressBookOperations.sortByCity(printStream);
+		String expected=contact1.toString()+"\n"+contact2.toString()+"\n"+contact3.toString()+"\n"+contact5.toString()+"\n"+contact6.toString()+"\n"+contact4.toString()+"\n";
+		Assert.assertEquals(expected, byteArrayOutputStream.toString());		
+	}	
+	@Test
+	public void whenGivenAddressBookAndContacts_ShouldSortByState()
+	{
+		addressBookOperations.sortByState(printStream);
+		String expected=contact2.toString()+"\n"+contact3.toString()+"\n"+contact1.toString()+"\n"+contact5.toString()+"\n"+contact4.toString()+"\n"+contact6.toString()+"\n";
+		Assert.assertEquals(expected, byteArrayOutputStream.toString());		
+	}
+	
+	@Test
+	public void whenGivenAddressBookAndContacts_ShouldSortByZip()
+	{
+		addressBookOperations.sortByZip(printStream);
+		String expected=contact1.toString()+"\n"+contact2.toString()+"\n"+contact3.toString()+"\n"+contact4.toString()+"\n"+contact5.toString()+"\n"+contact6.toString()+"\n";
+		Assert.assertEquals(expected, byteArrayOutputStream.toString());		
+	}
 	
 }
