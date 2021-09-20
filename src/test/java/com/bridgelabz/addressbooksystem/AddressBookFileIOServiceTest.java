@@ -11,13 +11,13 @@ import com.bridgelabz.adressbooksystem.Contact;
 import com.opencsv.exceptions.CsvException;
 import com.bridgelabz.adressbooksystem.AddessBookServiceImpl.IOService;
 import com.bridgelabz.adressbooksystem.AddressBookFileIOService.FileType;
-import com.bridgelabz.adressbooksystem.AddressBookSystem;
+import com.bridgelabz.adressbooksystem.AddressBooksCollection;
 
 public class AddressBookFileIOServiceTest 
 
 {
 	AddessBookServiceImpl addressBookOperations;
-	AddressBookSystem addressBookSystem = new AddressBookSystem();
+	AddressBooksCollection addressBookSystem = new AddressBooksCollection();
 
 	String addressBookName;
 
@@ -60,7 +60,15 @@ public class AddressBookFileIOServiceTest
 		Assert.assertEquals(3, csvEntries);
 
 	}
-	
+	@Test
+	public void given3ContactsWhenWrittenToJSONFileShouldMatchContactEntries() throws IOException, CsvException
+	{
+
+		addressBookOperations.writeContactsOfAddressBook(IOService.FILE_IO,addressBookName,FileType.CSV);
+		long jsonEntries = addressBookOperations.countEntries(IOService.FILE_IO,FileType.JSON);
+		Assert.assertEquals(2, jsonEntries);
+
+	}
 
 	@Test
 	public void givenFileOnReadingFromTXTFileShouldMatchContactsCount() throws IOException, CsvException
@@ -78,6 +86,13 @@ public class AddressBookFileIOServiceTest
 		Assert.assertEquals(3, csvEntries);
 
 	}
+	@Test
+	public void givenFileOnReadingFromJSONFileShouldMatchContactsCount() throws IOException, CsvException
+	{
+		
+		long jsonEntries = addressBookOperations.readContactListData(IOService.FILE_IO,addressBookName,FileType.JSON);
+		Assert.assertEquals(2, jsonEntries);
 
+	}
 
 }
