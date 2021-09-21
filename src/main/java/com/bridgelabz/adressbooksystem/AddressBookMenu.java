@@ -12,13 +12,10 @@ public class AddressBookMenu
 	public void performOperations() throws IOException, CsvException
 	{
 
-		String firstName,lastName,address,city,state,zip,phoneNumber,email,name;
-
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Welcome to Address book system program");
 
 		AddessBookServiceImpl addressBookOperations = new AddessBookServiceImpl();
-		AddressBooksCollection addressBookSystem = new AddressBooksCollection();
 
 		int addressBookMenuChoice;
 
@@ -29,9 +26,7 @@ public class AddressBookMenu
 			scanner.nextLine();
 			if(addressBookMenuChoice==1)
 			{
-				System.out.println("Enter name for the addressbook");
-				String addressBookName = scanner.nextLine();
-				addressBookOperations.createAddressBook(addressBookName);
+				createAddrressBook(scanner, addressBookOperations);
 
 			}
 
@@ -50,79 +45,38 @@ public class AddressBookMenu
 				{
 				case 1:
 
-					System.out.println("Enter first and last name of the person");
-					firstName=scanner.nextLine();
-					lastName=scanner.nextLine();
-					System.out.println("Enter address ");
-					address=scanner.nextLine();
-					System.out.println("Enter city ");
-					city=scanner.nextLine();
-					System.out.println("Enter state ");
-					state=scanner.nextLine();
-					System.out.println("Enter zip ");
-					zip=scanner.nextLine();
-					System.out.println("Enter phone number ");
-					phoneNumber=scanner.nextLine();
-					System.out.println("Enter email ");
-					email=scanner.nextLine();
-					Contact person= new Contact(firstName,lastName,address,city,state,zip,phoneNumber,email);
-					addressBookOperations.addNewContact(person,addressbookName);
+					addContact(scanner, addressBookOperations, addressbookName);
 					break;
 
 				case 2:
-
-					System.out.println("Enter phone number of contact to be edited");
-					phoneNumber=scanner.nextLine();
-					System.out.println("Enter the field and value to be edited");
-					String fieldToBeEdited = scanner.nextLine();
-					String valueToBeEdited=scanner.nextLine();
-					addressBookOperations.editContact(phoneNumber,valueToBeEdited,fieldToBeEdited,addressbookName);
+					editContact(scanner, addressBookOperations, addressbookName);
 					break;
+					
 				case 3:
-					System.out.println("Enter phone number of contact to be deleted");
-					phoneNumber=scanner.nextLine();
-					addressBookOperations.deleteContact(phoneNumber,addressbookName);
+					deleteContact(scanner, addressBookOperations, addressbookName);
 					break;
+					
 				case 4:
-					System.out.println("Enter phone number of contact to be display");
-					phoneNumber=scanner.nextLine();
-					addressBookOperations.displayContactInfo(phoneNumber,addressbookName);
+					displayContact(scanner, addressBookOperations, addressbookName);
 					break;
 				
-
 				case 5:
-					System.out.println("Enter name of the person to search");
-					name=scanner.nextLine();
-					System.out.println("Enter city to search");
-					city=scanner.nextLine();
-					addressBookOperations.searchPersonByCity(name, city);
+					searchPersonByCity(scanner, addressBookOperations);
 					break;
 				case 6:
-					System.out.println("Enter name of the person to search");
-					name=scanner.nextLine();
-					System.out.println("Enter state to search");
-					state=scanner.nextLine();
-					addressBookOperations.searchPersonByState(name, state);
+					searchPersonByState(scanner, addressBookOperations);
 					break;
 				case 7:
-					System.out.println("Enter city to search");
-					city=scanner.nextLine();
-					addressBookOperations.getAllContactsInCity(city);
+					getAllContactsInCity(scanner, addressBookOperations);
 					break;
 				case 8:
-					System.out.println("Enter state to search");
-					state=scanner.nextLine();
-					addressBookOperations.getAllContactsInState(state);
+					getAllContactsInState(scanner, addressBookOperations);
 					break;
 				case 9:
-					System.out.println("Enter city to search");
-					city=scanner.nextLine();
-					addressBookOperations.countPeopleinCity(city);
+					countPeopleInCity(scanner, addressBookOperations);
 					break;
 				case 10:
-					System.out.println("Enter state to search");
-					state=scanner.nextLine();
-					addressBookOperations.countPeopleinState(state);
+					countPeopleInState(scanner, addressBookOperations);
 					break;
 				case 11:
 					addressBookOperations.sortByName();
@@ -155,5 +109,122 @@ public class AddressBookMenu
 			}
 		}while(addressBookMenuChoice!=3);
 
+	}
+
+	private void createAddrressBook(Scanner scanner, AddessBookServiceImpl addressBookOperations) 
+	{
+		System.out.println("Enter name for the addressbook");
+		String addressBookName = scanner.nextLine();
+		addressBookOperations.createAddressBook(addressBookName);
+	}
+
+	private void countPeopleInState(Scanner scanner, AddessBookServiceImpl addressBookOperations) 
+	{
+		String state;
+		System.out.println("Enter state to search");
+		state=scanner.nextLine();
+		addressBookOperations.countPeopleinState(state);
+	}
+
+	private void countPeopleInCity(Scanner scanner, AddessBookServiceImpl addressBookOperations) 
+	{
+		String city;
+		System.out.println("Enter city to search");
+		city=scanner.nextLine();
+		addressBookOperations.countPeopleinCity(city);
+	}
+
+	private void getAllContactsInState(Scanner scanner, AddessBookServiceImpl addressBookOperations) 
+	{
+		String state;
+		System.out.println("Enter state to search");
+		state=scanner.nextLine();
+		addressBookOperations.getAllContactsInState(state);
+	}
+
+	private void getAllContactsInCity(Scanner scanner, AddessBookServiceImpl addressBookOperations) 
+	{
+		String city;
+		System.out.println("Enter city to search");
+		city=scanner.nextLine();
+		addressBookOperations.getAllContactsInCity(city);
+	}
+
+	private void searchPersonByState(Scanner scanner, AddessBookServiceImpl addressBookOperations) 
+	{
+		String state;
+		String name;
+		System.out.println("Enter name of the person to search");
+		name=scanner.nextLine();
+		System.out.println("Enter state to search");
+		state=scanner.nextLine();
+		addressBookOperations.searchPersonByState(name, state);
+	}
+
+	private void searchPersonByCity(Scanner scanner, AddessBookServiceImpl addressBookOperations) 
+	{
+		String city;
+		String name;
+		System.out.println("Enter name of the person to search");
+		name=scanner.nextLine();
+		System.out.println("Enter city to search");
+		city=scanner.nextLine();
+		addressBookOperations.searchPersonByCity(name, city);
+	}
+
+	private void displayContact(Scanner scanner, AddessBookServiceImpl addressBookOperations, String addressbookName) 
+	{
+		String phoneNumber;
+		System.out.println("Enter phone number of contact to be display");
+		phoneNumber=scanner.nextLine();
+		addressBookOperations.displayContactInfo(phoneNumber,addressbookName);
+	}
+
+	private void deleteContact(Scanner scanner, AddessBookServiceImpl addressBookOperations, String addressbookName) 
+	{
+		String phoneNumber;
+		System.out.println("Enter phone number of contact to be deleted");
+		phoneNumber=scanner.nextLine();
+		addressBookOperations.deleteContact(phoneNumber,addressbookName);
+	}
+
+	private void editContact(Scanner scanner, AddessBookServiceImpl addressBookOperations, String addressbookName) 
+	{
+		String phoneNumber;
+		System.out.println("Enter phone number of contact to be edited");
+		phoneNumber=scanner.nextLine();
+		System.out.println("Enter the field and value to be edited");
+		String fieldToBeEdited = scanner.nextLine();
+		String valueToBeEdited=scanner.nextLine();
+		addressBookOperations.editContact(phoneNumber,valueToBeEdited,fieldToBeEdited,addressbookName);
+	}
+
+	private void addContact(Scanner scanner, AddessBookServiceImpl addressBookOperations, String addressbookName) 
+	{
+		String firstName;
+		String lastName;
+		String address;
+		String city;
+		String state;
+		String zip;
+		String phoneNumber;
+		String email;
+		System.out.println("Enter first and last name of the person");
+		firstName=scanner.nextLine();
+		lastName=scanner.nextLine();
+		System.out.println("Enter address ");
+		address=scanner.nextLine();
+		System.out.println("Enter city ");
+		city=scanner.nextLine();
+		System.out.println("Enter state ");
+		state=scanner.nextLine();
+		System.out.println("Enter zip ");
+		zip=scanner.nextLine();
+		System.out.println("Enter phone number ");
+		phoneNumber=scanner.nextLine();
+		System.out.println("Enter email ");
+		email=scanner.nextLine();
+		Contact person= new Contact(firstName,lastName,address,city,state,zip,phoneNumber,email);
+		addressBookOperations.addNewContact(person,addressbookName);
 	}
 }
