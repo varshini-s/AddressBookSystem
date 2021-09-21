@@ -5,9 +5,17 @@ import java.util.Objects;
 public class Contact 
 
 {
-	private String firstName,lastName,address,city,state,zip,phoneNumber,email;
+	private String firstName;
+	public String lastName;
+	public String address;
+	public String city;
+    public String state;
+    public String zip;
+    public String phoneNumber;
+    public String email;
 	
-	public Contact()
+    
+    public Contact()
 	{
 		
 	}
@@ -21,6 +29,19 @@ public class Contact
 		this.zip=zip;
 		this.phoneNumber=phoneNumber;
 		this.email=email;
+	}
+	public Contact(String[] contact)
+	{
+		this.firstName=contact[0];
+		this.lastName=contact[1];
+		this.address=contact[2];
+		this.city=contact[3];
+		this.state=contact[4];
+		this.zip=contact[5];
+		this.phoneNumber=contact[6];
+		this.email=contact[7];
+		
+		
 	}
 	
 	public String getFirstName()
