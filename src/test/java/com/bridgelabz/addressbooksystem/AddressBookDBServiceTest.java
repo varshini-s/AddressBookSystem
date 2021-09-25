@@ -48,7 +48,7 @@ public class AddressBookDBServiceTest
 
 	}	
 	@Test
-	public void  givenContactsInDB_WhenGivenSCity_ShouldReturnSortedContactsByName() 
+	public void  givenContactsInDB_WhenGivenCity_ShouldReturnSortedContactsByName() 
 	{
 		List<String > expectedSortOrder=new ArrayList<String>();
 		expectedSortOrder.add("Bob");
@@ -57,4 +57,10 @@ public class AddressBookDBServiceTest
 		Assert.assertEquals(expectedSortOrder, retrievedSortedOrder);
 
 	}	
+	@Test
+	public void givenContactDB_WhenGivenAddresBookType_ShouldReturnCountOfContactsOfGivenType()
+	{
+		int count = addressBookOperations.countOfContactsInGivenType(IOService.DB_IO,"Friend");
+		Assert.assertEquals(3, count);
+	}
 }
