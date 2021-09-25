@@ -357,6 +357,17 @@ public class AddessBookServiceImpl implements AddressBookServiceIF
 		return this.getAddressBook(addressbookName).getContactList();
 	}
 
+	public List<Contact> readContactListOfState(IOService ioService,String state) 
+	{
+		if(ioService.equals(IOService.DB_IO))
+		{
+			return new AddressBookDBService().readContactListOfState(state);
+			
+		}
+
+		return null;
+	}
+
 }
 
 
