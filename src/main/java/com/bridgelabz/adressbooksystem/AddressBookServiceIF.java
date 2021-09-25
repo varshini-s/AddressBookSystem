@@ -34,6 +34,6 @@ public interface AddressBookServiceIF
 	public void writeContactsOfAddressBook(IOService ioService,String  addressbookName,FileType... fileType) throws IOException, CsvException;
 	public void printData(IOService ioService,FileType... fileType) throws IOException, CsvException;
 	public long countEntries(IOService ioService,FileType... fileType) throws IOException, CsvException;
-	public long readContactListData(IOService ioService,String  addressbookName,FileType... fileType) throws IOException, CsvException;
+	public List<Contact> readContactListData(IOService ioService,String  addressbookName,FileType... fileType) throws IOException, CsvException;
 
 }
