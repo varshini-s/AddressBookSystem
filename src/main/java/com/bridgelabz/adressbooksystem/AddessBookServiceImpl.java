@@ -379,6 +379,18 @@ public class AddessBookServiceImpl implements AddressBookServiceIF
 		return 0;
 	}
 
+	public List<String> getSortedContactByName(IOService ioService, String city) 
+	
+	{
+		if(ioService.equals(IOService.DB_IO))
+		{
+			return new AddressBookDBService().getSortedContactByName(  city);
+			
+		}
+		
+		return null;
+	}
+
 }
 
 

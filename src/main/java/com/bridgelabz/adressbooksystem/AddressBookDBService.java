@@ -140,4 +140,35 @@ public class AddressBookDBService
 
 
 	}
+
+	public List<String> getSortedContactByName(String city) 
+	{
+		
+		String sql=String.format("SELECT * FROM contact JOIN address ON contact.address_id=address.address_id"+
+								" where address.city=\"%s\" ORDER BY firstName ASC;",city);
+
+		List<String > sortedContactList = new ArrayList<String>();
+		try (Connection connection = this.getConnection())
+		{
+
+			Statement statement=connection.createStatement();
+			ResultSet resultSet=statement.executeQuery(sql);
+
+
+			while(resultSet.next())
+			{
+				String firstName=resultSet.getString("firstName");
+				sortedContactList.add(firstName);
+			}
+
+			return sortedContactList;
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+
+		
+		return null;
+	}
 }
