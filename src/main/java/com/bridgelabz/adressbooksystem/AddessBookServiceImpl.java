@@ -368,6 +368,17 @@ public class AddessBookServiceImpl implements AddressBookServiceIF
 		return null;
 	}
 
+	public int countOfContactsInGivenStateCity(IOService ioService, String city, String state, String addressBook) 
+	{
+		if(ioService.equals(IOService.DB_IO))
+		{
+			return new AddressBookDBService().countOfContactsInGivenStateCity(  city,  state,  addressBook);
+			
+		}
+		
+		return 0;
+	}
+
 }
 
 

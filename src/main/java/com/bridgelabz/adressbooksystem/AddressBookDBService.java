@@ -71,7 +71,7 @@ public class AddressBookDBService
 	public List<Contact> readContactListOfState(String givenState) 
 	{
 		String sql=String.format("SELECT * FROM contact JOIN address ON contact.address_id=address.address_id"+
-				" where address.state=\"Karnataka\";",givenState);
+				" where address.state=\"%s\";",givenState);
 
 		List<Contact> contactList=new ArrayList<Contact>();
 		try (Connection connection = this.getConnection())
@@ -108,6 +108,36 @@ public class AddressBookDBService
 
 	}
 
+	public int countOfContactsInGivenStateCity(String city, String state, String addressBook) 
+	{
+
+		int count=0;
+		String sql=String.format("SELECT count(id) FROM contact JOIN address ON contact.address_id=address.address_id"+
+				" JOIN address_book ON contact.address_book_id=address_book.address_book_id where contact.address_id in"+
+				" (Select address_id from address where state=\"%s\" and city=\"%s\") and address_book_name=\"%s\";",state,city,addressBook);
 
 
+		List<Contact> contactList=new ArrayList<Contact>();
+		try (Connection connection = this.getConnection())
+		{
+
+			Statement statement=connection.createStatement();
+			ResultSet resultSet=statement.executeQuery(sql);
+			while(resultSet.next())
+			{
+				count++;
+			}
+			return count;
+
+		}
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		return 0;
+
+
+
+
+	}
 }
