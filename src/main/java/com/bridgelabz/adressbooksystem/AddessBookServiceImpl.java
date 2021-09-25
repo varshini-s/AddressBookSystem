@@ -327,26 +327,34 @@ public class AddessBookServiceImpl implements AddressBookServiceIF
 		return 0;
 	}
 
+	public  List<AddressBook> readContactListDataFromJSON()throws IOException, CsvException
+	{
+		AddressBookFileIOService addressbookFileIOService = new AddressBookFileIOService();
+
+		return addressbookFileIOService.readData();
+
+	}
+	
 	@Override
-	public long readContactListData(IOService ioService,String  addressbookName,FileType... fileType) throws IOException, CsvException
+	public List<Contact> readContactListData(IOService ioService,String  addressbookName,FileType... fileType) throws IOException, CsvException
 	{
 
 		if(ioService.equals(IOService.FILE_IO))
 		{
 			AddressBookFileIOService addressbookFileIOService = new AddressBookFileIOService();
 			
-			if(fileType[0].equals(FileType.JSON))
-			{
-				return addressbookFileIOService.readData().size();
-			}
-			else
-			{
-				this.getAddressBook(addressbookName).setContactList(addressbookFileIOService.readData(fileType[0]));
+			this.getAddressBook(addressbookName).setContactList(addressbookFileIOService.readData(fileType[0]));
 
-			}
+			
+		}
+		
+		else if(ioService.equals(IOService.DB_IO))
+		{
+			return new AddressBookDBService().readContactList(addressbookName);
+			
 		}
 
-		return this.getAddressBook(addressbookName).getContactList().size();
+		return this.getAddressBook(addressbookName).getContactList();
 	}
 
 }
