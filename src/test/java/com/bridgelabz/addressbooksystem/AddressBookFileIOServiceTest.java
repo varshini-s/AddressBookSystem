@@ -74,7 +74,7 @@ public class AddressBookFileIOServiceTest
 	public void givenFileOnReadingFromTXTFileShouldMatchContactsCount() throws IOException, CsvException
 	{
 		
-		long txtEntries = addressBookOperations.readContactListData(IOService.FILE_IO,addressBookName,FileType.TXT);
+		long txtEntries = addressBookOperations.readContactListData(IOService.FILE_IO,addressBookName,FileType.TXT).size();
 		Assert.assertEquals(3, txtEntries);
 
 	}
@@ -82,7 +82,7 @@ public class AddressBookFileIOServiceTest
 	public void givenFileOnReadingFromCSVFileShouldMatchContactsCount() throws IOException, CsvException
 	{
 		
-		long csvEntries = addressBookOperations.readContactListData(IOService.FILE_IO,addressBookName,FileType.CSV);
+		long csvEntries = addressBookOperations.readContactListData(IOService.FILE_IO,addressBookName,FileType.CSV).size();
 		Assert.assertEquals(3, csvEntries);
 
 	}
@@ -90,7 +90,7 @@ public class AddressBookFileIOServiceTest
 	public void givenFileOnReadingFromJSONFileShouldMatchContactsCount() throws IOException, CsvException
 	{
 		
-		long jsonEntries = addressBookOperations.readContactListData(IOService.FILE_IO,addressBookName,FileType.JSON);
+		long jsonEntries = addressBookOperations.readContactListDataFromJSON().size();
 		Assert.assertEquals(2, jsonEntries);
 
 	}
