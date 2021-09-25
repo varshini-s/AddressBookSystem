@@ -27,7 +27,10 @@ dependencies {
     // Use JUnit test framework
     testImplementation 'junit:junit:4.13'
     
-        compile 'com.opencsv:opencsv:5.5.2'
+    compile 'com.opencsv:opencsv:5.5.2'
     
     implementation 'com.google.code.gson:gson:2.8.5'
+    
+    compile("mysql:mysql-connector-java:5.1.49")
+
 }
