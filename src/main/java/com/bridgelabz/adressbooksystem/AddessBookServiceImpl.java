@@ -11,7 +11,7 @@ import com.opencsv.exceptions.CsvException;
 import java.util.stream.Collectors;
 
 
-public class AddessBookServiceImpl implements AddressBookServiceIF
+public class AddessBookServiceImpl implements AddressBookServiceIF,AddressBookIOServiceIF
 
 {
 
