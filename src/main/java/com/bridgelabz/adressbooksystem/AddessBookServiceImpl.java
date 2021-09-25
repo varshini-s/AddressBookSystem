@@ -334,7 +334,7 @@ public class AddessBookServiceImpl implements AddressBookServiceIF
 		return addressbookFileIOService.readData();
 
 	}
-	
+
 	@Override
 	public List<Contact> readContactListData(IOService ioService,String  addressbookName,FileType... fileType) throws IOException, CsvException
 	{
@@ -342,16 +342,16 @@ public class AddessBookServiceImpl implements AddressBookServiceIF
 		if(ioService.equals(IOService.FILE_IO))
 		{
 			AddressBookFileIOService addressbookFileIOService = new AddressBookFileIOService();
-			
+
 			this.getAddressBook(addressbookName).setContactList(addressbookFileIOService.readData(fileType[0]));
 
-			
+
 		}
-		
+
 		else if(ioService.equals(IOService.DB_IO))
 		{
 			return new AddressBookDBService().readContactList(addressbookName);
-			
+
 		}
 
 		return this.getAddressBook(addressbookName).getContactList();
@@ -362,7 +362,7 @@ public class AddessBookServiceImpl implements AddressBookServiceIF
 		if(ioService.equals(IOService.DB_IO))
 		{
 			return new AddressBookDBService().readContactListOfState(state);
-			
+
 		}
 
 		return null;
@@ -373,22 +373,31 @@ public class AddessBookServiceImpl implements AddressBookServiceIF
 		if(ioService.equals(IOService.DB_IO))
 		{
 			return new AddressBookDBService().countOfContactsInGivenStateCity(  city,  state,  addressBook);
-			
+
 		}
-		
+
 		return 0;
 	}
 
 	public List<String> getSortedContactByName(IOService ioService, String city) 
-	
+
 	{
 		if(ioService.equals(IOService.DB_IO))
 		{
 			return new AddressBookDBService().getSortedContactByName(  city);
-			
+
 		}
-		
+
 		return null;
+	}
+
+	public int countOfContactsInGivenType(IOService ioService, String type) 
+	{
+		if(ioService.equals(IOService.DB_IO))
+		{
+			return new AddressBookDBService().countOfContactsInGivenType( type);
+
+		}		return 0;
 	}
 
 }
