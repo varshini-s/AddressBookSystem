@@ -1,6 +1,7 @@
 package com.bridgelabz.addressbooksystem;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
@@ -44,6 +45,16 @@ public class AddressBookDBServiceTest
 		
 		int count = addressBookOperations.countOfContactsInGivenStateCity(IOService.DB_IO,"book1","Bangalore","Karnataka");
 		Assert.assertEquals(1, count);
+
+	}	
+	@Test
+	public void  givenContactsInDB_WhenGivenSCity_ShouldReturnSortedContactsByName() 
+	{
+		List<String > expectedSortOrder=new ArrayList<String>();
+		expectedSortOrder.add("Bob");
+		expectedSortOrder.add("raj");
+		List<String > retrievedSortedOrder = addressBookOperations.getSortedContactByName(IOService.DB_IO,"Mysore");
+		Assert.assertEquals(expectedSortOrder, retrievedSortedOrder);
 
 	}	
 }
