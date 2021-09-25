@@ -31,12 +31,19 @@ public class AddressBookDBServiceTest
 	}
 	
 	@Test
-	public void  givenContactsInDB_WhenGivenState_ShouldMatchContactsCountInGivenState() throws IOException, CsvException
+	public void  givenContactsInDB_WhenGivenState_ShouldMatchContactsCountInGivenState() 
 	{
 		
 		List<Contact> contactList = addressBookOperations.readContactListOfState(IOService.DB_IO,"Karnataka");
 		Assert.assertEquals(3, contactList.size());
 
 	}
-	
+	@Test
+	public void  givenContactsInDB_WhenGivenStateCity_ShouldReturnCountOfContactsInGivenAddressBook() 
+	{
+		
+		int count = addressBookOperations.countOfContactsInGivenStateCity(IOService.DB_IO,"book1","Bangalore","Karnataka");
+		Assert.assertEquals(1, count);
+
+	}	
 }
