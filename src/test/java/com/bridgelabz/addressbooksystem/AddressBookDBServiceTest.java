@@ -23,10 +23,20 @@ public class AddressBookDBServiceTest
 	}
 	
 	@Test
-	public void  givenAddressBookInDB_WhenRetrieved_ShouldMatchEmployeeCount() throws IOException, CsvException
+	public void  givenContactsInDB_WhenRetrieved_ShouldMatchContactsCount() throws IOException, CsvException
 	{
 		
 		List<Contact> contactList = addressBookOperations.readContactListData(IOService.DB_IO,"book1");
 		Assert.assertEquals(2, contactList.size());
 	}
+	
+	@Test
+	public void  givenContactsInDB_WhenGivenState_ShouldMatchContactsCountInGivenState() throws IOException, CsvException
+	{
+		
+		List<Contact> contactList = addressBookOperations.readContactListOfState(IOService.DB_IO,"Karnataka");
+		Assert.assertEquals(3, contactList.size());
+
+	}
+	
 }
