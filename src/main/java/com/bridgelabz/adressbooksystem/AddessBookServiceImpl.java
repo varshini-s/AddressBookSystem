@@ -15,8 +15,13 @@ public class AddessBookServiceImpl implements AddressBookServiceIF,AddressBookIO
 
 {
 
+	AddressBookDBService addressBookDBService ;
 	AddressBooksCollection addressbookSystem = new AddressBooksCollection();
 
+	public AddessBookServiceImpl() 
+	{
+		addressBookDBService=AddressBookDBService.getInstance();
+	}
 	public enum IOService {CONSOLE_IO,FILE_IO,DB_IO,REST_IO}
 
 	@Override
