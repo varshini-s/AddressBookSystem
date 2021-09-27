@@ -12,10 +12,10 @@ import java.util.List;
 
 public class AddressBookDBService 
 {
-	
+
 	private static AddressBookDBService addressBookDBService;
 	private PreparedStatement addressBookReadStatement;
-	
+
 	public AddressBookDBService()
 	{
 
@@ -47,26 +47,43 @@ public class AddressBookDBService
 
 	{
 
-		String sql=String.format("SELECT * FROM contact JOIN address ON contact.address_id=address.address_id JOIN address_book ON contact.address_book_id=address_book.address_book_id"
-				+ " where address_book_name=\"%s\";",addressbookName);
-
-
-
 		List<Contact> contactList=new ArrayList<Contact>();
-		try (Connection connection = this.getConnection())
+		if(this.addressBookReadStatement==null)
+		{
+			this.preparedStatementForContactData();
+		}
+		try
 		{
 
-			Statement statement=connection.createStatement();
-			ResultSet resultSet=statement.executeQuery(sql);
+			addressBookReadStatement.setString(1, addressbookName);
+			ResultSet resultSet=addressBookReadStatement.executeQuery();
 			contactList=this.getContactData(resultSet);
 
-		} 
-		catch (SQLException e) 
+		}
+		catch (SQLException e)
 		{
 			e.printStackTrace();
 		}
 
 		return contactList;
+	}
+
+	private void preparedStatementForContactData()
+	{
+
+		try
+		{
+			Connection connection = this.getConnection();
+			String sql="SELECT * FROM contact JOIN address ON contact.address_id=address.address_id JOIN address_book ON contact.address_book_id=address_book.address_book_id"
+					+ " where address_book_name=?;";
+
+			addressBookReadStatement=connection.prepareStatement(sql);
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+
 	}
 
 	public List<Contact> readContactListOfState(String givenState) 
@@ -91,7 +108,7 @@ public class AddressBookDBService
 		return contactList;
 
 	}
-	
+
 	public List<Contact> getContactData(ResultSet resultSet)
 	{
 		List<Contact> contactList=new ArrayList<Contact>();
@@ -123,8 +140,8 @@ public class AddressBookDBService
 		}
 
 		return contactList;
-		
-		
+
+
 	}
 
 	public int countOfContactsInGivenStateCity(String city, String state, String addressBook) 
