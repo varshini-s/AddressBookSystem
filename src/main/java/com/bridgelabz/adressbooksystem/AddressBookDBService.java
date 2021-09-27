@@ -58,24 +58,7 @@ public class AddressBookDBService
 
 			Statement statement=connection.createStatement();
 			ResultSet resultSet=statement.executeQuery(sql);
-
-
-			while(resultSet.next())
-			{
-				String firstName=resultSet.getString("firstName");
-				String lastName=resultSet.getString("lastName");
-				String houseNumber=resultSet.getString("house_number");
-				String street=resultSet.getString("street");
-				String city=resultSet.getString("city");
-				String state=resultSet.getString("state");
-				String zip=resultSet.getString("zip");
-				String address=houseNumber+street+city+zip;
-				String phoneNumber=resultSet.getString("phoneNumber");
-				String email=resultSet.getString("email");
-
-
-				contactList.add(new Contact(firstName, lastName, address,city,state,zip,phoneNumber,email));
-			}
+			contactList=this.getContactData(resultSet);
 
 		} 
 		catch (SQLException e) 
@@ -97,6 +80,23 @@ public class AddressBookDBService
 
 			Statement statement=connection.createStatement();
 			ResultSet resultSet=statement.executeQuery(sql);
+			contactList=this.getContactData(resultSet);
+
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+
+		return contactList;
+
+	}
+	
+	public List<Contact> getContactData(ResultSet resultSet)
+	{
+		List<Contact> contactList=new ArrayList<Contact>();
+		try 
+		{
 
 
 			while(resultSet.next())
@@ -123,7 +123,8 @@ public class AddressBookDBService
 		}
 
 		return contactList;
-
+		
+		
 	}
 
 	public int countOfContactsInGivenStateCity(String city, String state, String addressBook) 
