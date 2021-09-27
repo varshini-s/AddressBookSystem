@@ -2,14 +2,33 @@ package com.bridgelabz.adressbooksystem;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class AddressBookDBService 
 {
+	
+	private static AddressBookDBService addressBookDBService;
+	private PreparedStatement addressBookReadStatement;
+	
+	public AddressBookDBService()
+	{
+
+	}
+
+	public static AddressBookDBService getInstance()
+	{
+		if(addressBookDBService==null)
+		{
+			addressBookDBService=new AddressBookDBService();
+		}
+		return  addressBookDBService;
+	}
 	private Connection getConnection() throws SQLException 
 	{
 		String jdbcURL ="jdbc:mysql://localhost:3306/addressbook_service?allowPublicKeyRetrieval=true&useSSL=false";
