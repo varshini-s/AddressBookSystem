@@ -314,7 +314,23 @@ public class AddressBookDBService
 		return contact;
 	}
 
+	public List<Contact> getContactData(String name) 
+	{
+		String sql = String.format("SELECT * from contact WHERE firstName=?'%s';",name);
+		try (Connection connection = this.getConnection())
+		{
 
+			Statement statement=connection.createStatement();
+			ResultSet resultSet= statement.executeQuery(sql);
+			return this.getContactData(resultSet);
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		return null;
+		
+	}
 
 
 }
