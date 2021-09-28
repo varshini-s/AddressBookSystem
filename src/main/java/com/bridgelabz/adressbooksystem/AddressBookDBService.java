@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +47,6 @@ public class AddressBookDBService
 	public List<Contact> readContactList(String addressbookName) 
 
 	{
-
 		List<Contact> contactList=new ArrayList<Contact>();
 		if(this.addressBookReadStatement==null)
 		{
@@ -54,7 +54,6 @@ public class AddressBookDBService
 		}
 		try
 		{
-
 			addressBookReadStatement.setString(1, addressbookName);
 			ResultSet resultSet=addressBookReadStatement.executeQuery();
 			contactList=this.getContactData(resultSet);
@@ -70,11 +69,10 @@ public class AddressBookDBService
 
 	private void preparedStatementForContactData()
 	{
-
 		try
 		{
 			Connection connection = this.getConnection();
-			String sql="SELECT * FROM contact JOIN address ON contact.address_id=address.address_id JOIN address_book ON contact.address_book_id=address_book.address_book_id"
+			String sql="SELECT * FROM contact JOIN address ON contact.id=address.contact_id JOIN address_book ON contact.address_book_id=address_book.address_book_id"
 					+ " where address_book_name=?;";
 
 			addressBookReadStatement=connection.prepareStatement(sql);
@@ -83,12 +81,11 @@ public class AddressBookDBService
 		{
 			e.printStackTrace();
 		}
-
 	}
 
 	public List<Contact> readContactListOfState(String givenState) 
 	{
-		String sql=String.format("SELECT * FROM contact JOIN address ON contact.address_id=address.address_id"+
+		String sql=String.format("SELECT * FROM contact JOIN address ON contact.id=address.contact_id"+
 				" where address.state=\"%s\";",givenState);
 
 		List<Contact> contactList=new ArrayList<Contact>();
@@ -106,7 +103,6 @@ public class AddressBookDBService
 		}
 
 		return contactList;
-
 	}
 
 	public List<Contact> getContactData(ResultSet resultSet)
@@ -114,7 +110,6 @@ public class AddressBookDBService
 		List<Contact> contactList=new ArrayList<Contact>();
 		try 
 		{
-
 
 			while(resultSet.next())
 			{
@@ -132,7 +127,6 @@ public class AddressBookDBService
 
 				contactList.add(new Contact(firstName, lastName, address,city,state,zip,phoneNumber,email));
 			}
-
 		} 
 		catch (SQLException e) 
 		{
@@ -141,17 +135,15 @@ public class AddressBookDBService
 
 		return contactList;
 
-
 	}
 
 	public int countOfContactsInGivenStateCity(String city, String state, String addressBook) 
 	{
 
 		int count=0;
-		String sql=String.format("SELECT count(id) FROM contact JOIN address ON contact.address_id=address.address_id"+
-				" JOIN address_book ON contact.address_book_id=address_book.address_book_id where contact.address_id in"+
-				" (Select address_id from address where state=\"%s\" and city=\"%s\") and address_book_name=\"%s\";",state,city,addressBook);
-
+		String sql=String.format("SELECT count(id) FROM contact JOIN address ON contact.id=address.contact_id"+
+				" JOIN address_book ON contact.address_book_id=address_book.address_book_id where contact.id in"+
+				" (Select contact_id from address where state=\"%s\" and city=\"%s\") and address_book_name=\"%s\";",state,city,addressBook);
 
 		try (Connection connection = this.getConnection())
 		{
@@ -163,27 +155,19 @@ public class AddressBookDBService
 				count++;
 			}
 			return count;
-
 		}
 		catch (SQLException e) 
 		{
 			e.printStackTrace();
 		}
 		return 0;
-
-
-
-
 	}
 
 	public List<String> getSortedContactByName(String city) 
 	{
 
-		String sql=String.format("SELECT * FROM contact JOIN address ON contact.address_id=address.address_id"+
+		String sql=String.format("SELECT * FROM contact JOIN address ON contact.id=address.contact_id"+
 				" where address.city=\"%s\" ORDER BY firstName ASC;",city);
-
-
-
 
 		List<String > sortedContactList = new ArrayList<String>();
 		try (Connection connection = this.getConnection())
@@ -205,7 +189,6 @@ public class AddressBookDBService
 		{
 			e.printStackTrace();
 		}
-
 
 		return null;
 	}
@@ -236,4 +219,105 @@ public class AddressBookDBService
 		return 0;
 
 	}
+
+	public Contact addContact(String firstName,String lastName,String houseNumber,String street,String city,String state,String zip,String phoneNumber,String email,int addressBookId)
+	{
+		int contactId=-1;
+		Connection connection=null;
+		Contact contact=null;
+
+		try 
+		{
+			connection=this.getConnection();
+			connection.setAutoCommit(false);
+		} catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+
+		try(Statement statement=connection.createStatement())
+		{
+			String sql=String.format("INSERT INTO contact(firstName,lastName,phoneNumber,email,address_book_id) "
+					+ "values ('%s','%s','%s','%s','%s');",firstName,lastName,phoneNumber,email,addressBookId);
+			int rowAffected = statement.executeUpdate(sql,statement.RETURN_GENERATED_KEYS);
+			if(rowAffected==1)
+			{
+				ResultSet resultSet=statement.getGeneratedKeys();
+				if(resultSet.next()) contactId=resultSet.getInt(1);
+			}
+
+		}
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+			try 
+			{
+				connection.rollback();
+
+			} catch (Exception ex) 
+			{
+
+				ex.printStackTrace();
+			}
+		}
+
+
+		try(Statement statement=connection.createStatement())
+		{
+
+			String sql=String.format("Insert into address values "
+					+ "('%d','%s','%s','%s','%s','%s');",contactId,houseNumber,street,city,state,zip);
+			int rowAffected=statement.executeUpdate(sql);
+			if(rowAffected==1)
+			{
+				contact = new Contact(firstName,lastName,phoneNumber,email);
+				contact.setContactAddress(new Address(houseNumber, street, city, state, zip));
+
+			}
+		}
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+			try 
+			{
+				connection.rollback();
+
+			} catch (Exception ex) 
+			{
+				ex.printStackTrace();
+			}
+		}
+		try 
+		{
+			connection.commit();
+
+		} catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			if(connection!=null)
+			{
+				try 
+				{
+					connection.close();
+
+				} catch (Exception e) 
+				{
+					e.printStackTrace();
+				}
+			}
+		}
+
+		
+		return contact;
+	}
+
+
+
+
 }
+
+
+
