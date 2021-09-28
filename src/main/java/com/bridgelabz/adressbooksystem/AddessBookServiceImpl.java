@@ -425,6 +425,11 @@ public class AddessBookServiceImpl implements AddressBookServiceIF,AddressBookIO
 
 	}
 
+	public boolean checkContactInSyncWithDB(String name)
+	{
+		List<Contact> contactList=addressBookDBService.getContactData(name);
+		return this.contactList.get(0).equals(this.getContact(name));
+	}
 
 
 }
