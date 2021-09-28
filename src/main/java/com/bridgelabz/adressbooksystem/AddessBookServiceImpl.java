@@ -2,6 +2,7 @@ package com.bridgelabz.adressbooksystem;
 
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -17,6 +18,13 @@ public class AddessBookServiceImpl implements AddressBookServiceIF,AddressBookIO
 
 	AddressBookDBService addressBookDBService ;
 	AddressBooksCollection addressbookSystem = new AddressBooksCollection();
+	
+	List<Contact> contactList=new ArrayList<Contact>();
+	
+	public AddessBookServiceImpl(List<Contact> contactList)
+	{
+		this.contactList=new ArrayList<Contact>();
+	}
 
 	public AddessBookServiceImpl() 
 	{
@@ -404,6 +412,20 @@ public class AddessBookServiceImpl implements AddressBookServiceIF,AddressBookIO
 
 		}		return 0;
 	}
+	
+	private Contact getContact(String name) 
+	{
+		Contact contact;
+		contact=this.contactList.stream()
+				.filter(contactItem->contactItem.getFirstName().equals(name))
+				.findFirst()
+				.orElse(null);
+
+		return contact;
+
+	}
+
+
 
 }
 
