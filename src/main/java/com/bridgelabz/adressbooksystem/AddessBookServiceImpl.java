@@ -431,6 +431,13 @@ public class AddessBookServiceImpl implements AddressBookServiceIF,AddressBookIO
 		return this.contactList.get(0).equals(this.getContact(name));
 	}
 
+	public void addContact(String firstName,String lastName,String houseNumber,String street,String city,String state,String zip,String phoneNumber,String email,int addressBookId)
+	{
+
+		contactList.add(addressBookDBService.addContact( firstName ,lastName, houseNumber, street, city, state, zip, phoneNumber, email, addressBookId));
+
+		
+	}
 
 }
 
