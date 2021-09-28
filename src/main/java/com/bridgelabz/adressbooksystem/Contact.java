@@ -17,19 +17,7 @@ public class Contact
     private Address contactAddress;
 	
     
-    public Contact(String firstName, String lastName, String address, String city, String state, String zip,
-			String phoneNumber, String email, Address contactAddress)
-    {
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.address = address;
-		this.city = city;
-		this.state = state;
-		this.zip = zip;
-		this.phoneNumber = phoneNumber;
-		this.email = email;
-		this.contactAddress = contactAddress;
-	}
+
 	public Contact()
 	{
 		
@@ -46,18 +34,7 @@ public class Contact
 		this.email=email;
 	}
 	
-	public Contact(int contactId,String firstName,String lastName,String address,String city,String state,String zip,String phoneNumber,String email)
-	{
-		this.contactId=contactId;
-		this.firstName=firstName;
-		this.lastName=lastName;
-		this.address=address;
-		this.city=city;
-		this.state=state;
-		this.zip=zip;
-		this.phoneNumber=phoneNumber;
-		this.email=email;
-	}
+
 	public Contact(String[] contact)
 	{
 		this.firstName=contact[0];
