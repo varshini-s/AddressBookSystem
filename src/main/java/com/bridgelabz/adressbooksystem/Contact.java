@@ -5,22 +5,50 @@ import java.util.Objects;
 public class Contact 
 
 {
+	private int contactId;
 	private String firstName;
-	public String lastName;
-	public String address;
-	public String city;
-    public String state;
-    public String zip;
-    public String phoneNumber;
-    public String email;
+	private String lastName;
+	private String address;
+	private String city;
+	private String state;
+	private String zip;
+	private String phoneNumber;
+	private String email;
+    private Address contactAddress;
 	
     
-    public Contact()
+    public Contact(String firstName, String lastName, String address, String city, String state, String zip,
+			String phoneNumber, String email, Address contactAddress)
+    {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.address = address;
+		this.city = city;
+		this.state = state;
+		this.zip = zip;
+		this.phoneNumber = phoneNumber;
+		this.email = email;
+		this.contactAddress = contactAddress;
+	}
+	public Contact()
 	{
 		
 	}
 	public Contact(String firstName,String lastName,String address,String city,String state,String zip,String phoneNumber,String email)
 	{
+		this.firstName=firstName;
+		this.lastName=lastName;
+		this.address=address;
+		this.city=city;
+		this.state=state;
+		this.zip=zip;
+		this.phoneNumber=phoneNumber;
+		this.email=email;
+	}
+	
+	public Contact(int contactId,String firstName,String lastName,String address,String city,String state,String zip,String phoneNumber,String email)
+	{
+		this.contactId=contactId;
 		this.firstName=firstName;
 		this.lastName=lastName;
 		this.address=address;
@@ -44,6 +72,15 @@ public class Contact
 		
 	}
 	
+	public Contact(String firstName, String lastName, String phoneNumber, String email) 
+	
+	{
+		this.firstName=firstName;
+		this.lastName=lastName;
+		this.phoneNumber=phoneNumber;
+		this.email=email;
+		
+	}
 	public String getFirstName()
 	{
 		return firstName;
@@ -113,41 +150,34 @@ public class Contact
 		this.email=email;
 	}
 	
-	@Override
-    public boolean equals(Object obj) 
 	
-	{
-		
-        if (obj == null) 
-        {
-            return false;
-        }
-
-        if (obj.getClass() != this.getClass()) 
-        {
-            return false;
-        }
-
-        final Contact other = (Contact) obj;
-        
-
-
-        if(this.lastName.equals(other.lastName)==false||this.firstName.equals(other.firstName)==false
-         ||this.address.equals(other.address)==false||this.city.equals(other.city)==false
-         ||this.state.equals(other.state)==false||this.zip.equals(other.zip)==false
-         ||this.phoneNumber.equals(other.phoneNumber)==false||this.email.equals(other.email)==false)
-        {
-            return false;
-        }
-        
-        
-        return true;
-    }
+	public Address getContactAddress() {
+		return contactAddress;
+	}
+	public void setContactAddress(Address contactAddress) {
+		this.contactAddress = contactAddress;
+	}
+	
 	
 	@Override
-	public int hashCode() 
-	{
-		return Objects.hash(firstName);
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Contact other = (Contact) obj;
+		return Objects.equals(address, other.address) && Objects.equals(city, other.city)
+				&& Objects.equals(contactAddress, other.contactAddress) && contactId == other.contactId
+				&& Objects.equals(email, other.email) && Objects.equals(firstName, other.firstName)
+				&& Objects.equals(lastName, other.lastName) && Objects.equals(phoneNumber, other.phoneNumber)
+				&& Objects.equals(state, other.state) && Objects.equals(zip, other.zip);
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(address, city, contactAddress, contactId, email, firstName, lastName, phoneNumber, state,
+				zip);
 	}
 	
 	 @Override
