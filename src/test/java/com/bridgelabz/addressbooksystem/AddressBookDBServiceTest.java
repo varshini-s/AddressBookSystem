@@ -1,8 +1,8 @@
 package com.bridgelabz.addressbooksystem;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +13,6 @@ import org.junit.Test;
 import com.bridgelabz.adressbooksystem.AddessBookServiceImpl;
 import com.bridgelabz.adressbooksystem.Contact;
 import com.bridgelabz.adressbooksystem.AddessBookServiceImpl.IOService;
-import com.bridgelabz.adressbooksystem.AddressBookDBService;
 import com.opencsv.exceptions.CsvException;
 
 public class AddressBookDBServiceTest 
@@ -21,9 +20,10 @@ public class AddressBookDBServiceTest
 	AddessBookServiceImpl addressBookOperations;
 
 	@Before
-	public void initialSetUp()
+	public void initialSetUp() throws FileNotFoundException, SQLException
 	{
 		addressBookOperations = new AddessBookServiceImpl();
+		addressBookOperations.setUpDataBase();
 	}
 	
 	@Test
@@ -31,7 +31,7 @@ public class AddressBookDBServiceTest
 	{
 		
 		List<Contact> contactList = addressBookOperations.readContactListData(IOService.DB_IO,"book1");
-		Assert.assertEquals(3, contactList.size());
+		Assert.assertEquals(2, contactList.size());
 	}
 	
 	@Test
@@ -76,7 +76,6 @@ public class AddressBookDBServiceTest
 										, "rrr", "12345", "1234512345", "ddd@example.com", 1);
 		boolean result= addressBookOperations.checkContactInSyncWithDB("susan");
 		Assert.assertTrue(result);
-		
 		
 	}
 	
