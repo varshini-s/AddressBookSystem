@@ -1,7 +1,9 @@
 package com.bridgelabz.adressbooksystem;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -436,6 +438,12 @@ public class AddessBookServiceImpl implements AddressBookServiceIF,AddressBookIO
 
 		contactList.add(addressBookDBService.addContact( firstName ,lastName, houseNumber, street, city, state, zip, phoneNumber, email, addressBookId));
 
+		
+	}
+
+	public void setUpDataBase() throws FileNotFoundException, SQLException 
+	{
+		addressBookDBService.setupDatabase();
 		
 	}
 
