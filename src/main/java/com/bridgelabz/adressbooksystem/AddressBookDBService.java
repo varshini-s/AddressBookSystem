@@ -1,5 +1,9 @@
 package com.bridgelabz.adressbooksystem;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.Reader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -9,6 +13,8 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.ibatis.jdbc.ScriptRunner;
 
 
 public class AddressBookDBService 
@@ -42,6 +48,16 @@ public class AddressBookDBService
 
 
 		return connection;
+	}
+	
+	public void setupDatabase() throws SQLException, FileNotFoundException
+	{
+		Connection connection = this.getConnection();
+		ScriptRunner sr = new ScriptRunner(connection);
+		Reader reader = new BufferedReader(new FileReader("AddressBookScript.sql"));
+		sr.runScript(reader);
+
+
 	}
 
 	public List<Contact> readContactList(String addressbookName) 
@@ -123,8 +139,10 @@ public class AddressBookDBService
 				String address=houseNumber+street+city+zip;
 				String phoneNumber=resultSet.getString("phoneNumber");
 				String email=resultSet.getString("email");
-
-
+				
+				Address contactAddress = new Address(houseNumber, street, city, state, zip);
+				Contact contact = new Contact(firstName, lastName,phoneNumber,email);
+				contact.setContactAddress(contactAddress);
 				contactList.add(new Contact(firstName, lastName, address,city,state,zip,phoneNumber,email));
 			}
 		} 
