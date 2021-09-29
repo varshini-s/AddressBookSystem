@@ -1,5 +1,7 @@
 package com.bridgelabz.adressbooksystem;
 
+import java.util.Objects;
+
 public class Address 
 {
 
@@ -10,11 +12,11 @@ public class Address
 	private String zip;
 	
 	
-	public Address(String houseNumber, String address, String city, String state, String zip)
+	public Address(String houseNumber, String street, String city, String state, String zip)
 	{
 		
 		this.houseNumber = houseNumber;
-		this.street = address;
+		this.street = street;
 		this.city = city;
 		this.state = state;
 		this.zip = zip;
@@ -79,6 +81,23 @@ public class Address
 	{
 		this.zip = zip;
 	}
+
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Address other = (Address) obj;
+		return Objects.equals(city, other.city) && Objects.equals(houseNumber, other.houseNumber)
+				&& Objects.equals(state, other.state) && Objects.equals(street, other.street)
+				&& Objects.equals(zip, other.zip);
+	}
+	
 	
 	
 	
