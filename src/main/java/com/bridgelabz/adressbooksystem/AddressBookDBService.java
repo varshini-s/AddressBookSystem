@@ -253,58 +253,12 @@ public class AddressBookDBService
 			e.printStackTrace();
 		}
 
-		try(Statement statement=connection.createStatement())
-		{
-			String sql=String.format("INSERT INTO contact(firstName,lastName,phoneNumber,email,address_book_id) "
-					+ "values ('%s','%s','%s','%s','%s');",firstName,lastName,phoneNumber,email,addressBookId);
-			int rowAffected = statement.executeUpdate(sql,statement.RETURN_GENERATED_KEYS);
-			if(rowAffected==1)
-			{
-				ResultSet resultSet=statement.getGeneratedKeys();
-				if(resultSet.next()) contactId=resultSet.getInt(1);
-			}
-
-		}
-		catch (SQLException e) 
-		{
-			e.printStackTrace();
-			try 
-			{
-				connection.rollback();
-
-			} catch (Exception ex) 
-			{
-
-				ex.printStackTrace();
-			}
-		}
+		contactId = insertContactToDatabase(firstName, lastName, phoneNumber, email, addressBookId, contactId,
+				connection);
 
 
-		try(Statement statement=connection.createStatement())
-		{
-
-			String sql=String.format("Insert into address values "
-					+ "('%d','%s','%s','%s','%s','%s');",contactId,houseNumber,street,city,state,zip);
-			int rowAffected=statement.executeUpdate(sql);
-			if(rowAffected==1)
-			{
-				contact = new Contact(firstName,lastName,phoneNumber,email);
-				contact.setContactAddress(new Address(houseNumber, street, city, state, zip));
-
-			}
-		}
-		catch (SQLException e) 
-		{
-			e.printStackTrace();
-			try 
-			{
-				connection.rollback();
-
-			} catch (Exception ex) 
-			{
-				ex.printStackTrace();
-			}
-		}
+		contact = insertAddressToDataBase(firstName, lastName, houseNumber, street, city, state, zip, phoneNumber,
+				email, contactId, connection, contact);
 		try 
 		{
 			connection.commit();
@@ -332,6 +286,66 @@ public class AddressBookDBService
 		return contact;
 	}
 
+	private Contact insertAddressToDataBase(String firstName, String lastName, String houseNumber, String street,
+			String city, String state, String zip, String phoneNumber, String email, int contactId,
+			Connection connection, Contact contact) {
+		try(Statement statement=connection.createStatement())
+		{
+			String sql=String.format("Insert into address values "
+					+ "('%d','%s','%s','%s','%s','%s');",contactId,houseNumber,street,city,state,zip);
+			int rowAffected=statement.executeUpdate(sql);
+			if(rowAffected==1)
+			{
+				contact = new Contact(firstName,lastName,phoneNumber,email);
+				contact.setContactAddress(new Address(houseNumber, street, city, state, zip));
+
+			}
+		}
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+			try 
+			{
+				connection.rollback();
+
+			} catch (Exception ex) 
+			{
+				ex.printStackTrace();
+			}
+		}
+		return contact;
+	}
+
+	private int insertContactToDatabase(String firstName, String lastName, String phoneNumber, String email,
+			int addressBookId, int contactId, Connection connection) {
+		try(Statement statement=connection.createStatement())
+		{
+			String sql=String.format("INSERT INTO contact(firstName,lastName,phoneNumber,email,address_book_id) "
+					+ "values ('%s','%s','%s','%s','%s');",firstName,lastName,phoneNumber,email,addressBookId);
+			int rowAffected = statement.executeUpdate(sql,statement.RETURN_GENERATED_KEYS);
+			if(rowAffected==1)
+			{
+				ResultSet resultSet=statement.getGeneratedKeys();
+				if(resultSet.next()) contactId=resultSet.getInt(1);
+			}
+
+		}
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+			try 
+			{
+				connection.rollback();
+
+			} catch (Exception ex) 
+			{
+
+				ex.printStackTrace();
+			}
+		}
+		return contactId;
+	}
+
 	public List<Contact> getContactData(String name) 
 	{
 		String sql = String.format("SELECT * from contact WHERE firstName=?'%s';",name);
@@ -349,9 +363,5 @@ public class AddressBookDBService
 		return null;
 		
 	}
-
-
 }
-
-
 
