@@ -2,9 +2,13 @@ package com.bridgelabz.adressbooksystem;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.nio.file.Files;
@@ -31,6 +35,9 @@ public class AddressBookFileIOService
 	public static String ADDRESSBOOK_TXT_FILE_NAME="addressbook.txt";
 	public static String ADDRESSBOOK_CSV_FILE_NAME="addressbook.csv";
 	public static String ADDRESSBOOK_JSON_FILE_NAME="addressbook.json";
+	public static String ADDRESSBOOK_FILE_NAME="addressbookStream.txt";
+
+	
 
 	public enum FileType {TXT,CSV,JSON}
 
@@ -44,7 +51,7 @@ public class AddressBookFileIOService
 		else if(fileType.equals(FileType.CSV))
 		{
 			writeDataToCSVFile(contactList);
-			
+
 		}
 		else if(fileType.equals(FileType.JSON))
 		{
@@ -57,7 +64,7 @@ public class AddressBookFileIOService
 		{
 
 			List<AddressBook> addressbookList = addressBookSystem[0].getAddressbookList();
-		    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+			Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
 			String json =gson.toJson(addressbookList);
 			FileWriter writer = new FileWriter(ADDRESSBOOK_JSON_FILE_NAME);
@@ -68,37 +75,36 @@ public class AddressBookFileIOService
 		catch(IOException e)
 		{
 			e.printStackTrace();
-			
+
 		}
 	}
 
 	private void writeDataToCSVFile(List<Contact> contactList)
 			throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException 
 	{
-		
-		
-		try
-		(Writer writer =Files.newBufferedWriter(Paths.get(ADDRESSBOOK_CSV_FILE_NAME))
-		)
+
+
+		try(Writer writer =Files.newBufferedWriter(Paths.get(ADDRESSBOOK_CSV_FILE_NAME)))
 		{
-			
-			ColumnPositionMappingStrategy strategy = new ColumnPositionMappingStrategy();
-            strategy.setType(Contact.class);
-            String[] memberFieldsToBindTo = {"firstName", "lastName", "address", "city", "state", "zip", "phoneNumber","email"};
-            strategy.setColumnMapping(memberFieldsToBindTo);
-            strategy.generateHeader(memberFieldsToBindTo);
-			
+
+			ColumnPositionMappingStrategy<Contact> strategy = new ColumnPositionMappingStrategy<Contact>();
+			strategy.setType(Contact.class);
+			String[] memberFieldsToBindTo = {"firstName", "lastName", "address", "phoneNumber","email"};
+			strategy.setColumnMapping(memberFieldsToBindTo);
+
 			StatefulBeanToCsv<Contact> beanToCsv= new StatefulBeanToCsvBuilder<Contact>(writer)
-                    .withMappingStrategy(strategy)
+					.withMappingStrategy(strategy)
 					.withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
 					.build();
-	
 			
+
 			beanToCsv.write(contactList);
 		}
 	}
 
-	private void writeDataToTXTFile(List<Contact> contactList) {
+	private void writeDataToTXTFile(List<Contact> contactList) throws IOException 
+	{
+		this.writeDataToTXTFileUsingOutputStream(contactList);
 		StringBuffer contactBuffer = new StringBuffer();
 		contactList.forEach(contact -> {
 			String contactDataString =contact.toString().concat("\n");
@@ -113,8 +119,23 @@ public class AddressBookFileIOService
 		{
 			e.printStackTrace();
 		}
+
 	}
 	
+	private void writeDataToTXTFileUsingOutputStream(List<Contact> contactList) throws IOException 
+	{
+		try(ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(ADDRESSBOOK_FILE_NAME)))
+		{
+	        objectOutputStream.writeObject(contactList);
+
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		 
+
+	}
+
 	public void printData(FileType fileType) throws IOException, CsvException 
 	{
 		if(fileType.equals(FileType.TXT))
@@ -130,12 +151,12 @@ public class AddressBookFileIOService
 		}
 		else if(fileType.equals(FileType.CSV))
 		{
-			
+
 			try
 			(
-				Reader reader =Files.newBufferedReader(Paths.get(ADDRESSBOOK_CSV_FILE_NAME));
-				CSVReader csvReader = new CSVReader(reader);
-			)
+					Reader reader =Files.newBufferedReader(Paths.get(ADDRESSBOOK_CSV_FILE_NAME));
+					CSVReader csvReader = new CSVReader(reader);
+					)
 			{
 				List<String[]> records = csvReader.readAll();
 				for(String[] record:records)
@@ -150,21 +171,21 @@ public class AddressBookFileIOService
 					System.out.println("Email: "+record[7]);
 
 					System.out.println("=========================");
-					
+
 				}
 			}
 		}
 		else if(fileType.equals(FileType.JSON))
 		{
-			
+
 			List<AddressBook> addressBookList=this.readData();
 			addressBookList.stream()
 			.forEach(addressBook-> {addressBook.getContactList().stream().forEach(contact->System.out.println(contact));});
-			
+
 		}
-		
+
 	}
-	
+
 	public long countEntries(FileType fileType) throws IOException, CsvException
 	{
 		if(fileType.equals(FileType.TXT))
@@ -186,28 +207,28 @@ public class AddressBookFileIOService
 		}
 		else if(fileType.equals(FileType.JSON))
 		{
-			
+
 			return this.readData().size();
 		}
 		return 0;
 	}
 
-	
+
 	public List<Contact> readData(FileType fileType) throws IOException, CsvException 
 	{
 		List<Contact> contactList = new ArrayList<Contact>();
-		
+
 		if(fileType.equals(FileType.TXT))
 		{
-			readDataFromTXTFileToList(contactList);
+			contactList=readDataFromTXTFileToList(contactList);
 		}
 		else if(fileType.equals(FileType.CSV))
 		{
-			
+
 			readDataFromCSVFileToList(contactList);
-			
+
 		}
-	
+
 		return contactList;
 	}
 
@@ -216,58 +237,44 @@ public class AddressBookFileIOService
 		List<String[]> contactDataFromFile;
 		try
 		(
-			Reader reader =Files.newBufferedReader(Paths.get(ADDRESSBOOK_CSV_FILE_NAME));
-			CSVReader csvReader = new CSVReader(reader);
-		)
+				Reader reader =Files.newBufferedReader(Paths.get(ADDRESSBOOK_CSV_FILE_NAME));
+				CSVReader csvReader = new CSVReader(reader);
+				)
 		{
-			   
-			 contactDataFromFile = csvReader.readAll();
 
-			 contactDataFromFile.stream().forEach(object->contactList.add(new Contact(object)));
+			contactDataFromFile = csvReader.readAll();
+
+			contactDataFromFile.stream().forEach(object->contactList.add(new Contact(object)));
 		}
 	}
 
-	private void readDataFromTXTFileToList(List<Contact> contactList) 
+	private List<Contact> readDataFromTXTFileToList(List<Contact> contactList) throws IOException
 	{
-		try
+		
+		try(ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(ADDRESSBOOK_FILE_NAME)))
 		{
-			List<String[]> contactDataFromTXTFile = new ArrayList<String[]>();
-
-			Files.lines(new File(ADDRESSBOOK_TXT_FILE_NAME).toPath())
-				.map(line->line.trim())
-				.forEach(line->contactDataFromTXTFile.add(line.split(",")));
+	          contactList = (List<Contact>) objectInputStream.readObject();
 			
-
-			for(int index=0;index<contactDataFromTXTFile.size();index++)
-			{
-				
-				contactList.add(new Contact(contactDataFromTXTFile.get(index)[0].split("=")[1]
-										,contactDataFromTXTFile.get(index)[1].split("=")[1]
-										,contactDataFromTXTFile.get(index)[2].split("=")[1]
-										,contactDataFromTXTFile.get(index)[3].split("=")[1]
-										,contactDataFromTXTFile.get(index)[4].split("=")[1]
-										,contactDataFromTXTFile.get(index)[5].split("=")[1]
-										,contactDataFromTXTFile.get(index)[6].split("=")[1]
-										,contactDataFromTXTFile.get(index)[7].split("=")[1]
-										));
-			}
-			
-		}
-		catch(IOException e)
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		} catch (ClassNotFoundException e)
 		{
 			e.printStackTrace();
 		}
+
+		return contactList;
 	}
-	
+
 	public List<AddressBook> readData() throws IOException, CsvException 
 	{
 		BufferedReader br = new BufferedReader(new FileReader(ADDRESSBOOK_JSON_FILE_NAME));
 		Gson gson= new Gson();
 		AddressBook[] usrObj =gson.fromJson(br, AddressBook[].class);
 		List<AddressBook> addressBookList = Arrays.asList(usrObj);
-		
+
 		return addressBookList;
-		
+
 	}
 
 }
