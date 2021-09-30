@@ -129,6 +129,7 @@ public class AddressBookDBService
 
 			while(resultSet.next())
 			{
+				int id=resultSet.getInt("id");
 				String firstName=resultSet.getString("firstName");
 				String lastName=resultSet.getString("lastName");
 				String houseNumber=resultSet.getString("house_number");
@@ -141,9 +142,8 @@ public class AddressBookDBService
 				String email=resultSet.getString("email");
 				
 				Address contactAddress = new Address(houseNumber, street, city, state, zip);
-				Contact contact = new Contact(firstName, lastName,phoneNumber,email);
-				contact.setContactAddress(contactAddress);
-				contactList.add(new Contact(firstName, lastName, address,city,state,zip,phoneNumber,email));
+				Contact contact = new Contact(id,firstName, lastName,contactAddress,phoneNumber,email);
+				contactList.add(contact);
 			}
 		} 
 		catch (SQLException e) 
@@ -293,11 +293,13 @@ public class AddressBookDBService
 		{
 			String sql=String.format("Insert into address values "
 					+ "('%d','%s','%s','%s','%s','%s');",contactId,houseNumber,street,city,state,zip);
-			int rowAffected=statement.executeUpdate(sql);
+			int rowAffected = statement.executeUpdate(sql,statement.RETURN_GENERATED_KEYS);
 			if(rowAffected==1)
 			{
-				contact = new Contact(firstName,lastName,phoneNumber,email);
-				contact.setContactAddress(new Address(houseNumber, street, city, state, zip));
+				ResultSet resultSet=statement.getGeneratedKeys();
+				if(resultSet.next()) contactId=resultSet.getInt(1);
+				Address address= new Address(houseNumber, street, city, state, zip);
+				contact = new Contact(contactId,firstName,lastName,address,phoneNumber,email);
 
 			}
 		}
