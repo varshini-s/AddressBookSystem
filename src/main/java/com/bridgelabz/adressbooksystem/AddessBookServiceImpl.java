@@ -115,16 +115,16 @@ public class AddessBookServiceImpl implements AddressBookServiceIF,AddressBookIO
 			{
 
 			case "address":
-				contactList.get(contactIndex).setAddress(editInfo);
+				contactList.get(contactIndex).getContactAddress().setAddress(editInfo);
 				break;
 			case "city":
-				contactList.get(contactIndex).setCity(editInfo);
+				contactList.get(contactIndex).getContactAddress().setCity(editInfo);
 				break;
 			case "state":
-				contactList.get(contactIndex).setState(editInfo);
+				contactList.get(contactIndex).getContactAddress().setState(editInfo);
 				break;
 			case "zip":
-				contactList.get(contactIndex).setZip(editInfo);
+				contactList.get(contactIndex).getContactAddress().setZip(editInfo);
 				break;
 			case "phoneNumber":
 				contactList.get(contactIndex).setPhoneNumber(editInfo);
@@ -169,10 +169,10 @@ public class AddessBookServiceImpl implements AddressBookServiceIF,AddressBookIO
 		if(contactIndex>=0)
 		{
 			Contact contact=contactList.get(contactIndex);
-			System.out.println("address:"+contact.getAddress());
-			System.out.println("city:"+contact.getCity());
-			System.out.println("state:"+contact.getState());
-			System.out.println("zip:"+contact.getZip());
+			System.out.println("address:"+contact.getContactAddress().getAddress());
+			System.out.println("city:"+contact.getContactAddress().getCity());
+			System.out.println("state:"+contact.getContactAddress().getState());
+			System.out.println("zip:"+contact.getContactAddress().getZip());
 			System.out.println("phone number:"+contact.getPhoneNumber());
 			System.out.println("email:"+contact.getEmail());
 
@@ -190,7 +190,7 @@ public class AddessBookServiceImpl implements AddressBookServiceIF,AddressBookIO
 		System.out.println("all contacts in given name in given state are:");
 		addressbookList.stream()
 		.forEach(addressBook->addressBook.getContactList()
-				.stream().filter(contact->contact.getState().equals(state) && contact.getFirstName().equals(givenName))
+				.stream().filter(contact->contact.getContactAddress().getState().equals(state) && contact.getFirstName().equals(givenName))
 				.forEach(object->printStreamObject[0].println(object)));
 	}
 
@@ -204,7 +204,7 @@ public class AddessBookServiceImpl implements AddressBookServiceIF,AddressBookIO
 		System.out.println("all contacts in given name in given city are:");
 		addressbookList.stream()
 		.forEach(addressBook->addressBook.getContactList()
-				.stream().filter(contact->contact.getCity().equals(city) && contact.getFirstName().equals(givenName))
+				.stream().filter(contact->contact.getContactAddress().getCity().equals(city) && contact.getFirstName().equals(givenName))
 				.forEach(contact->printStreamObject[0].println(contact)));
 
 	}
@@ -217,7 +217,7 @@ public class AddessBookServiceImpl implements AddressBookServiceIF,AddressBookIO
 		System.out.println("all contacts in given state are:");
 		addressbookList.stream()
 		.forEach(addressBook->addressBook.getContactList()
-				.stream().filter(contact->contact.getState().equals(state)).forEach(contact->printStreamObject[0].println(contact)));
+				.stream().filter(contact->contact.getContactAddress().getState().equals(state)).forEach(contact->printStreamObject[0].println(contact)));
 
 	}
 	@Override
@@ -229,7 +229,7 @@ public class AddessBookServiceImpl implements AddressBookServiceIF,AddressBookIO
 		System.out.println("all contacts in given city are:");
 		addressbookList.stream()
 		.forEach(addressBook->addressBook.getContactList()
-				.stream().filter(contact->contact.getCity().equals(city)).forEach(contact->printStreamObject[0].println(contact)));
+				.stream().filter(contact->contact.getContactAddress().getCity().equals(city)).forEach(contact->printStreamObject[0].println(contact)));
 
 	}
 	@Override
@@ -240,7 +240,7 @@ public class AddessBookServiceImpl implements AddressBookServiceIF,AddressBookIO
 
 		addressbookList.stream()
 		.forEach(addressBook->System.out.println("Number of contacts of given city in addressbook"+addressBook.getAddressBookName()+" is"+addressBook.getContactList()
-		.stream().filter(contact->contact.getCity().equals(city)).count()));
+		.stream().filter(contact->contact.getContactAddress().getCity().equals(city)).count()));
 
 
 	}
@@ -253,7 +253,7 @@ public class AddessBookServiceImpl implements AddressBookServiceIF,AddressBookIO
 
 		addressbookList.stream()
 		.forEach(addressBook->System.out.println("Number of contacts of given state in addressbook"+addressBook.getAddressBookName()+" is"+addressBook.getContactList()
-		.stream().filter(contact->contact.getState().equals(state)).count()));
+		.stream().filter(contact->contact.getContactAddress().getState().equals(state)).count()));
 
 	}
 
@@ -276,7 +276,7 @@ public class AddessBookServiceImpl implements AddressBookServiceIF,AddressBookIO
 		System.out.println("Sorting contacts by  city:");
 		addressbookList.stream()
 		.forEach(addressBook->addressBook.getContactList()
-				.stream().sorted((person1,person2)->person1.getCity().compareTo(person2.getCity())).forEach(contact->printStreamObject[0].println(contact)));
+				.stream().sorted((person1,person2)->person1.getContactAddress().getCity().compareTo(person2.getContactAddress().getCity())).forEach(contact->printStreamObject[0].println(contact)));
 	}
 
 	@Override
@@ -287,7 +287,7 @@ public class AddessBookServiceImpl implements AddressBookServiceIF,AddressBookIO
 		System.out.println("Sorting contacts by  state");
 		addressbookList.stream()
 		.forEach(addressBook->addressBook.getContactList()
-				.stream().sorted((person1,person2)->person1.getState().compareTo(person2.getState())).forEach(contact->printStreamObject[0].println(contact)));
+				.stream().sorted((person1,person2)->person1.getContactAddress().getState().compareTo(person2.getContactAddress().getState())).forEach(contact->printStreamObject[0].println(contact)));
 	}
 
 	@Override
@@ -298,7 +298,7 @@ public class AddessBookServiceImpl implements AddressBookServiceIF,AddressBookIO
 		System.out.println("Sorting contacts by  zip:");
 		addressbookList.stream()
 		.forEach(addressBook->addressBook.getContactList()
-				.stream().sorted((person1,person2)->person1.getZip().compareTo(person2.getZip())).forEach(contact->printStreamObject[0].println(contact)));
+				.stream().sorted((person1,person2)->person1.getContactAddress().getZip().compareTo(person2.getContactAddress().getZip())).forEach(contact->printStreamObject[0].println(contact)));
 	}
 	@Override
 	public List<Contact> getContactList(String  addressbookName)
