@@ -203,7 +203,7 @@ public class AddressBookMenu
 	{
 		String firstName;
 		String lastName;
-		String address;
+		String houseNumber,street;
 		String city;
 		String state;
 		String zip;
@@ -212,8 +212,10 @@ public class AddressBookMenu
 		System.out.println("Enter first and last name of the person");
 		firstName=scanner.nextLine();
 		lastName=scanner.nextLine();
-		System.out.println("Enter address ");
-		address=scanner.nextLine();
+		System.out.println("Enter HouseNumber ");
+		houseNumber=scanner.nextLine();
+		System.out.println("Enter street ");
+		street=scanner.nextLine();
 		System.out.println("Enter city ");
 		city=scanner.nextLine();
 		System.out.println("Enter state ");
@@ -224,7 +226,8 @@ public class AddressBookMenu
 		phoneNumber=scanner.nextLine();
 		System.out.println("Enter email ");
 		email=scanner.nextLine();
-		Contact person= new Contact(firstName,lastName,address,city,state,zip,phoneNumber,email);
+		Address address= new Address(houseNumber, street, city, state, zip);
+		Contact person=  new Contact(firstName,lastName,address,phoneNumber,email);
 		addressBookOperations.addNewContact(person,addressbookName);
 	}
 }
