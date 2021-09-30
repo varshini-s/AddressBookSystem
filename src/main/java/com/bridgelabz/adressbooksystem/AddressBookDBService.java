@@ -14,21 +14,41 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 import org.apache.ibatis.jdbc.ScriptRunner;
 
 
-public class AddressBookDBService 
+public class AddressBookDBService implements Runnable
 {
 
 	private static AddressBookDBService addressBookDBService;
 	private PreparedStatement addressBookReadStatement;
 
-	public AddressBookDBService()
-	{
+	String firstName, lastName, houseNumber, street, city, state, zip, phoneNumber, email;
+	int addressBookId;
+	LocalDate dateAdded;
 
+    public AddressBookDBService ()
+    {
+		
 	}
 
+	public AddressBookDBService(String firstName, String lastName, String houseNumber, String street, String city,
+			String state, String zip, String phoneNumber, String email, int addressBookId, LocalDate dateAdded) 
+	{
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.houseNumber = houseNumber;
+		this.street = street;
+		this.city = city;
+		this.state = state;
+		this.zip = zip;
+		this.phoneNumber = phoneNumber;
+		this.email = email;
+		this.addressBookId = addressBookId;
+		this.dateAdded = dateAdded;
+	}
 	public static AddressBookDBService getInstance()
 	{
 		if(addressBookDBService==null)
@@ -238,53 +258,89 @@ public class AddressBookDBService
 
 	}
 
-	public Contact addContact(String firstName,String lastName,String houseNumber,String street,String city,
+	public  synchronized Contact addContact(String firstName,String lastName,String houseNumber,String street,String city,
 								String state,String zip,String phoneNumber,String email,int addressBookId,LocalDate dateAdded)
 	{
 		int contactId=-1;
 		Connection connection=null;
 		Contact contact=null;
-
-		try 
+		if(checkContactExists(firstName,lastName,email,phoneNumber,addressBookId)==false)
 		{
-			connection=this.getConnection();
-			connection.setAutoCommit(false);
-		} catch (SQLException e) 
-		{
-			e.printStackTrace();
-		}
-
-		contactId = insertContactToDatabase(firstName, lastName, phoneNumber, email, addressBookId, contactId,
-				connection,dateAdded);
-
-
-		contact = insertAddressToDataBase(firstName, lastName, houseNumber, street, city, state, zip, phoneNumber,
-				email, contactId, connection, contact);
-		try 
-		{
-			connection.commit();
-
-		} catch (Exception e) 
-		{
-			e.printStackTrace();
-		}
-		finally
-		{
-			if(connection!=null)
+			
+			try 
 			{
-				try 
-				{
-					connection.close();
+				connection=this.getConnection();
+				connection.setAutoCommit(false);
+			} catch (SQLException e) 
+			{
+				e.printStackTrace();
+			}
 
-				} catch (Exception e) 
+			contactId = insertContactToDatabase(firstName, lastName, phoneNumber, email, addressBookId, contactId,
+					connection,dateAdded);
+
+
+			contact = insertAddressToDataBase(firstName, lastName, houseNumber, street, city, state, zip, phoneNumber,
+					email, contactId, connection, contact);
+			try 
+			{
+				connection.commit();
+
+			} catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+			finally
+			{
+				if(connection!=null)
 				{
-					e.printStackTrace();
+					try 
+					{
+						connection.close();
+
+					} catch (Exception e) 
+					{
+						e.printStackTrace();
+					}
 				}
 			}
 		}
+		else 
+		{
+			System.out.println("duplicate contact");
+		}
+		
 
 		
 		return contact;
+	}
+
+	private boolean checkContactExists(String firstName, String lastName, String email, String phoneNumber, int addressBookId) 
+	{
+		String sql=String.format("select address_book_id from contact where "+"firstName ='%s' and lastName='%s' and email='%s' and phoneNumber='%s';",
+									firstName,lastName,email,phoneNumber);
+		
+		try (Connection connection = this.getConnection())
+		{
+
+			Statement statement=connection.createStatement();
+			ResultSet resultSet= statement.executeQuery(sql);
+			while(resultSet.next())
+			{
+				int id=resultSet.getInt("address_book_id");
+				if(id==addressBookId)
+				{
+					return true;
+
+				}
+			}
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return false;
 	}
 
 	private Contact insertAddressToDataBase(String firstName, String lastName, String houseNumber, String street,
@@ -366,24 +422,43 @@ public class AddressBookDBService
 		return null;
 		
 	}
+	
+	public List<Contact> getSelectQueryResult(String sql)
+	{
+		try (Connection connection = this.getConnection())
+		{
+
+			Statement statement=connection.createStatement();
+			ResultSet resultSet= statement.executeQuery(sql);
+			return this.getContactData(resultSet);
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		return null;
+		
+		
+	}
 
 	public int countOfContactsAddedInGivenDateRange(String startDate, String endDate)
 	{
 		String sql = String.format("SELECT * FROM contact JOIN address ON contact.id=address.contact_id"+
 								 " WHERE date_added BETWEEN '%s' AND '%s';",Date.valueOf(startDate),Date.valueOf(endDate));
 
-		try (Connection connection = this.getConnection())
-		{
+		 return getSelectQueryResult(sql).size();
 
-			Statement statement=connection.createStatement();
-			ResultSet resultSet= statement.executeQuery(sql);
-			return this.getContactData(resultSet).size();
-		} 
-		catch (SQLException e) 
-		{
-			e.printStackTrace();
-		}
-		return 0;
 	}
+	public int countOfContactsInDataBase()
+	{
+		String sql = "SELECT * FROM contact JOIN address ON contact.id=address.contact_id;";
+		 return getSelectQueryResult(sql).size();
+		 
+	}
+
+
+
+
+
 }
 
