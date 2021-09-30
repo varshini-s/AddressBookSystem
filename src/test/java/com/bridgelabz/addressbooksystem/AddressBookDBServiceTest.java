@@ -3,6 +3,8 @@ package com.bridgelabz.addressbooksystem;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,10 +75,25 @@ public class AddressBookDBServiceTest
 	{
 		addressBookOperations.readContactListData(IOService.DB_IO, "Book1");		
 		addressBookOperations.addContact("susan", "prevensie", "123", "bbb", "yk"
-										, "rrr", "12345", "1234512345", "ddd@example.com", 1);
+										, "rrr", "12345", "1234512345", "ddd@example.com", 1,LocalDate.now());
 		boolean result= addressBookOperations.checkContactInSyncWithDB("susan");
 		Assert.assertTrue(result);
 		
+	}
+	
+	@Test
+	public void givenContactDB_WhenGivenDate_ShouldReturnCountOfContactsAddedInGivenDateRange()
+	{
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		String startDate="2018-01-02";
+		String endDate="2019-01-02";
+
+		LocalDate.parse(startDate, formatter);
+		LocalDate.parse(endDate, formatter);
+
+		int count = addressBookOperations.countOfContactsAddedInGivenDateRange(IOService.DB_IO,startDate,endDate);
+		Assert.assertEquals(1, count);
 	}
 	
 		
