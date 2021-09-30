@@ -462,6 +462,17 @@ public class AddessBookServiceImpl implements AddressBookServiceIF,AddressBookIO
 		return 0;
 	}
 
+
+	public int countOfContacts(IOService ioService)
+	{
+		if(ioService.equals(IOService.DB_IO))
+		{
+			return new AddressBookDBService().countOfContactsInDataBase();
+			
+		}
+		return 0;
+	}
+
 }
 
 
