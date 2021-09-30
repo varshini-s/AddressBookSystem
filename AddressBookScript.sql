@@ -4,62 +4,6 @@ CREATE DATABASE addressbook_service;
 USE addressbook_service;
 SELECT DATABASE();
 
-#UC 2
-CREATE TABLE address_book 
-(
-    firstName VARCHAR(20) NOT NULL,
-    lastName VARCHAR(20) NOT NULL,
-    address VARCHAR(100) NOT NULL,
-    city VARCHAR(20) NOT NULL,
-    state VARCHAR(20) NOT NULL,
-    zip VARCHAR(10) NOT NULL,
-    phoneNumber CHAR(10) NOT NULL,
-    email VARCHAR(20) NOT NULL
-    
-);
-
-#UC 3
-INSERT INTO address_book (firstName, lastName, address, city, state, zip, phoneNumber, email) VALUES 
-('Raj', 'A', 'aaa', 'mysore', 'karnataka', '571771', '9897889999', 'abc@gmail.com'),
-('amy', 'cooper', 'abc', 'bangalore', 'karnataka', '43566', '7898887188', 'amy@gmail.com'),
-('Bob', 'J', 'groov street', 'bangalore', 'karnataka', '4566', '9897899999', 'bob@example.com');
-
-#UC 4
-UPDATE address_book 
-SET address='ert street' 
-WHERE firstName='Raj';
-
-#UC 5
-DELETE FROM address_book 
-WHERE firstName='Bob';
-
-#UC 9
-ALTER TABLE address_book
-ADD addressBookName varchar(20);
-
-ALTER TABLE address_book
-ADD addressBookType varchar(20);
-
-UPDATE address_book 
-SET addressBookName='book1',addressBookType='family'
-WHERE firstName='Raj';
-
-UPDATE address_book 
-SET addressBookName='book2',addressBookType='friends'
-WHERE firstName='amy';
-
-INSERT INTO address_book (firstName, lastName, address, city, state, zip, phoneNumber, email,addressBookName,addressBookType) 
-VALUES ('penny', 'clair', 'aaa street', 'bangalore', 'karnataka', '345', '9897098999', 'penny@example.com','book1','profession');
-sBookType='family';
-
-
-INSERT INTO address_book (firstName, lastName, address, city, state, zip, phoneNumber, email,addressBookName,addressBookType) 
-VALUES ('Bob', 'J', 'groov street', 'bangalore', 'karnataka', '4566', '9897899999', 'bob@example.com','book2','friends');
-
-INSERT INTO address_book (firstName, lastName, address, city, state, zip, phoneNumber, email,addressBookName,addressBookType) 
-VALUES ('Bob', 'J', 'groov street', 'bangalore', 'karnataka', '4566', '9897899999', 'bob@example.com','book2','family');
-
-DROP TABLE address_book;
 
 CREATE TABLE address_book 
 (
@@ -79,13 +23,14 @@ CREATE TABLE contact (
     phoneNumber CHAR(10) NOT NULL,
     email VARCHAR(20) NOT NULL,
     address_book_id INT UNSIGNED NOT NULL,
+    date_added DATE NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (address_book_id) references address_book(address_book_id)
 
 );
 
-INSERT INTO contact(firstName,lastName,phoneNumber,email,address_book_id)
-values('Bob', 'J', '9897899999', 'bob@example.com',1),('amy', 'cooper', '6578445578', 'amy@example.com',1),('raj', 'a', '9987899999', 'raj@example.com',2);
+INSERT INTO contact(firstName,lastName,phoneNumber,email,address_book_id,date_added)
+values('Bob', 'J', '9897899999', 'bob@example.com',1,'2019-01-07'),('amy', 'cooper', '6578445578', 'amy@example.com',1,'2020-08-21'),('raj', 'a', '9987899999', 'raj@example.com',2,'2018-01-03');
 
 CREATE TABLE address_book_contact
 (
