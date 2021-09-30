@@ -1,0 +1,96 @@
+[
+  {
+    "AddressBookName": "Addressbook1",
+    "contactList": [
+      {
+        "contactId": 1,
+        "firstName": "Sheldon",
+        "lastName": "Cooper",
+        "phoneNumber": "12345",
+        "email": "abc@gmail.com",
+        "address": {
+          "houseNumber": "123",
+          "street": "aaa",
+          "city": "pasadena",
+          "state": "california",
+          "zip": "12345"
+        }
+      },
+      {
+        "contactId": 2,
+        "firstName": "Ross ",
+        "lastName": "Geller",
+        "phoneNumber": "89897677",
+        "email": "ross@gmail.com",
+        "address": {
+          "houseNumber": "456",
+          "street": "groov street",
+          "city": "LA",
+          "state": "california",
+          "zip": "12345"
+        }
+      },
+      {
+        "contactId": 3,
+        "firstName": "Ted",
+        "lastName": "Mobsby",
+        "phoneNumber": "567890999",
+        "email": "ted@gmail.com",
+        "address": {
+          "houseNumber": "22",
+          "street": "green",
+          "city": "pasadena",
+          "state": "new york",
+          "zip": "12345"
+        }
+      }
+    ]
+  },
+  {
+    "AddressBookName": "Addressbook2",
+    "contactList": [
+      {
+        "contactId": 4,
+        "firstName": "james",
+        "lastName": "b",
+        "phoneNumber": "12345",
+        "email": "abc@gmail.com",
+        "address": {
+          "houseNumber": "456",
+          "street": "texas",
+          "city": "pasadena",
+          "state": "california",
+          "zip": "11134"
+        }
+      },
+      {
+        "contactId": 5,
+        "firstName": "susan ",
+        "lastName": "aaa",
+        "phoneNumber": "89897677",
+        "email": "ross@gmail.com",
+        "address": {
+          "houseNumber": "23",
+          "street": "rover street",
+          "city": "aaa",
+          "state": "New york",
+          "zip": "2333"
+        }
+      },
+      {
+        "contactId": 6,
+        "firstName": "alan",
+        "lastName": "c",
+        "phoneNumber": "567890999",
+        "email": "ted@gmail.com",
+        "address": {
+          "houseNumber": "44",
+          "street": "aaaa",
+          "city": "bbb",
+          "state": "New york",
+          "zip": "2345"
+        }
+      }
+    ]
+  }
+]
