@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -433,10 +434,11 @@ public class AddessBookServiceImpl implements AddressBookServiceIF,AddressBookIO
 		return this.contactList.get(0).equals(this.getContact(name));
 	}
 
-	public void addContact(String firstName,String lastName,String houseNumber,String street,String city,String state,String zip,String phoneNumber,String email,int addressBookId)
+	public void addContact(String firstName,String lastName,String houseNumber,String street,String city,
+						  String state,String zip,String phoneNumber,String email,int addressBookId,LocalDate date)
 	{
 
-		contactList.add(addressBookDBService.addContact( firstName ,lastName, houseNumber, street, city, state, zip, phoneNumber, email, addressBookId));
+		contactList.add(addressBookDBService.addContact( firstName ,lastName, houseNumber, street, city, state, zip, phoneNumber, email, addressBookId,date));
 
 		
 	}
@@ -445,6 +447,19 @@ public class AddessBookServiceImpl implements AddressBookServiceIF,AddressBookIO
 	{
 		addressBookDBService.setupDatabase();
 		
+	}
+
+	public int countOfContactsAddedInGivenDateRange(IOService ioService, String startDate, String endDate) 
+	{
+		if(ioService.equals(IOService.DB_IO))
+		{
+			return new AddressBookDBService().countOfContactsAddedInGivenDateRange( startDate,  endDate);
+			
+
+		}
+
+		
+		return 0;
 	}
 
 }
