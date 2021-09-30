@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.Reader;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -137,7 +138,6 @@ public class AddressBookDBService
 				String city=resultSet.getString("city");
 				String state=resultSet.getString("state");
 				String zip=resultSet.getString("zip");
-				String address=houseNumber+street+city+zip;
 				String phoneNumber=resultSet.getString("phoneNumber");
 				String email=resultSet.getString("email");
 				
@@ -238,7 +238,8 @@ public class AddressBookDBService
 
 	}
 
-	public Contact addContact(String firstName,String lastName,String houseNumber,String street,String city,String state,String zip,String phoneNumber,String email,int addressBookId)
+	public Contact addContact(String firstName,String lastName,String houseNumber,String street,String city,
+								String state,String zip,String phoneNumber,String email,int addressBookId,LocalDate dateAdded)
 	{
 		int contactId=-1;
 		Connection connection=null;
@@ -254,7 +255,7 @@ public class AddressBookDBService
 		}
 
 		contactId = insertContactToDatabase(firstName, lastName, phoneNumber, email, addressBookId, contactId,
-				connection);
+				connection,dateAdded);
 
 
 		contact = insertAddressToDataBase(firstName, lastName, houseNumber, street, city, state, zip, phoneNumber,
@@ -319,11 +320,11 @@ public class AddressBookDBService
 	}
 
 	private int insertContactToDatabase(String firstName, String lastName, String phoneNumber, String email,
-			int addressBookId, int contactId, Connection connection) {
+			int addressBookId, int contactId, Connection connection,LocalDate dateAdded) {
 		try(Statement statement=connection.createStatement())
 		{
-			String sql=String.format("INSERT INTO contact(firstName,lastName,phoneNumber,email,address_book_id) "
-					+ "values ('%s','%s','%s','%s','%s');",firstName,lastName,phoneNumber,email,addressBookId);
+			String sql=String.format("INSERT INTO contact(firstName,lastName,phoneNumber,email,address_book_id,date_added) "
+					+ "values ('%s','%s','%s','%s','%s','%s');",firstName,lastName,phoneNumber,email,addressBookId,dateAdded);
 			int rowAffected = statement.executeUpdate(sql,statement.RETURN_GENERATED_KEYS);
 			if(rowAffected==1)
 			{
@@ -364,6 +365,25 @@ public class AddressBookDBService
 		}
 		return null;
 		
+	}
+
+	public int countOfContactsAddedInGivenDateRange(String startDate, String endDate)
+	{
+		String sql = String.format("SELECT * FROM contact JOIN address ON contact.id=address.contact_id"+
+								 " WHERE date_added BETWEEN '%s' AND '%s';",Date.valueOf(startDate),Date.valueOf(endDate));
+
+		try (Connection connection = this.getConnection())
+		{
+
+			Statement statement=connection.createStatement();
+			ResultSet resultSet= statement.executeQuery(sql);
+			return this.getContactData(resultSet).size();
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		return 0;
 	}
 }
 
