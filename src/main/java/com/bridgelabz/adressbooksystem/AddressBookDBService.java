@@ -456,7 +456,20 @@ public class AddressBookDBService implements Runnable
 		 
 	}
 
+	@Override
+	public void run()
+	{
+		try
+		{
 
+			this.addContact( firstName, lastName, houseNumber, street, city,
+							state, zip, phoneNumber, email, addressBookId, dateAdded);
+		} catch (Exception ex) 
+		{
+			ex.printStackTrace();
+		}
+				
+	}
 
 
 
