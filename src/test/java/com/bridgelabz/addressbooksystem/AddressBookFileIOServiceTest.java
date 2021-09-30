@@ -10,6 +10,7 @@ import com.bridgelabz.adressbooksystem.AddessBookServiceImpl;
 import com.bridgelabz.adressbooksystem.Contact;
 import com.opencsv.exceptions.CsvException;
 import com.bridgelabz.adressbooksystem.AddessBookServiceImpl.IOService;
+import com.bridgelabz.adressbooksystem.Address;
 import com.bridgelabz.adressbooksystem.AddressBookFileIOService.FileType;
 import com.bridgelabz.adressbooksystem.AddressBooksCollection;
 
@@ -28,15 +29,21 @@ public class AddressBookFileIOServiceTest
 
 		addressBookOperations.createAddressBook("Addressbook1");
 		addressBookName="Addressbook1";
-		addressBookOperations.addNewContact(new Contact("Sheldon","Cooper","texas","pasadena","california","11134","12345","abc@gmail.com"),addressBookName);
-		addressBookOperations.addNewContact(new Contact("Ross ","Geller","groov street","aaa","New york","12311","89897677","ross@gmail.com"),addressBookName);
-		addressBookOperations.addNewContact(new Contact("Ted","Mobsby","aaa","bbb","new york","44562","567890999","ted@gmail.com"),addressBookName);
-		
+		Address address= new Address("123", "aaa", "pasadena", "california", "12345");
+		addressBookOperations.addNewContact(new Contact(1,"Sheldon","Cooper",address,"12345","abc@gmail.com"),addressBookName);
+		address= new Address("456", "groov street", "LA", "california", "12345");
+		addressBookOperations.addNewContact(new Contact(2,"Ross ","Geller",address,"89897677","ross@gmail.com"),addressBookName);
+		address= new Address("22", "green", "pasadena", "new york", "12345");
+		addressBookOperations.addNewContact(new Contact(3,"Ted","Mobsby",address,"567890999","ted@gmail.com"),addressBookName);
+
 		addressBookOperations.createAddressBook("Addressbook2");
 		addressBookName="Addressbook2";
-		addressBookOperations.addNewContact(new Contact("james","b","texas","pasadena","california","11134","12345","abc@gmail.com"),addressBookName);
-		addressBookOperations.addNewContact(new Contact("susan ","aaa","groov street","aaa","New york","12311","89897677","ross@gmail.com"),addressBookName);
-		addressBookOperations.addNewContact(new Contact("alan","c","aaa","bbb","new york","44562","567890999","ted@gmail.com"),addressBookName);	
+		address= new Address("456", "texas", "pasadena", "california", "11134");
+		addressBookOperations.addNewContact(new Contact(4,"james","b",address,"12345","abc@gmail.com"),addressBookName);
+		address= new Address("23", "rover street", "aaa", "New york", "2333");
+		addressBookOperations.addNewContact(new Contact(5,"susan ","aaa",address,"89897677","ross@gmail.com"),addressBookName);
+		address= new Address("44", "aaaa", "bbb", "New york", "2345");
+		addressBookOperations.addNewContact(new Contact(6,"alan","c",address,"567890999","ted@gmail.com"),addressBookName);	
 
 	}
 
@@ -64,7 +71,7 @@ public class AddressBookFileIOServiceTest
 	public void given3ContactsWhenWrittenToJSONFileShouldMatchContactEntries() throws IOException, CsvException
 	{
 
-		addressBookOperations.writeContactsOfAddressBook(IOService.FILE_IO,addressBookName,FileType.CSV);
+		addressBookOperations.writeContactsOfAddressBook(IOService.FILE_IO,addressBookName,FileType.JSON);
 		long jsonEntries = addressBookOperations.countEntries(IOService.FILE_IO,FileType.JSON);
 		Assert.assertEquals(2, jsonEntries);
 
@@ -73,7 +80,6 @@ public class AddressBookFileIOServiceTest
 	@Test
 	public void givenFileOnReadingFromTXTFileShouldMatchContactsCount() throws IOException, CsvException
 	{
-		
 		long txtEntries = addressBookOperations.readContactListData(IOService.FILE_IO,addressBookName,FileType.TXT).size();
 		Assert.assertEquals(3, txtEntries);
 
@@ -81,7 +87,7 @@ public class AddressBookFileIOServiceTest
 	@Test
 	public void givenFileOnReadingFromCSVFileShouldMatchContactsCount() throws IOException, CsvException
 	{
-		
+
 		long csvEntries = addressBookOperations.readContactListData(IOService.FILE_IO,addressBookName,FileType.CSV).size();
 		Assert.assertEquals(3, csvEntries);
 
@@ -89,7 +95,7 @@ public class AddressBookFileIOServiceTest
 	@Test
 	public void givenFileOnReadingFromJSONFileShouldMatchContactsCount() throws IOException, CsvException
 	{
-		
+
 		long jsonEntries = addressBookOperations.readContactListDataFromJSON().size();
 		Assert.assertEquals(2, jsonEntries);
 
