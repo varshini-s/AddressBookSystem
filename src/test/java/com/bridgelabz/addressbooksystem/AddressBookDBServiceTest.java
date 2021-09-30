@@ -7,14 +7,15 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
 import com.bridgelabz.adressbooksystem.AddessBookServiceImpl;
 import com.bridgelabz.adressbooksystem.Contact;
 import com.bridgelabz.adressbooksystem.AddessBookServiceImpl.IOService;
+import com.bridgelabz.adressbooksystem.AddressBookDBService;
 import com.opencsv.exceptions.CsvException;
 
 public class AddressBookDBServiceTest 
@@ -27,19 +28,19 @@ public class AddressBookDBServiceTest
 		addressBookOperations = new AddessBookServiceImpl();
 		addressBookOperations.setUpDataBase();
 	}
-	
+
 	@Test
 	public void  givenContactsInDB_WhenRetrieved_ShouldMatchContactsCount() throws IOException, CsvException
 	{
-		
+
 		List<Contact> contactList = addressBookOperations.readContactListData(IOService.DB_IO,"book1");
 		Assert.assertEquals(2, contactList.size());
 	}
-	
+
 	@Test
 	public void  givenContactsInDB_WhenGivenState_ShouldMatchContactsCountInGivenState() 
 	{
-		
+
 		List<Contact> contactList = addressBookOperations.readContactListOfState(IOService.DB_IO,"Karnataka");
 		Assert.assertEquals(3, contactList.size());
 
@@ -47,7 +48,7 @@ public class AddressBookDBServiceTest
 	@Test
 	public void  givenContactsInDB_WhenGivenStateCity_ShouldReturnCountOfContactsInGivenAddressBook() 
 	{
-		
+
 		int count = addressBookOperations.countOfContactsInGivenStateCity(IOService.DB_IO,"book1","Bangalore","Karnataka");
 		Assert.assertEquals(1, count);
 
@@ -68,23 +69,23 @@ public class AddressBookDBServiceTest
 		int count = addressBookOperations.countOfContactsInGivenType(IOService.DB_IO,"Friend");
 		Assert.assertEquals(3, count);
 	}
-	
-	
+
+
 	@Test
 	public void givenNewEContact_WhenAddedShouldSyncWithDB() throws IOException, CsvException
 	{
 		addressBookOperations.readContactListData(IOService.DB_IO, "Book1");		
 		addressBookOperations.addContact("susan", "prevensie", "123", "bbb", "yk"
-										, "rrr", "12345", "1234512345", "ddd@example.com", 1,LocalDate.now());
+				, "rrr", "12345", "1234512345", "ddd@example.com", 1,LocalDate.now());
 		boolean result= addressBookOperations.checkContactInSyncWithDB("susan");
 		Assert.assertTrue(result);
-		
+
 	}
-	
+
 	@Test
 	public void givenContactDB_WhenGivenDate_ShouldReturnCountOfContactsAddedInGivenDateRange()
 	{
-		
+
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		String startDate="2018-01-02";
 		String endDate="2019-01-02";
@@ -95,6 +96,31 @@ public class AddressBookDBServiceTest
 		int count = addressBookOperations.countOfContactsAddedInGivenDateRange(IOService.DB_IO,startDate,endDate);
 		Assert.assertEquals(1, count);
 	}
-	
-		
+
+
+	@Test
+	public void givenTwoThreads_WhenTryingToAddSameContact_OnlyOneMustBeAbleToAdd() throws InterruptedException
+	{
+
+		CountDownLatch lock = new CountDownLatch(2);
+
+		AddressBookDBService addressBookDBService= new AddressBookDBService("susan", "prevensie", "123", "bbb", "yk"
+				, "rrr", "12345", "1234512345", "ddd@example.com", 1,LocalDate.now());
+
+		Thread thread1 = new Thread(addressBookDBService);
+		Thread thread2 = new Thread(addressBookDBService);
+		thread1.setName("Person1");
+		thread2.setName("Person2");
+
+		thread1.start();
+		thread2.start();	
+
+		lock.await(3000, TimeUnit.MILLISECONDS);
+		int count=addressBookOperations.countOfContacts(IOService.DB_IO);
+
+		Assert.assertEquals(4, count);
+
+	}
+
 }
+
