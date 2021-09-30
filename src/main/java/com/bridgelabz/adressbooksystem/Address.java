@@ -1,85 +1,75 @@
 package com.bridgelabz.adressbooksystem;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Address 
+public class Address implements Serializable
 {
+
 
 	private String houseNumber;
 	private String street;
 	private String city;
 	private String state;
 	private String zip;
-	
-	
+	private String address;
+
+
 	public Address(String houseNumber, String street, String city, String state, String zip)
 	{
-		
+
 		this.houseNumber = houseNumber;
 		this.street = street;
 		this.city = city;
 		this.state = state;
 		this.zip = zip;
+		
 	}
 
 
-	public String getHouseNumber()
-	{
+
+	public String getHouseNumber() {
 		return houseNumber;
 	}
 
-
-	public void setHouseNumber(String houseNumber)
-	{
+	public void setHouseNumber(String houseNumber) {
 		this.houseNumber = houseNumber;
 	}
 
-
-	public String getAddress() 
-	{
+	public String getStreet() {
 		return street;
 	}
 
-
-	public void setAddress(String address) 
-	{
-		this.street = address;
+	public void setStreet(String street) {
+		this.street = street;
 	}
 
-
-	public String getCity() 
-	{
+	public String getCity() {
 		return city;
 	}
 
-
-	public void setCity(String city)
-	{
+	public void setCity(String city) {
 		this.city = city;
 	}
-
-
-	public String getState()
-	{
+	public String getState() {
 		return state;
 	}
-
-
-	public void setState(String state) 
-	{
+	public void setState(String state) {
 		this.state = state;
 	}
 
-
-	public String getZip() 
-	{
+	public String getZip() {
 		return zip;
 	}
-
-
-	public void setZip(String zip) 
-	{
+	public void setZip(String zip) {
 		this.zip = zip;
+	}
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 
@@ -97,9 +87,16 @@ public class Address
 				&& Objects.equals(state, other.state) && Objects.equals(street, other.street)
 				&& Objects.equals(zip, other.zip);
 	}
-	
-	
-	
-	
+
+
+	@Override
+	public String toString() 
+	{
+		return "Address [houseNumber=" + houseNumber + ", street=" + street + ", city=" + city + ", state=" + state
+				+ ", zip=" + zip + "]";
+	}
+
+
+
 
 }
