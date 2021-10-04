@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import com.bridgelabz.adressbooksystem.AddessBookServiceImpl;
 import com.bridgelabz.adressbooksystem.Contact;
-import com.bridgelabz.adressbooksystem.IOServiceTypes.IOService;
+import com.bridgelabz.adressbooksystem.IOServiceType.IOService;
 import com.opencsv.exceptions.CsvException;
 import com.bridgelabz.adressbooksystem.Address;
 import com.bridgelabz.adressbooksystem.AddressBookFileIOService.FileType;

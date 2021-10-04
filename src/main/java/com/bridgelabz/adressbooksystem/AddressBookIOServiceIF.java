@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.bridgelabz.adressbooksystem.AddressBookFileIOService.FileType;
-import com.bridgelabz.adressbooksystem.IOServiceTypes.IOService;
+import com.bridgelabz.adressbooksystem.IOServiceType.IOService;
 import com.opencsv.exceptions.CsvException;
 
 public interface AddressBookIOServiceIF 
@@ -22,10 +22,10 @@ public interface AddressBookIOServiceIF
 	public long countEntries(IOService ioService,FileType... fileType) throws IOException, CsvException;
 	public List<Contact> readContactListData(IOService ioService,String  addressbookName,FileType... fileType) throws IOException, CsvException;
 	public  List<AddressBook> readContactListDataFromJSON()throws IOException, CsvException;
-	public List<ContactDTO> readContactListDataFromDB(String  addressbookName);
+	public List<ContactDTO> readContactListDataFromDB(String  addressbookName) throws UserEntryException;
 	public List<ContactDTO> readContactListOfState(IOService ioService,String state) ;
 	public int countOfContactsInGivenStateCity(IOService ioService, String city, String state, String addressBook);
-	public List<String> getSortedContactByName(IOService ioService, String city) ;
+	public List<String> getSortedContactByName(IOService ioService, String city) throws UserEntryException; 
 	public int countOfContactsInGivenType(IOService ioService, String type) ;
 	public boolean checkContactInSyncWithDB(String name);
 	public void addContact(Contact contact,String  addressBookName,LocalDate date);

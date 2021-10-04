@@ -10,13 +10,13 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import com.bridgelabz.adressbooksystem.AddressBookFileIOService.FileType;
-import com.bridgelabz.adressbooksystem.IOServiceTypes.IOService;
+import com.bridgelabz.adressbooksystem.IOServiceType.IOService;
 import com.opencsv.exceptions.CsvException;
 
 import java.util.stream.Collectors;
 
 
-public class AddessBookServiceImpl implements AddressBookServiceIF,AddressBookIOServiceIF
+public class AddessBookServiceImpl implements AddressBookConsoleServiceIF,AddressBookIOServiceIF
 
 {
 
@@ -370,7 +370,7 @@ public class AddessBookServiceImpl implements AddressBookServiceIF,AddressBookIO
 		return this.getAddressBook(addressbookName).getContactList();
 	}
 	@Override
-	public List<ContactDTO> readContactListDataFromDB(String  addressbookName)
+	public List<ContactDTO> readContactListDataFromDB(String  addressbookName) throws UserEntryException
 	{
 		this.contactListDTO= new AddressBookDBService().readContactList(addressbookName);
 		return this.contactListDTO;
@@ -402,7 +402,7 @@ public class AddessBookServiceImpl implements AddressBookServiceIF,AddressBookIO
 	}
 	
 	@Override
-	public List<String> getSortedContactByName(IOService ioService, String city) 
+	public List<String> getSortedContactByName(IOService ioService, String city) throws UserEntryException 
 
 	{
 		if(ioService.equals(IOService.DB_IO))

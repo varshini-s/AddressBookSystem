@@ -3,7 +3,7 @@ package com.bridgelabz.adressbooksystem;
 import java.io.IOException;
 import java.util.Scanner;
 
-import com.bridgelabz.adressbooksystem.IOServiceTypes.IOService;
+import com.bridgelabz.adressbooksystem.IOServiceType.IOService;
 import com.opencsv.exceptions.CsvException;
 
 public class AddressBookMenu 
