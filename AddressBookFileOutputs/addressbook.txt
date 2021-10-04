@@ -1,3 +1,0 @@
-firstName=james,lastName=b,address=texas,city=pasadena,zip=11134,state=california,phone number=12345,email=abc@gmail.com
-firstName=susan ,lastName=aaa,address=groov street,city=aaa,zip=12311,state=New york,phone number=89897677,email=ross@gmail.com
-firstName=alan,lastName=c,address=aaa,city=bbb,zip=44562,state=new york,phone number=567890999,email=ted@gmail.com

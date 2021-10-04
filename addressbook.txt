@@ -1,3 +1,0 @@
-Contact [contactId=4, firstName=james, lastName=b, phoneNumber=12345, email=abc@gmail.com, contactAddress=Address [houseNumber=456, street=texas, city=pasadena, state=california, zip=11134]]
-Contact [contactId=5, firstName=susan , lastName=aaa, phoneNumber=89897677, email=ross@gmail.com, contactAddress=Address [houseNumber=23, street=rover street, city=aaa, state=New york, zip=2333]]
-Contact [contactId=6, firstName=alan, lastName=c, phoneNumber=567890999, email=ted@gmail.com, contactAddress=Address [houseNumber=44, street=aaaa, city=bbb, state=New york, zip=2345]]
