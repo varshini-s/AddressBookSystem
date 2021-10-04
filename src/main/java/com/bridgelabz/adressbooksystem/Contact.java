@@ -7,7 +7,6 @@ public class Contact implements Serializable
 
 {
 
-	private int contactId;
 	private String firstName;
 	private String lastName;
 	private String phoneNumber;
@@ -19,20 +18,8 @@ public class Contact implements Serializable
 
 	}
 
-	public Contact(int contactId, String firstName,String lastName, Address contactAddress, String phoneNumber, String email) 
-	{
-		this.contactId = contactId;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.address = contactAddress;
-		this.phoneNumber = phoneNumber;
-		this.email = email;
-	}
-
-
 	public Contact(String firstName, String lastName, Address address,String phoneNumber, String email) 
 	{
-		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.phoneNumber = phoneNumber;
@@ -96,14 +83,14 @@ public class Contact implements Serializable
 		this.address = contactAddress;
 	}
 
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash(address, email, firstName, lastName, phoneNumber);
+	}
 
 	@Override
-	public int hashCode() 
-	{
-		return Objects.hash(address, contactId, email, firstName, lastName, phoneNumber);
-	}
-	@Override
-	public boolean equals(Object obj) 
+	public boolean equals(Object obj)
 	{
 		if (this == obj)
 			return true;
@@ -112,17 +99,20 @@ public class Contact implements Serializable
 		if (getClass() != obj.getClass())
 			return false;
 		Contact other = (Contact) obj;
-		return Objects.equals(address, other.address) && contactId == other.contactId
-				&& Objects.equals(email, other.email) && Objects.equals(firstName, other.firstName)
-				&& Objects.equals(lastName, other.lastName) && Objects.equals(phoneNumber, other.phoneNumber);
-	}
-	@Override
-	public String toString() 
-	{
-		return "Contact [contactId=" + contactId + ", firstName=" + firstName + ", lastName=" + lastName
-				+ ", phoneNumber=" + phoneNumber + ", email=" + email + ", contactAddress=" + address + "]";
+		return Objects.equals(address, other.address) && Objects.equals(email, other.email)
+				&& Objects.equals(firstName, other.firstName) && Objects.equals(lastName, other.lastName)
+				&& Objects.equals(phoneNumber, other.phoneNumber);
 	}
 
+	@Override
+	public String toString()
+	{
+		return "Contact [firstName=" + firstName + ", lastName=" + lastName + ", phoneNumber=" + phoneNumber
+				+ ", email=" + email + ", address=" + address + "]";
+	}
+
+
+	
 
 
 
