@@ -110,6 +110,55 @@ public class AddressBookDBService implements Runnable
 			e.printStackTrace();
 		}
 	}
+	public List<ContactDTO> getContactData(String name) 
+	{
+		String sql = String.format("SELECT * FROM contact JOIN address ON contact.id=address.contact_id WHERE firstName='%s';",name);
+		try (Connection connection = this.getConnection())
+		{
+
+			Statement statement=connection.createStatement();
+			ResultSet resultSet= statement.executeQuery(sql);
+			return this.getContactData(resultSet);
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		return null;
+		
+	}
+	public List<ContactDTO> getContactData(ResultSet resultSet)
+	{
+		List<ContactDTO> contactList=new ArrayList<ContactDTO>();
+		try 
+		{
+
+			while(resultSet.next())
+			{
+				int id=resultSet.getInt("id");
+				String firstName=resultSet.getString("firstName");
+				String lastName=resultSet.getString("lastName");
+				String houseNumber=resultSet.getString("house_number");
+				String street=resultSet.getString("street");
+				String city=resultSet.getString("city");
+				String state=resultSet.getString("state");
+				String zip=resultSet.getString("zip");
+				String phoneNumber=resultSet.getString("phoneNumber");
+				String email=resultSet.getString("email");
+				
+				Address contactAddress = new Address(houseNumber, street, city, state, zip);
+				ContactDTO contact = new ContactDTO(id,firstName, lastName,contactAddress,phoneNumber,email);
+				contactList.add(contact);
+			}
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+
+		return contactList;
+
+	}
 	
 	public int updateContactPhoneNumber(Contact contact, String phoneNumber) 
 	{
@@ -137,6 +186,39 @@ public class AddressBookDBService implements Runnable
 		return 0;
 
 	}
+	
+	public int countOfContactsAddedInGivenDateRange(String startDate, String endDate)
+	{
+		String sql = String.format("SELECT * FROM contact JOIN address ON contact.id=address.contact_id"+
+								 " WHERE date_added BETWEEN '%s' AND '%s';",Date.valueOf(startDate),Date.valueOf(endDate));
+
+		 return getSelectQueryResult(sql).size();
+
+	}
+	public int countOfContactsInDataBase()
+	{
+		String sql = "SELECT * FROM contact JOIN address ON contact.id=address.contact_id;";
+		 return getSelectQueryResult(sql).size();
+		 
+	}
+	public List<ContactDTO> getSelectQueryResult(String sql)
+	{
+		try (Connection connection = this.getConnection())
+		{
+
+			Statement statement=connection.createStatement();
+			ResultSet resultSet= statement.executeQuery(sql);
+			return this.getContactData(resultSet);
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		return null;
+		
+		
+	}
+	
 
 }
 
