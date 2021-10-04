@@ -17,7 +17,8 @@ import com.bridgelabz.adressbooksystem.Address;
 import com.bridgelabz.adressbooksystem.AddressBookDBService;
 import com.bridgelabz.adressbooksystem.Contact;
 import com.bridgelabz.adressbooksystem.ContactDTO;
-import com.bridgelabz.adressbooksystem.IOServiceTypes.IOService;
+import com.bridgelabz.adressbooksystem.IOServiceType.IOService;
+import com.bridgelabz.adressbooksystem.UserEntryException;
 import com.opencsv.exceptions.CsvException;
 
 public class AddressBookDBServiceTest 
@@ -32,11 +33,39 @@ public class AddressBookDBServiceTest
 	}
 
 	@Test
-	public void  givenContactsInDB_WhenRetrieved_ShouldMatchContactsCount() throws IOException, CsvException
+	public void  givenContactsInDB_WhenRetrieved_ShouldMatchContactsCount() throws IOException, CsvException, UserEntryException
 	{
 
 		List<ContactDTO> contactList = addressBookOperations.readContactListDataFromDB("book1");
 		Assert.assertEquals(2, contactList.size());
+	}
+	@Test
+	public void  givenContactsInDB_WhenGivenAddressBookNameAsNull_ShouldThrowCustomException() 
+	{
+			
+		try 
+		{
+
+			addressBookOperations.readContactListDataFromDB(null);
+		}
+		catch (UserEntryException e) 
+		{
+			Assert.assertEquals( "Please enter valid AddressBook Name",e.getMessage());
+		}
+	}
+	@Test
+	public void  givenContactsInDB_WhenGivenAddressBookNameAsEmpty_ShouldThrowCustomException() 
+	{
+			
+		try 
+		{
+
+			addressBookOperations.readContactListDataFromDB("");
+		}
+		catch (UserEntryException e) 
+		{
+			Assert.assertEquals( "Please enter valid AddressBook Name",e.getMessage());
+		}
 	}
 
 	@Test
@@ -56,15 +85,48 @@ public class AddressBookDBServiceTest
 
 	}	
 	@Test
-	public void  givenContactsInDB_WhenGivenCity_ShouldReturnSortedContactsByName() 
+	public void  givenContactsInDB_WhenGivenCity_ShouldReturnSortedContactsByName() throws UserEntryException 
 	{
 		List<String > expectedSortOrder=new ArrayList<String>();
 		expectedSortOrder.add("Bob");
 		expectedSortOrder.add("raj");
 		List<String > retrievedSortedOrder = addressBookOperations.getSortedContactByName(IOService.DB_IO,"Mysore");
 		Assert.assertEquals(expectedSortOrder, retrievedSortedOrder);
-
 	}	
+	@Test
+	public void  givenContactsInDB_WhenGivenCityNameAsNull_ShouldThrowCustomException() 
+	{
+			
+		try 
+		{
+
+			List<String > expectedSortOrder=new ArrayList<String>();
+			expectedSortOrder.add("Bob");
+			expectedSortOrder.add("raj");
+		    addressBookOperations.getSortedContactByName(IOService.DB_IO,null);
+		}
+		catch (UserEntryException e) 
+		{
+			Assert.assertEquals( "Please enter valid city Name",e.getMessage());
+		}
+	}
+	@Test
+	public void  givenContactsInDB_WhenGivenCityNameAsEmpty_ShouldThrowCustomException() 
+	{
+			
+		try 
+		{
+
+			List<String > expectedSortOrder=new ArrayList<String>();
+			expectedSortOrder.add("Bob");
+			expectedSortOrder.add("raj");
+		    addressBookOperations.getSortedContactByName(IOService.DB_IO,"");
+		}
+		catch (UserEntryException e) 
+		{
+			Assert.assertEquals( "Please enter valid city Name",e.getMessage());
+		}
+	}
 	@Test
 	public void givenContactDB_WhenGivenAddresBookType_ShouldReturnCountOfContactsOfGivenType()
 	{
@@ -74,7 +136,7 @@ public class AddressBookDBServiceTest
 
 
 	@Test
-	public void givenNewEContact_WhenAddedShouldSyncWithDB() throws IOException, CsvException
+	public void givenNewEContact_WhenAddedShouldSyncWithDB() throws IOException, CsvException, UserEntryException
 	{
 		addressBookOperations.readContactListDataFromDB( "Book1");	
 		Address address = new Address("123", "bbb", "yk", "rrr", "12345");
@@ -128,7 +190,7 @@ public class AddressBookDBServiceTest
 
 	
 	@Test
-	public void givenInfoToUpdateContact_WhenUpdatedShouldSyncWithDB() throws IOException, CsvException
+	public void givenInfoToUpdateContact_WhenUpdatedShouldSyncWithDB() throws IOException, CsvException, UserEntryException
 	{
 		addressBookOperations.readContactListDataFromDB( "Book1");
 		Address address= new Address("23", "aaa", "Mysore", "Karnataka", "12345");
