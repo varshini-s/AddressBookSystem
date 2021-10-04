@@ -8,8 +8,8 @@ import org.junit.Test;
 
 import com.bridgelabz.adressbooksystem.AddessBookServiceImpl;
 import com.bridgelabz.adressbooksystem.Contact;
+import com.bridgelabz.adressbooksystem.IOServiceTypes.IOService;
 import com.opencsv.exceptions.CsvException;
-import com.bridgelabz.adressbooksystem.AddessBookServiceImpl.IOService;
 import com.bridgelabz.adressbooksystem.Address;
 import com.bridgelabz.adressbooksystem.AddressBookFileIOService.FileType;
 import com.bridgelabz.adressbooksystem.AddressBooksCollection;
@@ -30,20 +30,20 @@ public class AddressBookFileIOServiceTest
 		addressBookOperations.createAddressBook("Addressbook1");
 		addressBookName="Addressbook1";
 		Address address= new Address("123", "aaa", "pasadena", "california", "12345");
-		addressBookOperations.addNewContact(new Contact(1,"Sheldon","Cooper",address,"12345","abc@gmail.com"),addressBookName);
+		addressBookOperations.addNewContact(new Contact("Sheldon","Cooper",address,"12345","abc@gmail.com"),addressBookName);
 		address= new Address("456", "groov street", "LA", "california", "12345");
-		addressBookOperations.addNewContact(new Contact(2,"Ross ","Geller",address,"89897677","ross@gmail.com"),addressBookName);
+		addressBookOperations.addNewContact(new Contact("Ross ","Geller",address,"89897677","ross@gmail.com"),addressBookName);
 		address= new Address("22", "green", "pasadena", "new york", "12345");
-		addressBookOperations.addNewContact(new Contact(3,"Ted","Mobsby",address,"567890999","ted@gmail.com"),addressBookName);
+		addressBookOperations.addNewContact(new Contact("Ted","Mobsby",address,"567890999","ted@gmail.com"),addressBookName);
 
 		addressBookOperations.createAddressBook("Addressbook2");
 		addressBookName="Addressbook2";
 		address= new Address("456", "texas", "pasadena", "california", "11134");
-		addressBookOperations.addNewContact(new Contact(4,"james","b",address,"12345","abc@gmail.com"),addressBookName);
+		addressBookOperations.addNewContact(new Contact("james","b",address,"12345","abc@gmail.com"),addressBookName);
 		address= new Address("23", "rover street", "aaa", "New york", "2333");
-		addressBookOperations.addNewContact(new Contact(5,"susan ","aaa",address,"89897677","ross@gmail.com"),addressBookName);
+		addressBookOperations.addNewContact(new Contact("susan ","aaa",address,"89897677","ross@gmail.com"),addressBookName);
 		address= new Address("44", "aaaa", "bbb", "New york", "2345");
-		addressBookOperations.addNewContact(new Contact(6,"alan","c",address,"567890999","ted@gmail.com"),addressBookName);	
+		addressBookOperations.addNewContact(new Contact("alan","c",address,"567890999","ted@gmail.com"),addressBookName);	
 
 	}
 
