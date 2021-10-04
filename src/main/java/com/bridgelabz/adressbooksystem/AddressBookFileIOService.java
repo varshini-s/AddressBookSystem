@@ -43,20 +43,18 @@ public class AddressBookFileIOService
 
 	public void writeData(List<Contact> contactList,FileType fileType,AddressBooksCollection...addressBookSystem) throws IOException, CsvException 
 	{
-		if(fileType.equals(FileType.TXT))
-		{
-			writeDataToTXTFile(contactList);
-		}
-		else if(fileType.equals(FileType.CSV))
-		{
-			writeDataToCSVFile(contactList);
-
-		}
-		else if(fileType.equals(FileType.JSON))
-		{
-			writeDataTOJSONFile(addressBookSystem);
-		}
 		 
+		switch (fileType)
+		{
+			case TXT:
+				writeDataToTXTFile(contactList);
+				break;
+			case CSV:
+				writeDataToCSVFile(contactList);
+				break;
+			case JSON:
+				writeDataTOJSONFile(addressBookSystem);
+		}
 	}
 
 	private void writeDataTOJSONFile(AddressBooksCollection... addressBookSystem) {
@@ -138,78 +136,69 @@ public class AddressBookFileIOService
 
 	public void printData(FileType fileType) throws IOException, CsvException 
 	{
-		if(fileType.equals(FileType.TXT))
+		
+		switch (fileType)
 		{
-			try 
-			{
-				Files.lines(new File(ADDRESSBOOK_TXT_FILE_NAME).toPath())
-				.forEach(System.out::println);
-			} catch (Exception e) 
-			{
-				e.printStackTrace();
-			}
-		}
-		else if(fileType.equals(FileType.CSV))
-		{
-
-			try
-			(
-					Reader reader =Files.newBufferedReader(Paths.get(ADDRESSBOOK_CSV_FILE_NAME));
-					CSVReader csvReader = new CSVReader(reader);
-					)
-			{
-				List<String[]> records = csvReader.readAll();
-				for(String[] record:records)
+			case TXT:
+				try 
 				{
-					System.out.println("First Name: "+record[0]);
-					System.out.println("Last Name: "+record[1]);
-					System.out.println("Adddress: "+record[2]);
-					System.out.println("City: "+record[3]);
-					System.out.println("Zip: "+record[4]);
-					System.out.println("state: "+record[5]);
-					System.out.println("Phone number: "+record[6]);
-					System.out.println("Email: "+record[7]);
+					Files.lines(new File(ADDRESSBOOK_TXT_FILE_NAME).toPath())
+					.forEach(System.out::println);
+				} catch (Exception e) 
+				{
+					e.printStackTrace();
+				}				break;
+			case CSV:
+				try
+				(
+						Reader reader =Files.newBufferedReader(Paths.get(ADDRESSBOOK_CSV_FILE_NAME));
+						CSVReader csvReader = new CSVReader(reader);
+						)
+				{
+					List<String[]> records = csvReader.readAll();
+					for(String[] record:records)
+					{
+						System.out.println("First Name: "+record[0]);
+						System.out.println("Last Name: "+record[1]);
+						System.out.println("Adddress: "+record[2]);
+						System.out.println("City: "+record[3]);
+						System.out.println("Zip: "+record[4]);
+						System.out.println("state: "+record[5]);
+						System.out.println("Phone number: "+record[6]);
+						System.out.println("Email: "+record[7]);
 
-					System.out.println("=========================");
+						System.out.println("=========================");
 
-				}
-			}
-		}
-		else if(fileType.equals(FileType.JSON))
-		{
-
-			List<AddressBook> addressBookList=this.readData();
-			addressBookList.stream()
-			.forEach(addressBook-> {addressBook.getContactList().stream().forEach(contact->System.out.println(contact));});
-
-		}
-
+					}
+				}				break;
+			case JSON:
+				List<AddressBook> addressBookList=this.readData();
+				addressBookList.stream()
+				.forEach(addressBook-> {addressBook.getContactList().stream().forEach(contact->System.out.println(contact));});		}
 	}
 
 	public long countEntries(FileType fileType) throws IOException, CsvException
 	{
-		if(fileType.equals(FileType.TXT))
+		
+		switch (fileType)
 		{
-			long entries=0;
-			try {
-				entries=Files.lines(new File(ADDRESSBOOK_TXT_FILE_NAME).toPath())
-						.count();
-			}
-			catch (IOException e) 
-			{
-				e.printStackTrace();
-			}
-			return entries;
+			case TXT:
+				long entries=0;
+				try {
+					entries=Files.lines(new File(ADDRESSBOOK_TXT_FILE_NAME).toPath())
+							.count();
+				}
+				catch (IOException e) 
+				{
+					e.printStackTrace();
+				}
+				return entries;		
+			case CSV:
+				return this.readData(FileType.CSV).size();
+			case JSON:
+				return this.readData().size();
 		}
-		else if(fileType.equals(FileType.CSV))
-		{
-			return this.readData(FileType.CSV).size();
-		}
-		else if(fileType.equals(FileType.JSON))
-		{
-
-			return this.readData().size();
-		}
+		
 		return 0;
 	}
 
@@ -218,17 +207,16 @@ public class AddressBookFileIOService
 	{
 		List<Contact> contactList = new ArrayList<Contact>();
 
-		if(fileType.equals(FileType.TXT))
+	
+		switch (fileType)
 		{
-			contactList=readDataFromTXTFileToList(contactList);
+			case TXT:
+				contactList=readDataFromTXTFileToList(contactList);
+				break;
+			case CSV:
+				readDataFromCSVFileToList(contactList);
+				
 		}
-		else if(fileType.equals(FileType.CSV))
-		{
-
-			readDataFromCSVFileToList(contactList);
-
-		}
-
 		return contactList;
 	}
 
