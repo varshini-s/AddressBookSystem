@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.List;
 
-import com.bridgelabz.adressbooksystem.AddessBookServiceImpl.IOService;
 import com.bridgelabz.adressbooksystem.AddressBookFileIOService.FileType;
 import com.opencsv.exceptions.CsvException;
 
@@ -26,7 +25,6 @@ public interface AddressBookServiceIF
 	public void sortByCity(PrintStream... printStreamObject);
 	public void sortByState(PrintStream... printStreamObject);
 	public void sortByZip(PrintStream... printStreamObject);
-	
-	
+	public ContactDTO getContact(String name);
 
 }
