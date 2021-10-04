@@ -110,6 +110,33 @@ public class AddressBookDBService implements Runnable
 			e.printStackTrace();
 		}
 	}
+	
+	public int updateContactPhoneNumber(Contact contact, String phoneNumber) 
+	{
+		
+		String sql = "UPDATE contact SET phoneNumber = ? WHERE firstName = ? AND lastName = ? AND email = ?;";
+	
+		
+			this.preparedStatementForGivenQuery(sql);
+	
+		try
+		{
+			addressBookReadStatement.setString(1, contact.getPhoneNumber());
+			addressBookReadStatement.setString(2, contact.getFirstName());
+			addressBookReadStatement.setString(3, contact.getLastName());
+			addressBookReadStatement.setString(4, contact.getEmail());
+
+
+			return addressBookReadStatement.executeUpdate();
+
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		return 0;
+
+	}
 
 }
 
