@@ -1,13 +1,9 @@
 package com.bridgelabz.adressbooksystem;
 
-import java.io.IOException;
 import java.io.PrintStream;
-import java.util.List;
 
-import com.bridgelabz.adressbooksystem.AddressBookFileIOService.FileType;
-import com.opencsv.exceptions.CsvException;
 
-public interface AddressBookServiceIF 
+public interface AddressBookConsoleServiceIF 
 
 {
 	public void addNewContact(Contact person,String  addressbookName);
