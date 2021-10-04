@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Case;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -31,13 +32,11 @@ import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
 public class AddressBookFileIOService 
 {
-	private static final String Final = null;
 	public static String ADDRESSBOOK_TXT_FILE_NAME="addressbook.txt";
 	public static String ADDRESSBOOK_CSV_FILE_NAME="addressbook.csv";
 	public static String ADDRESSBOOK_JSON_FILE_NAME="addressbook.json";
 	public static String ADDRESSBOOK_FILE_NAME="addressbookStream.txt";
 
-	
 
 	public enum FileType {TXT,CSV,JSON}
 
@@ -57,6 +56,7 @@ public class AddressBookFileIOService
 		{
 			writeDataTOJSONFile(addressBookSystem);
 		}
+		 
 	}
 
 	private void writeDataTOJSONFile(AddressBooksCollection... addressBookSystem) {
