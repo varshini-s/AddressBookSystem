@@ -37,11 +37,11 @@ public class AddressBookServiceTest
 		addressBookName="Addressbook1";
 
 		Address address1 = new Address("123","texas","aaa","california","11134");
-		contact1=new Contact(1,"Sheldon","Cooper",address1,"12345","abc@gmail.com");
+		contact1=new Contact("Sheldon","Cooper",address1,"12345","abc@gmail.com");
 		Address address2 = new Address("1","groov street","aaa","New york","12311");
-		contact2=new Contact(2,"Ross ","Geller",address2,"89897677","ross@gmail.com");
+		contact2=new Contact("Ross ","Geller",address2,"89897677","ross@gmail.com");
 		Address address3 = new Address("24","aaa","bbb","New york","44562");
-		contact3=new Contact(3,"Ted","Mobsby",address3,"567890999","ted@gmail.com");
+		contact3=new Contact("Ted","Mobsby",address3,"567890999","ted@gmail.com");
 		addressBookOperations.addNewContact(contact1,addressBookName);
 		addressBookOperations.addNewContact(contact2,addressBookName);
 		addressBookOperations.addNewContact(contact3,addressBookName);
@@ -49,11 +49,11 @@ public class AddressBookServiceTest
 		addressBookOperations.createAddressBook("Addressbook2");
 		addressBookName="Addressbook2";
 		Address address4 = new Address("3","texas","pasadena","california","11134");
-		contact4=new Contact(4,"james","b",address4,"12345","abc@gmail.com");
+		contact4=new Contact("james","b",address4,"12345","abc@gmail.com");
 		Address address5 = new Address("123","groov street","aaa","New york","12311");
-		contact5=new Contact(5,"susan ","aaa",address5,"89897677","ross@gmail.com");
+		contact5=new Contact("susan ","aaa",address5,"89897677","ross@gmail.com");
 		Address address6 = new Address("342","aaa","bbb","new york","44562");
-		contact6=new Contact(6,"alan","c",address6,"567890999","ted@gmail.com");
+		contact6=new Contact("alan","c",address6,"567890999","ted@gmail.com");
 		addressBookOperations.addNewContact(contact4,addressBookName);
 		addressBookOperations.addNewContact(contact5,addressBookName);
 		addressBookOperations.addNewContact(contact6,addressBookName);	
@@ -81,7 +81,7 @@ public class AddressBookServiceTest
 		addressBookName="Addressbook1";
 		addressBookOperations.editContact("12345","shell@example.com","email",addressBookName);
 		Address address = new Address("123","texas","aaa","california","11134");
-		Contact resultingContact = new Contact(1,"Sheldon","Cooper",address,"12345","shell@example.com");
+		Contact resultingContact = new Contact("Sheldon","Cooper",address,"12345","shell@example.com");
 		int contactIndex=addressBookOperations.hasContact("12345", addressBookName);
 		Contact editedContact=addressBookOperations.getAddressBook(addressBookName).getContactList().get(contactIndex);
 		Assert.assertEquals(resultingContact,editedContact);
