@@ -13,9 +13,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import com.bridgelabz.adressbooksystem.AddessBookServiceImpl;
-import com.bridgelabz.adressbooksystem.Contact;
-import com.bridgelabz.adressbooksystem.AddessBookServiceImpl.IOService;
+import com.bridgelabz.adressbooksystem.Address;
 import com.bridgelabz.adressbooksystem.AddressBookDBService;
+import com.bridgelabz.adressbooksystem.Contact;
+import com.bridgelabz.adressbooksystem.ContactDTO;
+import com.bridgelabz.adressbooksystem.IOServiceTypes.IOService;
 import com.opencsv.exceptions.CsvException;
 
 public class AddressBookDBServiceTest 
@@ -33,7 +35,7 @@ public class AddressBookDBServiceTest
 	public void  givenContactsInDB_WhenRetrieved_ShouldMatchContactsCount() throws IOException, CsvException
 	{
 
-		List<Contact> contactList = addressBookOperations.readContactListData(IOService.DB_IO,"book1");
+		List<ContactDTO> contactList = addressBookOperations.readContactListDataFromDB("book1");
 		Assert.assertEquals(2, contactList.size());
 	}
 
@@ -41,7 +43,7 @@ public class AddressBookDBServiceTest
 	public void  givenContactsInDB_WhenGivenState_ShouldMatchContactsCountInGivenState() 
 	{
 
-		List<Contact> contactList = addressBookOperations.readContactListOfState(IOService.DB_IO,"Karnataka");
+		List<ContactDTO> contactList = addressBookOperations.readContactListOfState(IOService.DB_IO,"Karnataka");
 		Assert.assertEquals(3, contactList.size());
 
 	}
@@ -74,9 +76,10 @@ public class AddressBookDBServiceTest
 	@Test
 	public void givenNewEContact_WhenAddedShouldSyncWithDB() throws IOException, CsvException
 	{
-		addressBookOperations.readContactListData(IOService.DB_IO, "Book1");		
-		addressBookOperations.addContact("susan", "prevensie", "123", "bbb", "yk"
-				, "rrr", "12345", "1234512345", "ddd@example.com", 1,LocalDate.now());
+		addressBookOperations.readContactListDataFromDB( "Book1");	
+		Address address = new Address("123", "bbb", "yk", "rrr", "12345");
+		Contact contact = new Contact("susan", "prevensie",address , "1234512345", "ddd@example.com");
+		addressBookOperations.addContact(contact,"book1",LocalDate.now());
 		boolean result= addressBookOperations.checkContactInSyncWithDB("susan");
 		Assert.assertTrue(result);
 
@@ -104,8 +107,9 @@ public class AddressBookDBServiceTest
 
 		CountDownLatch lock = new CountDownLatch(2);
 
-		AddressBookDBService addressBookDBService= new AddressBookDBService("susan", "prevensie", "123", "bbb", "yk"
-				, "rrr", "12345", "1234512345", "ddd@example.com", 1,LocalDate.now());
+		Address address= new Address("23", "aaa", "Mysore", "Karnataka", "12345");
+		Contact contact = new Contact("susan", "prevensie",address,"1234512345", "ddd@example.com");
+		AddressBookDBService addressBookDBService= new AddressBookDBService(contact,"book1",LocalDate.now());
 
 		Thread thread1 = new Thread(addressBookDBService);
 		Thread thread2 = new Thread(addressBookDBService);
@@ -122,5 +126,18 @@ public class AddressBookDBServiceTest
 
 	}
 
+	
+	@Test
+	public void givenInfoToUpdateContact_WhenUpdatedShouldSyncWithDB() throws IOException, CsvException
+	{
+		addressBookOperations.readContactListDataFromDB( "Book1");
+		Address address= new Address("23", "aaa", "Mysore", "Karnataka", "12345");
+		Contact contact = new Contact("Bob","J",address,"1234123455","bob@example.com");
+		addressBookOperations.updateContactPhoneNumber(IOService.DB_IO,contact,"1234123455");
+		
+		boolean result= addressBookOperations.checkContactInSyncWithDB("Bob");
+		Assert.assertTrue(result);
+
+	}
 }
 
