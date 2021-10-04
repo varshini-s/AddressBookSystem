@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.ibatis.jdbc.ScriptRunner;
-
+import com.bridgelabz.adressbooksystem.UserEntryException.ExceptionType;
 
 public class AddressBookDBService implements Runnable
 {
@@ -72,7 +72,7 @@ public class AddressBookDBService implements Runnable
 
 	}
 
-	public List<ContactDTO> readContactList(String addressbookName) 
+	public List<ContactDTO> readContactList(String addressbookName) throws UserEntryException 
 
 	{
 		List<ContactDTO> contactList=new ArrayList<ContactDTO>();
@@ -84,6 +84,10 @@ public class AddressBookDBService implements Runnable
 		}
 		try
 		{
+			if(addressbookName.isEmpty())
+			{
+				throw new UserEntryException(ExceptionType.ENTERED_EMPTY,"Please enter valid AddressBook Name");
+			}
 			addressBookReadStatement.setString(1, addressbookName);
 			ResultSet resultSet=addressBookReadStatement.executeQuery();
 			contactList=this.getContactData(resultSet);
@@ -92,6 +96,10 @@ public class AddressBookDBService implements Runnable
 		catch (SQLException e)
 		{
 			e.printStackTrace();
+		}
+		catch (NullPointerException e) 
+		{
+			throw new UserEntryException(ExceptionType.ENTERED_NULL,"Please enter valid AddressBook Name");
 		}
 
 		return contactList;
@@ -266,7 +274,7 @@ public class AddressBookDBService implements Runnable
 		return 0;
 	}
 	
-	public List<String> getSortedContactByName(String city) 
+	public List<String> getSortedContactByName(String city) throws UserEntryException 
 	{
 
 		String sql=String.format("SELECT * FROM contact JOIN address ON contact.id=address.contact_id"+
@@ -275,6 +283,10 @@ public class AddressBookDBService implements Runnable
 		List<String > sortedContactList = new ArrayList<String>();
 		try (Connection connection = this.getConnection())
 		{
+			if(city.isEmpty())
+			{
+				throw new UserEntryException(ExceptionType.ENTERED_EMPTY,"Please enter valid city Name");
+			}
 
 			Statement statement=connection.createStatement();
 			ResultSet resultSet=statement.executeQuery(sql);
@@ -291,6 +303,10 @@ public class AddressBookDBService implements Runnable
 		catch (SQLException e) 
 		{
 			e.printStackTrace();
+		}
+		catch (NullPointerException e) 
+		{
+			throw new UserEntryException(ExceptionType.ENTERED_NULL,"Please enter valid city Name");
 		}
 
 		return null;
