@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import com.bridgelabz.adressbooksystem.AddressBookFileIOService.FileType;
+import com.bridgelabz.adressbooksystem.IOServiceTypes.IOService;
 import com.opencsv.exceptions.CsvException;
 
 import java.util.stream.Collectors;
@@ -19,10 +20,12 @@ public class AddessBookServiceImpl implements AddressBookServiceIF,AddressBookIO
 
 {
 
-	AddressBookDBService addressBookDBService ;
-	AddressBooksCollection addressbookSystem = new AddressBooksCollection();
+	AddressBookDBService addressBookDBService = new AddressBookDBService() ;
+	AddressBooksCollection addressbookSystem = new AddressBooksCollection() ;
 	
 	List<Contact> contactList=new ArrayList<Contact>();
+	List<ContactDTO> contactListDTO=new ArrayList<ContactDTO>();
+
 	
 	public AddessBookServiceImpl(List<Contact> contactList)
 	{
@@ -33,7 +36,6 @@ public class AddessBookServiceImpl implements AddressBookServiceIF,AddressBookIO
 	{
 		addressBookDBService=AddressBookDBService.getInstance();
 	}
-	public enum IOService {CONSOLE_IO,FILE_IO,DB_IO,REST_IO}
 
 	@Override
 	public void createAddressBook(String addressbookName)
@@ -343,6 +345,7 @@ public class AddessBookServiceImpl implements AddressBookServiceIF,AddressBookIO
 		return 0;
 	}
 
+	@Override
 	public  List<AddressBook> readContactListDataFromJSON()throws IOException, CsvException
 	{
 		AddressBookFileIOService addressbookFileIOService = new AddressBookFileIOService();
@@ -364,16 +367,18 @@ public class AddessBookServiceImpl implements AddressBookServiceIF,AddressBookIO
 
 		}
 
-		else if(ioService.equals(IOService.DB_IO))
-		{
-			return new AddressBookDBService().readContactList(addressbookName);
-
-		}
-
 		return this.getAddressBook(addressbookName).getContactList();
 	}
-
-	public List<Contact> readContactListOfState(IOService ioService,String state) 
+	@Override
+	public List<ContactDTO> readContactListDataFromDB(String  addressbookName)
+	{
+		this.contactListDTO= new AddressBookDBService().readContactList(addressbookName);
+		return this.contactListDTO;
+		
+	}
+	
+	@Override
+	public List<ContactDTO> readContactListOfState(IOService ioService,String state) 
 	{
 		if(ioService.equals(IOService.DB_IO))
 		{
@@ -383,7 +388,8 @@ public class AddessBookServiceImpl implements AddressBookServiceIF,AddressBookIO
 
 		return null;
 	}
-
+	
+	@Override
 	public int countOfContactsInGivenStateCity(IOService ioService, String city, String state, String addressBook) 
 	{
 		if(ioService.equals(IOService.DB_IO))
@@ -394,7 +400,8 @@ public class AddessBookServiceImpl implements AddressBookServiceIF,AddressBookIO
 
 		return 0;
 	}
-
+	
+	@Override
 	public List<String> getSortedContactByName(IOService ioService, String city) 
 
 	{
@@ -406,7 +413,7 @@ public class AddessBookServiceImpl implements AddressBookServiceIF,AddressBookIO
 
 		return null;
 	}
-
+	@Override
 	public int countOfContactsInGivenType(IOService ioService, String type) 
 	{
 		if(ioService.equals(IOService.DB_IO))
@@ -416,10 +423,11 @@ public class AddessBookServiceImpl implements AddressBookServiceIF,AddressBookIO
 		}		return 0;
 	}
 	
-	private Contact getContact(String name) 
+	@Override
+	public ContactDTO getContact(String name) 
 	{
-		Contact contact;
-		contact=this.contactList.stream()
+		ContactDTO contact;
+		contact=this.contactListDTO.stream()
 				.filter(contactItem->contactItem.getFirstName().equals(name))
 				.findFirst()
 				.orElse(null);
@@ -427,33 +435,34 @@ public class AddessBookServiceImpl implements AddressBookServiceIF,AddressBookIO
 		return contact;
 
 	}
-
+	@Override
 	public boolean checkContactInSyncWithDB(String name)
 	{
-		List<Contact> contactList=addressBookDBService.getContactData(name);
-		return this.contactList.get(0).equals(this.getContact(name));
+		List<ContactDTO> contactList=addressBookDBService.getContactData(name);
+		return contactList.get(0).equals(this.getContact(name));
 	}
 
-	public void addContact(String firstName,String lastName,String houseNumber,String street,String city,
-						  String state,String zip,String phoneNumber,String email,int addressBookId,LocalDate date)
+	@Override
+	public void addContact(Contact contact,String  addressBookName,LocalDate date)
 	{
 
-		contactList.add(addressBookDBService.addContact( firstName ,lastName, houseNumber, street, city, state, zip, phoneNumber, email, addressBookId,date));
+		contactListDTO.add(addressBookDBService.addContact(  contact,  addressBookName, date));
 
 		
 	}
-
+	@Override
 	public void setUpDataBase() throws FileNotFoundException, SQLException 
 	{
 		addressBookDBService.setupDatabase();
 		
 	}
 
+	@Override
 	public int countOfContactsAddedInGivenDateRange(IOService ioService, String startDate, String endDate) 
 	{
 		if(ioService.equals(IOService.DB_IO))
 		{
-			return new AddressBookDBService().countOfContactsAddedInGivenDateRange( startDate,  endDate);
+			return addressBookDBService.countOfContactsAddedInGivenDateRange( startDate,  endDate);
 			
 
 		}
@@ -462,15 +471,30 @@ public class AddessBookServiceImpl implements AddressBookServiceIF,AddressBookIO
 		return 0;
 	}
 
-
+	@Override
 	public int countOfContacts(IOService ioService)
 	{
 		if(ioService.equals(IOService.DB_IO))
 		{
-			return new AddressBookDBService().countOfContactsInDataBase();
+			return addressBookDBService.countOfContactsInDataBase();
 			
 		}
 		return 0;
+	}
+	@Override
+	public void updateContactPhoneNumber(IOService ioService,Contact contact, String phoneNumber)
+	{
+		if(ioService.equals(IOService.DB_IO))
+		{
+			int result =addressBookDBService.updateContactPhoneNumber( contact,  phoneNumber);
+			if(result==0) return;
+			ContactDTO contactInMemory=this.getContact(contact.getFirstName());
+			if(contactInMemory!=null) 
+			{
+				contactInMemory.setPhoneNumber(phoneNumber);
+
+			}
+		}
 	}
 
 }
