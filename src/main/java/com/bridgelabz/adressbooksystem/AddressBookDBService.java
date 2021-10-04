@@ -14,7 +14,6 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 
 import org.apache.ibatis.jdbc.ScriptRunner;
 
@@ -503,6 +502,19 @@ public class AddressBookDBService implements Runnable
 		}
 		
 		return false;
+	}
+	@Override
+	public void run()
+	{
+		try
+		{
+
+			this.addContact( this.contact,  this.addressBookName, this.dateAdded);
+		} catch (Exception ex) 
+		{
+			ex.printStackTrace();
+		}
+				
 	}
 
 
