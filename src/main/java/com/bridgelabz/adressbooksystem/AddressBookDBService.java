@@ -73,7 +73,43 @@ public class AddressBookDBService implements Runnable
 
 	}
 
-	
+	public List<ContactDTO> readContactList(String addressbookName) 
+
+	{
+		List<ContactDTO> contactList=new ArrayList<ContactDTO>();
+		if(this.addressBookReadStatement==null)
+		{
+			String sql="SELECT * FROM contact JOIN address ON contact.id=address.contact_id JOIN address_book ON contact.address_book_id=address_book.address_book_id"
+					+ " where address_book_name=?;";
+			this.preparedStatementForGivenQuery(sql);
+		}
+		try
+		{
+			addressBookReadStatement.setString(1, addressbookName);
+			ResultSet resultSet=addressBookReadStatement.executeQuery();
+			contactList=this.getContactData(resultSet);
+
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+
+		return contactList;
+	}
+
+	private void preparedStatementForGivenQuery(String sql)
+	{
+		try
+		{
+			Connection connection = this.getConnection();
+			addressBookReadStatement=connection.prepareStatement(sql);
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
 
 }
 
