@@ -216,7 +216,55 @@ public class AddressBookDBService implements Runnable
 		}
 		return null;
 		
-		
+	}
+	public List<ContactDTO> readContactListOfState(String givenState) 
+	{
+		String sql=String.format("SELECT * FROM contact JOIN address ON contact.id=address.contact_id"+
+				" where address.state=\"%s\";",givenState);
+
+		List<ContactDTO> contactList=new ArrayList<ContactDTO>();
+		try (Connection connection = this.getConnection())
+		{
+
+			Statement statement=connection.createStatement();
+			ResultSet resultSet=statement.executeQuery(sql);
+			contactList=this.getContactData(resultSet);
+
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+
+		return contactList;
+	}
+
+	
+
+	public int countOfContactsInGivenStateCity(String city, String state, String addressBook) 
+	{
+
+		int count=0;
+		String sql=String.format("SELECT count(id) FROM contact JOIN address ON contact.id=address.contact_id"+
+				" JOIN address_book ON contact.address_book_id=address_book.address_book_id where contact.id in"+
+				" (Select contact_id from address where state=\"%s\" and city=\"%s\") and address_book_name=\"%s\";",state,city,addressBook);
+
+		try (Connection connection = this.getConnection())
+		{
+
+			Statement statement=connection.createStatement();
+			ResultSet resultSet=statement.executeQuery(sql);
+			while(resultSet.next())
+			{
+				count++;
+			}
+			return count;
+		}
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		return 0;
 	}
 	
 
